@@ -1,0 +1,106 @@
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: {{ .Chart.Name }}-sts
+  namespace: {{ .Release.Name }}
+  labels: 
+    {{- include "unchained.statefulsetLabels" . | nindent 4 }}
+spec:
+  serviceName: {{ .Chart.Name }}-svc
+  replicas: {{ .Values.statefulset.replicas }}
+  selector:
+    matchLabels:   
+      {{- include "unchained.statefulsetLabels" . | nindent 6 }}
+  podManagementPolicy: 'Parallel'
+  updateStrategy:
+    type: 'RollingUpdate'
+  template:
+    metadata:
+      namespace: {{ .Release.Name }}
+      labels:
+        {{- include "unchained.statefulsetLabels" . | nindent 8 }}
+    spec:
+      terminationGracePeriodSeconds: 600
+      containers: 
+        {{- range .Values.statefulset.containers }}
+      - name: {{ .name }}
+        image: {{ .image }}
+        {{- with .env }}
+        env: 
+          {{- toYaml . | nindent 10 }}
+        {{- end }}
+        {{- with .ports }}
+        ports: 
+          {{- toYaml . | nindent 10 }}
+        {{- end }}
+        resources:
+          {{- with .limits }}
+          limits:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with .requests }}
+          requests:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+        command: {{- toYaml .command | nindent 10 }} 
+        readinessProbe:
+          failureThreshold: 10
+          periodSeconds: 30
+          timeoutSeconds: 10
+          exec:
+            command: 
+            - '/readiness.sh'
+        {{- if eq .name "indexer" }}
+        startupProbe:
+          failureThreshold: 60
+          periodSeconds: 30
+          timeoutSeconds: 10 
+          httpGet:
+            path: '/api/v2'
+            port: 8001
+        livenessProbe:
+          failureThreshold: 5
+          periodSeconds: 30
+          timeoutSeconds: 10
+          httpGet:
+            path: '/api/v2'
+            port: 8001
+        {{- end }}
+        volumeMounts:
+        - name: {{ $.Chart.Name }}-{{ .name }}-data
+          mountPath: {{ default "/data" .dataDir }}
+        - name: {{ $.Values.name }}
+          mountPath: '/readiness.sh'
+          subPath: {{ .name }}-readiness.sh
+        {{- if eq .name "daemon" }}
+        - name: {{ $.Values.name }}
+          mountPath: '/init.sh'
+          subPath: {{ .name }}-init.sh
+        {{- else }}
+        - name: {{ $.Values.name }}
+          mountPath: '/indexer-config.json'
+          subPath: 'indexer-config.json'
+        - name: {{ $.Values.name }}
+          mountPath: '/startup.sh'
+          subPath: {{ .name }}-startup.sh
+        - name: {{ $.Values.name }}
+          mountPath: '/liveness.sh'
+          subPath: {{ .name }}-liveness.sh
+        {{- end }}
+      {{- end }}
+      volumes:
+        - name: {{ .Values.name }}
+          configMap:
+            name: {{ .Chart.Name }}-scripts
+            defaultMode: 0775
+  volumeClaimTemplates:
+  {{- range .Values.statefulset.containers }}
+  - metadata:
+      name: {{ $.Chart.Name }}-{{ .name }}-data
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      resources:
+        requests:
+          storage: {{ .storage_size }}
+  {{- end }}

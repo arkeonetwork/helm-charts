@@ -1,0 +1,57 @@
+apiVersion: v2
+name: unchained-stack
+description: Deploys an Unchained stack with options to enable or disable some services
+type: application
+version: 1.0.0
+
+appVersion: 1.0.0
+
+dependencies:
+- name: unchained-avalanche
+  version: "1.0.0"
+  repository: file://infra/unchained/chart/avalanche
+  condition: avalanche.enabled
+- name: unchained-bitcoin
+  version: "1.0.0"
+  repository: file://infra/unchained/chart/bitcoin
+  condition: bitcoin.enabled
+- name: unchained-bitcoincash
+  version: "1.0.0"
+  repository: file://infra/unchained/chart/bitcoin-cash
+  condition: bitcoincash.enabled
+- name: unchained-bnbsmartchain
+  version: "1.0.0"
+  repository: file://infra/unchained/chart/bnbsmartchain
+  condition: bnbsmartchain.enabled
+- name: unchained-cosmos
+  version: "1.0.0"
+  repository: file://infra/unchained/chart/cosmos
+  condition: cosmos.enabled
+- name: unchained-dogecoin
+  version: "1.0.0"
+  repository: file://infra/unchained/chart/dogecoin
+  condition: dogecoin.enabled
+- name: unchained-gnosis
+  version: "1.0.0"
+  repository: file://infra/unchained/chart/gnosis
+  condition: gnosis.enabled
+- name: unchained-litecoin
+  version: "1.0.0"
+  repository: file://infra/unchained/chart/litecoin
+  condition: litecoin.enabled
+- name: unchained-ethereum
+  version: "1.0.0"
+  repository: file://infra/unchained/chart/ethereum
+  condition: ethereum.enabled
+- name: unchained-optimism
+  version: "1.0.0"
+  repository: file://infra/unchained/chart/optimism
+  condition: optimism.enabled
+- name: unchained-polygon
+  version: "1.0.0"
+  repository: file://infra/unchained/chart/polygon
+  condition: polygon.enabled
+- name: unchained-thorchain
+  version: "1.0.0"
+  repository: file://infra/unchained/chart/thorchain
+  condition: thorchain.enabled

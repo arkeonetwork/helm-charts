@@ -1,0 +1,64 @@
+name: bitcoincash
+
+api:
+  tier: api
+  image: "shapeshiftdao/unchained-bitcoincash-api:latest"
+  autoscaling: true
+  limits:
+    cpu: 500m
+    memory: 500Mi
+  requests:
+    cpu: 250m
+    memory: 250Mi
+  env:
+  - name: INDEXER_URL
+    value: "https://dev-indexer.bitcoincash.shapeshift.com"
+  - name: INDEXER_WS_URL
+    value: "wss://dev-indexer.bitcoincash.shapeshift.com/websocket"
+  - name: LOG_LEVEL
+    value: "debug"
+  - name: NETWORK
+    value: "mainnet"
+  - name: RPC_URL
+    value: "https://user:password@dev-daemon.bitcoincash.shapeshift.com"
+
+statefulset:
+  name: bitcoincash
+  replicas: 3
+  containers:
+    - name: daemon
+      image: "shapeshiftdao/bitcoin-cash-node:26.1.0"
+      command: 
+        - '/init.sh'
+      limits:
+        cpu: 2
+        memory: 4Gi
+      requests:
+        cpu: 1
+      ports:
+      - name: daemon-rpc
+        containerPort: 8332
+      env:
+      - name: SNAPSHOT
+        value: 'https://pub-c0627345c16f47ab858c9469133073a8.r2.dev/geth-20230719.tar.lz4'
+      storage_size: 250Gi
+    - name: indexer
+      image: "shapeshiftdao/unchained-blockbook:95ee9b5"
+      command: 
+        - '/bin/blockbook'
+        - '-blockchaincfg=/config.json'
+        - '-datadir=/data'
+        - '-sync'
+        - '-public=:8001'
+        - '-enablesubnewtx'
+        - '-logtostderr'
+        - '-workers=1'
+      limits:
+        cpu: 2
+        memory: 8Gi
+      requests:
+        cpu: 1
+      storage_size: 250Gi
+      ports:
+      - name: indexer
+        containerPort: 8001

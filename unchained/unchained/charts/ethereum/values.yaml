@@ -1,0 +1,83 @@
+name: ethereum
+
+api:
+  tier: api
+  image: "shapeshiftdao/unchained-ethereum-api:latest"
+  autoscaling: true
+  limits:
+    cpu: 500m
+    memory: 500Mi
+  requests:
+    cpu: 250m
+    memory: 250Mi
+  env:
+  - name: INDEXER_URL
+    value: "https://dev-indexer.ethereum.shapeshift.com"
+  - name: INDEXER_WS_URL
+    value: "wss://dev-indexer.ethereum.shapeshift.com/websocket"
+  - name: LOG_LEVEL
+    value: "debug"
+  - name: NETWORK
+    value: "mainnet"
+  - name: RPC_URL
+    value: "https://dev-daemon.ethereum.shapeshift.com"
+
+statefulset:
+  name: ethereum
+  replicas: 2
+  containers:
+    - name: daemon
+      image: "ethereum/client-go:v1.12.2"
+      command: 
+        - '/init.sh' 
+      limits:
+        cpu: 2
+        memory: 32Gi
+      requests:
+        cpu: 1
+      ports:
+      - name: daemon-rpc
+        containerPort: 8545
+      - name: daemon-ws
+        containerPort: 8546
+      - name: daemon-beacon
+        containerPort: 8551
+      storage_size: 3000Gi
+      env:
+      - name: NETWORK
+        value: mainnet
+    - name: daemon-beacon
+      image: "gcr.io/prysmaticlabs/prysm/beacon-chain:v4.0.8"
+      args:
+        - '--datadir'
+        - '/data'
+        - '--execution-endpoint'
+        - 'http://localhost:8551'
+        - '--jwt-secret'
+        - '/jwt.hex'
+        - '--accept-terms-of-use'
+      limits:
+        cpu: 2
+        memory: 12Gi
+      requests:
+        cpu: 1
+      storage_size: 500Gi
+    - name: indexer
+      image: "shapeshiftdao/unchained-blockbook:95ee9b5"
+      command: 
+        - '/bin/blockbook'
+        - '-blockchaincfg=/config.json'
+        - '-datadir=/data'
+        - '-sync'
+        - '-public=:8001'
+        - '-enablesubnewtx'
+        - '-logtostderr'
+      limits:
+        cpu: 2
+        memory: 16Gi
+      requests:
+        cpu: 1
+      storage_size: 500Gi
+      ports:
+      - name: indexer
+        containerPort: 8001

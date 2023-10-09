@@ -1,0 +1,82 @@
+name: gnosis
+
+api:
+  tier: api
+  image: "shapeshiftdao/unchained-gnosis-api:latest"
+  autoscaling: true
+  limits:
+    cpu: 500m
+    memory: 250Mi
+  requests:
+    cpu: 500m
+    memory: 250Mi
+  env:
+  - name: INDEXER_URL
+    value: "https://dev-indexer.gnosis.shapeshift.com"
+  - name: INDEXER_WS_URL
+    value: "wss://dev-indexer.gnosis.shapeshift.com/websocket"
+  - name: LOG_LEVEL
+    value: "debug"
+  - name: NETWORK
+    value: "mainnet"
+  - name: RPC_URL
+    value: "https://dev-daemon.gnosis.shapeshift.com"
+
+statefulset:
+  name: gnosis
+  replicas: 2
+  containers:
+    - name: daemon
+      image: "nethermind/nethermind:1.20.1"
+      command: 
+        - '/init.sh'
+      ports:
+      - name: daemon-rpc
+        containerPort: 8545
+      - name: daemon-ws
+        containerPort: 8546
+      - name: daemon-beacon
+        containerPort: 8551
+      limits:
+        cpu: 2
+        memory: 6Gi
+      requests:
+        cpu: 1
+      storage_size: 1000Gi
+    - name: daemon-beacon
+      image: "sigp/lighthouse:v4.3.0"
+      command: 
+        - '/usr/local/bin/lighthouse'
+        - 'beacon_node'
+        - '--network=gnosis'
+        - '--disable-upnp'
+        - '--datadir=/data'
+        - '--http'
+        - '--execution-endpoint=http://localhost:8551'
+        - '--execution-jwt=/jwt.hex'
+        - '--checkpoint-sync-url=https://checkpoint.gnosischain.com/'
+      limits:
+        cpu: 2
+        memory: 4Gi
+      requests:
+        cpu: 1
+      storage_size: 500Gi
+    - name: indexer
+      image: "shapeshiftdao/unchained-blockbook:gnosis-7fc9809"
+      command: 
+        - '/bin/blockbook'
+        - '-blockchaincfg=/config.json'
+        - '-datadir=/data'
+        - '-sync'
+        - '-public=:8001'
+        - '-enablesubnewtx'
+        - '-logtostderr'
+      limits:
+        cpu: 2
+        memory: 24Gi
+      requests:
+        cpu: 1
+      storage_size: 500Gi
+      ports:
+      - name: indexer
+        containerPort: 8001

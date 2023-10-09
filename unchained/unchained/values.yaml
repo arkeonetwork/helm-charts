@@ -1,0 +1,47 @@
+global:
+  indexerCommand: 
+    - '/bin/blockbook'
+    - '-blockchaincfg=/config.json'
+    - '-datadir=/data'
+    - '-sync'
+    - '-public=:8001'
+    - '-enablesubnewtx'
+    - '-logtostderr'
+  backupSchedule: "0 4 * * 0"
+  backupCount: "3"
+
+avalanche: 
+  enabled: true
+
+bitcoin:
+  enabled: false
+
+bitcoincash:
+  enabled: false
+
+bnbsmartchain:
+  enabled: false
+
+cosmos:
+  enabled: false
+
+dogecoin:
+  enabled: false
+
+ethereum:
+  enabled: false
+
+gnosis:
+  enabled: false
+
+litecoin:
+  enabled: false
+
+optimism:
+  enabled: false
+
+polygon:
+  enabled: false
+
+thorchain:
+  enabled: false

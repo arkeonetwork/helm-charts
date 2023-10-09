@@ -1,0 +1,81 @@
+name: thorchain
+
+api:
+  tier: api
+  image: "shapeshiftdao/unchained-thorchain-api:latest"
+  autoscaling: true
+  limits:
+    cpu: 500m
+    memory: 500Mi
+  requests:
+    cpu: 250m
+    memory: 250Mi
+  env:
+  - name: LCD_URL
+    value: "https://dev-daemon.thorchain.shapeshift.com/lcd"
+  - name: WS_URL
+    value: "https://dev-daemon.thorchain.shapeshift.com/rpc"
+  - name: RPC_URL
+    value: "wss://dev-daemon.thorchain.shapeshift.com/rpc"
+
+statefulset:
+  name: thorchain
+  replicas: 2
+  containers:
+    - name: daemon
+      image: "registry.gitlab.com/thorchain/thornode:mainnet-1.120.1"
+      ports:
+      - name: daemon-api
+        containerPort: 1317
+      - name: daemon-rpc
+        containerPort: 27147
+      env:
+      - name: NETWORK
+        value: mainnet
+      - name: CHAIN_ID
+        value: 'thorchain-mainnet-v1'
+      limits:
+        cpu: 2
+        memory: 12Gi
+      requests:
+        cpu: 1
+      storage_size: 2500Gi
+      dataDir: /root
+    - name: timescaledb
+      image: "timescale/timescaledb:2.2.0-pg13"
+      env:
+      - name: POSTGRES_DB
+        value: 'midgard'
+      - name: POSTGRES_USER
+        value: 'midgard'
+      - name: POSTGRES_PASSWORD
+        value: 'password'
+      - name: PGDATA
+        value: '/var/lib/postgresql/data/pgdata'
+      ports:
+      - name: postgres
+        containerPort: 5432
+      limits:
+        cpu: 2
+        memory: 8Gi
+      requests:
+        cpu: 1
+      storage_size: 500Gi
+      dataDir: '/var/lib/postgresql/data'
+    - name: indexer
+      image: "registry.gitlab.com/thorchain/midgard:2.16.1"
+      env:
+      - name: MIDGARD_BLOCKSTORE_LOCAL
+        value: '/blockstore'
+      - name: MIDGARD_BLOCKSTORE_REMOTE
+        value: 'https://storage.googleapis.com/public-snapshots-ninerealms/midgard-blockstore/mainnet/v2/'
+      ports:
+      - name: midgard
+        containerPort: 8080      
+      limits:
+        cpu: 500m
+        memory: 1Gi
+      requests:
+        cpu: 250m
+      storage_size: 100Gi
+      dataDir: '/blockstore'

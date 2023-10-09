@@ -1,0 +1,41 @@
+name: cosmos
+
+api:
+  tier: api
+  image: "shapeshiftdao/unchained-cosmos-api:latest"
+  autoscaling: true
+  limits:
+    cpu: 500m
+    memory: 500Mi
+  requests:
+    cpu: 250m
+    memory: 250Mi
+  env:
+  - name: LCD_URL
+    value: "https://dev-daemon.cosmos.shapeshift.com/lcd"
+  - name: GRPC_URL
+    value: "dev-daemon.cosmos.shapeshift.com"
+  - name: WS_URL
+    value: "wss://dev-daemon.cosmos.shapeshift.com/rpc"
+  - name: RPC_URL
+    value: "https://dev-daemon.cosmos.shapeshift.com/rpc"
+
+statefulset:
+  name: cosmos
+  replicas: 2
+  containers:
+    - name: daemon
+      image: "shapeshiftdao/cosmoshub:v11.0.0"
+      ports:
+      - name: daemon-api
+        containerPort: 1317
+      - name: daemon-rpc
+        containerPort: 26657
+      limits:
+        cpu: 2
+        memory: 32Gi
+      requests:
+        cpu: 1
+      storage_size: 3500Gi
+      dataDir: /root
+      

@@ -1,0 +1,89 @@
+name: polygon
+
+api:
+  tier: api
+  image: "shapeshiftdao/unchained-polygon-api:latest"
+  autoscaling: true
+  limits:
+    cpu: 1
+    memory: 500Mi
+  requests:
+    cpu: 500m
+    memory: 250Mi
+  env:
+  - name: INDEXER_URL
+    value: "https://dev-indexer.polygon.shapeshift.com"
+  - name: INDEXER_WS_URL
+    value: "wss://dev-indexer.polygon.shapeshift.com/websocket"
+  - name: LOG_LEVEL
+    value: "debug"
+  - name: NETWORK
+    value: "mainnet"
+  - name: RPC_URL
+    value: "https://dev-daemon.polygon.shapeshift.com"
+
+statefulset:
+  name: polygon
+  replicas: 2
+  containers:
+    - name: daemon
+      image: "0xpolygon/bor:0.4.0"
+      command: 
+        - '/init.sh'
+      ports:
+      - name: daemon-rpc
+        containerPort: 8545
+      - name: daemon-ws
+        containerPort: 8546
+      env:
+      - name: NETWORK
+        value: mainnet
+      - name: SNAPSHOT
+        value: 'https://snapshot-download.polygon.technology/snapdown.sh'
+      limits:
+        cpu: 8
+        memory: 48Gi
+      requests:
+        cpu: 4
+        memory: 32Gi
+      storage_size: 4000Gi
+    - name: heimdall
+      image: "0xpolygon/heimdall:0.3.4"
+      command: 
+        - '/init.sh'
+      ports:
+      - name: heimdall-api
+        containerPort: 1317
+      - name: heimdall-rpc
+        containerPort:
+      env:
+      - name: ETH_RPC_URL
+        value: 'http://ethereum-svc.ethereum.svc.cluster.local:8545'
+      - name: SNAPSHOT
+        value: 'https://snapshot-download.polygon.technology/snapdown.sh'
+      limits:
+        cpu: 2
+        memory: 2Gi
+      requests:
+        cpu: 1
+      storage_size: 500Gi
+      dataDir: /root
+    - name: indexer
+      image: "shapeshiftdao/unchained-blockbook:95ee9b5"
+      command: 
+        - '/bin/blockbook'
+        - '-blockchaincfg=/config.json'
+        - '-datadir=/data'
+        - '-sync'
+        - '-public=:8001'
+        - '-enablesubnewtx'
+        - '-logtostderr'
+      limits:
+        cpu: 4
+        memory: 24Gi
+      requests:
+        cpu: 2
+      storage_size: 750Gi
+      ports:
+      - name: indexer
+        containerPort: 8001

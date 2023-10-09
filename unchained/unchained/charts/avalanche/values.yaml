@@ -1,0 +1,61 @@
+name: avalanche
+
+api: 
+  name: avalanche
+  tier: api
+  image: "shapeshiftdao/unchained-avalanche-api:latest"
+  autoscaling: true
+  limits:
+    cpu: 500m
+    memory: 500Mi
+  requests:
+    cpu: 250m
+    memory: 250Mi
+  env:
+  - name: INDEXER_URL
+    value: "https://dev-indexer.avalanche.shapeshift.com"
+  - name: INDEXER_WS_URL
+    value: "wss://dev-indexer.avalanche.shapeshift.com/websocket"
+  - name: LOG_LEVEL
+    value: "debug"
+  - name: NETWORK
+    value: "mainnet"
+  - name: RPC_URL
+    value: "https://dev-daemon.avalanche.shapeshift.com"
+
+statefulset:
+  name: avalanche
+  replicas: 2
+  containers:
+    - name: daemon
+      image: "avaplatform/avalanchego:v1.10.9"
+      command:
+        - '/init.sh'
+      limits:
+        cpu: 2
+        memory: 12Gi
+      requests:
+        cpu: 1
+      storage_size: 500Gi
+      ports:
+      - name: daemon-rpc
+        containerPort: 9650
+    - name: indexer
+      image: "shapeshiftdao/unchained-blockbook:95ee9b5"
+      command: 
+        - '/bin/blockbook'
+        - '-blockchaincfg=/config.json'
+        - '-datadir=/data'
+        - '-sync'
+        - '-public=:8001'
+        - '-enablesubnewtx'
+        - '-logtostderr' 
+      limits:
+        cpu: 2
+        memory: 6Gi
+      requests:
+        cpu: 1
+      storage_size: 500Gi
+      ports:
+      - name: indexer
+        containerPort: 8001
