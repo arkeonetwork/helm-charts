@@ -12,11 +12,11 @@ api:
     memory: 250Mi
   env:
   - name: LCD_URL
-    value: "https://dev-daemon.thorchain.shapeshift.com/lcd"
+    value: "http://thorchain-svc.unchained.svc.cluster.local:1317"
   - name: WS_URL
-    value: "https://dev-daemon.thorchain.shapeshift.com/rpc"
+    value: "ws://thorchain-svc.unchained.svc.cluster.local:27147"
   - name: RPC_URL
-    value: "wss://dev-daemon.thorchain.shapeshift.com/rpc"
+    value: "http://thorchain-svc.unchained.svc.cluster.local:27147"
 
 statefulset:
   name: thorchain

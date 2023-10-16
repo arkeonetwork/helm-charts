@@ -12,15 +12,15 @@ api:
     memory: 250Mi
   env:
   - name: INDEXER_URL
-    value: "https://dev-indexer.gnosis.shapeshift.com"
+    value: "http://gnosis-svc.unchained.svc.cluster.local:8001"
   - name: INDEXER_WS_URL
-    value: "wss://dev-indexer.gnosis.shapeshift.com/websocket"
+    value: "ws://gnosis-svc.unchained.svc.cluster.local:8001/websocket"
   - name: LOG_LEVEL
     value: "debug"
   - name: NETWORK
     value: "mainnet"
   - name: RPC_URL
-    value: "https://dev-daemon.gnosis.shapeshift.com"
+    value: "http://gnosis-svc.unchained.svc.cluster.local:8545"
 
 statefulset:
   name: gnosis

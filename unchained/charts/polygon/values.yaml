@@ -12,15 +12,15 @@ api:
     memory: 250Mi
   env:
   - name: INDEXER_URL
-    value: "https://dev-indexer.polygon.shapeshift.com"
+    value: "http://polygon-svc.unchained.svc.cluster.local:8001"
   - name: INDEXER_WS_URL
-    value: "wss://dev-indexer.polygon.shapeshift.com/websocket"
+    value: "ws://polygon-svc.unchained.svc.cluster.local:8001/websocket"
   - name: LOG_LEVEL
     value: "debug"
   - name: NETWORK
     value: "mainnet"
   - name: RPC_URL
-    value: "https://dev-daemon.polygon.shapeshift.com"
+    value: "http://polygon-svc.unchained.svc.cluster.local:8545"
 
 statefulset:
   name: polygon

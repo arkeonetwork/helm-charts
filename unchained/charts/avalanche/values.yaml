@@ -13,15 +13,15 @@ api:
     memory: 250Mi
   env:
   - name: INDEXER_URL
-    value: "https://dev-indexer.avalanche.shapeshift.com"
+    value: "http://avalanche-svc.unchained.svc.cluster.local:8001"
   - name: INDEXER_WS_URL
-    value: "wss://dev-indexer.avalanche.shapeshift.com/websocket"
+    value: "ws://avalanche-svc.unchained.svc.cluster.local:8001/websocket"
   - name: LOG_LEVEL
     value: "debug"
   - name: NETWORK
     value: "mainnet"
   - name: RPC_URL
-    value: "https://dev-daemon.avalanche.shapeshift.com"
+    value: "http://avalanche-svc.unchained.svc.cluster.local:9650/ext/bc/C/rpc"
 
 statefulset:
   name: avalanche

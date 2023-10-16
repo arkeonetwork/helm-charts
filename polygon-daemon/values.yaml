@@ -8,6 +8,8 @@ fileSystemId: ""
 
 chain: mainnet
 
+storageClassName: "microk8s-hostpath"
+
 nameOverride: ""
 fullnameOverride: ""
 

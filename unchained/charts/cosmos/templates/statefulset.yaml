@@ -96,6 +96,7 @@ spec:
       name: {{ $.Chart.Name }}-{{ .name }}-data
     spec:
       accessModes: [ "ReadWriteOnce" ]
+      storageClassName: {{ $.Values.global.storageClassName }}
       resources:
         requests:
           storage: {{ .storage_size }}

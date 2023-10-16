@@ -1,5 +1,5 @@
 apiVersion: v2
-name: unchained-ethereum
+name: ethereum
 description: Deploys Ethereum node as part of the Unchained stack
 type: application
 version: 1.0.0

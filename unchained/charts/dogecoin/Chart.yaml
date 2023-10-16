@@ -1,5 +1,5 @@
 apiVersion: v2
-name: unchained-dogecoin
+name: dogecoin
 description: Deploys Dogecoin node as part of the Unchained stack
 type: application
 version: 1.0.0

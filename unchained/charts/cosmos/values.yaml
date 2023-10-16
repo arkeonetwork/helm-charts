@@ -12,13 +12,13 @@ api:
     memory: 250Mi
   env:
   - name: LCD_URL
-    value: "https://dev-daemon.cosmos.shapeshift.com/lcd"
+    value: "http://cosmos-svc.unchained.svc.cluster.local:1317"
   - name: GRPC_URL
-    value: "dev-daemon.cosmos.shapeshift.com"
+    value: "cosmos-svc.unchained.svc.cluster.local:9090"
   - name: WS_URL
-    value: "wss://dev-daemon.cosmos.shapeshift.com/rpc"
+    value: "ws://cosmos-svc.unchained.svc.cluster.local:26657"
   - name: RPC_URL
-    value: "https://dev-daemon.cosmos.shapeshift.com/rpc"
+    value: "http://cosmos-svc.unchained.svc.cluster.local:26657"
 
 statefulset:
   name: cosmos

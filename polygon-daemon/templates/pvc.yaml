@@ -9,4 +9,4 @@ spec:
   resources:
     requests:
       storage: {{ .Values.storage }}
-  storageClassName: fast-storage
+  storageClassName: {{ .Values.storageClassName }}
