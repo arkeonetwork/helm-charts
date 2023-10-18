@@ -49,56 +49,64 @@ spec:
           limits:
             {{- toYaml . | nindent 12 }}
           {{- end }}
-          {{- with .Values.requests.ipfs }}
-          requests:
-            {{- toYaml . | nindent 12 }}
-          {{- end }}
-        command: {{- toYaml .command | nindent 10 }} 
         livenessProbe:
           initialDelaySeconds: 5
           periodSeconds: 30
           timeoutSeconds: 10
           tcpSocket:
             port: 'swarm'
+        {{- with .Values.volumeMounts }}
         volumeMounts:
-        - name: {{ $.Chart.Name }}-{{ .name }}-data
-          mountPath: {{ default "/data" .dataDir }}
-        - name: {{ $.Values.name }}
-          mountPath: '/readiness.sh'
-          subPath: {{ .name }}-readiness.sh
-        - name: {{ $.Values.name }}
-          mountPath: '/startup.sh'
-          subPath: {{ .name }}-startup.sh
-        - name: {{ $.Values.name }}
-          mountPath: '/liveness.sh'
-          subPath: {{ .name }}-liveness.sh
-        {{- if eq .name "daemon" }}
-        - name: {{ $.Values.name }}
-          mountPath: '/init.sh'
-          subPath: {{ .name }}-init.sh
-        {{- else if ne .name "indexer" }}
-        - name: {{ $.Values.name }}
-          mountPath: '/jwt.hex'
-          subPath: 'jwt.hex'
-        {{- else }}
-        - name: {{ $.Values.name }}
-          mountPath: '/indexer-config.json'
-          subPath: 'indexer-config.json'
+          {{- toYaml . | nindent 10 }}
+        {{-end }}
+      - name: {{ Chart.name }}-ipfs-cluster
+        image: {{ .Values.image.ipfsCluster }}
+        {{- with .Values.env.ipfsCluster }}
+        env: 
+          {{- toYaml . | nindent 10 }}
         {{- end }}
-      {{- end }}
+        envFrom:
+        - configMapRef:
+            name: {{ .Chart.Name }}-scripts
+        {{- with .Values.ports.ipfsCluster }}
+        ports: 
+          {{- toYaml . | nindent 10 }}
+        {{- end }}
+        resources:
+          {{- with .Values.limits.ipfsCluster }}
+          limits:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+        command: {{- toYaml .Values.command.ipfsCluster | nindent 10 }} 
+        livenessProbe:
+          initialDelaySeconds: 5
+          periodSeconds: 5
+          timeoutSeconds: 10
+          tcpSocket:
+            port: 'cluster-swarm'
+        {{- with .Values.volumeMounts }}
+        volumeMounts:
+          {{- toYaml . | nindent 10 }}
+        {{-end }}
       volumes:
-        - name: {{ .Values.name }}
+        - name: 'configure-script'
           configMap:
             name: {{ .Chart.Name }}-scripts
             defaultMode: 0775
   volumeClaimTemplates:
-  {{- range .Values.statefulset.containers }}
   - metadata:
-      name: {{ $.Chart.Name }}-{{ .name }}-data
+      name: 'cluster-storage'
     spec:
       accessModes: [ "ReadWriteOnce" ]
       storageClassName: {{ $.Values.global.storageClassName }}
       resources:
         requests:
-          storage: {{ .storage_size }}
-  {{- end }}
+          storage: 5Gi
+  - metadata:
+      name: 'ipfs-storage'
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      storageClassName: {{ $.Values.global.storageClassName }}
+      resources:
+        requests:
+          storage: 200Gi
