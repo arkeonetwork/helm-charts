@@ -5,13 +5,15 @@ metadata:
   name: {{ .Chart.Name }}-sts
   namespace: {{ .Release.Name }}
   labels: 
-    {{- include "unchained.statefulsetLabels" . | nindent 4 }}
+    name: "ipfs"
+    nodeType: "cluster"
 spec:
   serviceName: {{ .Chart.Name }}-svc
   replicas: {{ .Values.replicas }}
   selector:
     matchLabels:   
-      {{- include "unchained.statefulsetLabels" . | nindent 6 }}
+      name: "ipfs"
+      nodeType: "cluster"
   podManagementPolicy: 'Parallel'
   updateStrategy:
     type: 'RollingUpdate'
@@ -19,7 +21,8 @@ spec:
     metadata:
       namespace: {{ .Release.Name }}
       labels:
-        {{- include "unchained.statefulsetLabels" . | nindent 8 }}
+        name: "ipfs"
+        nodeType: "cluster"
     spec:
       terminationGracePeriodSeconds: 600
       initContainers:

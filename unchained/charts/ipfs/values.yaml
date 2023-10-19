@@ -21,9 +21,9 @@ env:
         key: "cluster-priv-key"
   - name: "CLUSTER_SECRET"
     valueFrom: 
-      configMapKeyRef: 
+      secretKeyRef: 
         name: "ipfs-secret"
-        key: "cluster-priv-key"
+        key: "cluster-secret"
   - name: "CLUSTER_MONITOR_PING_INTERVAL"
     value: "3m"
   - name: "SVC_NAME"
