@@ -9,16 +9,16 @@ avalanche:
   enabled: true
 
 bitcoin:
-  enabled: true
+  enabled: false
 
 bitcoincash:
-  enabled: true
+  enabled: false
 
 bnbsmartchain:
-  enabled: true
+  enabled: false
 
 cosmos:
-  enabled: true
+  enabled: false
 
 dogecoin:
   enabled: false
