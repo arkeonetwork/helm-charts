@@ -7,51 +7,55 @@ version: 1.0.0
 appVersion: 1.0.0
 
 dependencies:
-- name: unchained-avalanche
+- name: avalanche
   version: "1.0.0"
   repository: file://infra/unchained/chart/avalanche
   condition: avalanche.enabled
-- name: unchained-bitcoin
+- name: bitcoin
   version: "1.0.0"
   repository: file://infra/unchained/chart/bitcoin
   condition: bitcoin.enabled
-- name: unchained-bitcoincash
+- name: bitcoincash
   version: "1.0.0"
   repository: file://infra/unchained/chart/bitcoin-cash
   condition: bitcoincash.enabled
-- name: unchained-bnbsmartchain
+- name: bnbsmartchain
   version: "1.0.0"
   repository: file://infra/unchained/chart/bnbsmartchain
   condition: bnbsmartchain.enabled
-- name: unchained-cosmos
+- name: cosmos
   version: "1.0.0"
   repository: file://infra/unchained/chart/cosmos
   condition: cosmos.enabled
-- name: unchained-dogecoin
+- name: dogecoin
   version: "1.0.0"
   repository: file://infra/unchained/chart/dogecoin
   condition: dogecoin.enabled
-- name: unchained-gnosis
+- name: gnosis
   version: "1.0.0"
   repository: file://infra/unchained/chart/gnosis
   condition: gnosis.enabled
-- name: unchained-litecoin
+- name: litecoin
   version: "1.0.0"
   repository: file://infra/unchained/chart/litecoin
   condition: litecoin.enabled
-- name: unchained-ethereum
+- name: ethereum
   version: "1.0.0"
   repository: file://infra/unchained/chart/ethereum
   condition: ethereum.enabled
-- name: unchained-optimism
+- name: optimism
   version: "1.0.0"
   repository: file://infra/unchained/chart/optimism
   condition: optimism.enabled
-- name: unchained-polygon
+- name: polygon
   version: "1.0.0"
   repository: file://infra/unchained/chart/polygon
   condition: polygon.enabled
-- name: unchained-thorchain
+- name: thorchain
   version: "1.0.0"
   repository: file://infra/unchained/chart/thorchain
   condition: thorchain.enabled
+- name: ipfs
+  version: "1.0.0"
+  repository: file://infra/unchained/chart/ipfs
+  condition: ipfs.enabled

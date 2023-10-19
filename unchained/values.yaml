@@ -21,22 +21,25 @@ cosmos:
   enabled: true
 
 dogecoin:
-  enabled: true
+  enabled: false
 
 ethereum:
-  enabled: true
+  enabled: false
 
 gnosis:
-  enabled: true
+  enabled: false
 
 litecoin:
-  enabled: true
+  enabled: false
 
 optimism:
-  enabled: true
+  enabled: false
 
 polygon:
-  enabled: true
+  enabled: false
 
 thorchain:
-  enabled: true
+  enabled: false
+
+ipfs:
+  enabled: false
