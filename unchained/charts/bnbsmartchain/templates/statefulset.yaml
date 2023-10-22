@@ -81,6 +81,13 @@ spec:
         - name: {{ $.Chart.Name }}-{{ .name }}-data
           mountPath: {{ default "/data" .dataDir }}
         - name: {{ $.Values.name }}
+          mountPath: '/readiness.sh'
+          subPath: {{ .name }}-readiness.sh
+        {{- if eq .name "daemon" }}
+        - name: {{ $.Values.name }}
+          mountPath: '/evm.sh'
+          subPath: 'evm.sh'
+        - name: {{ $.Values.name }}
           mountPath: '/init.sh'
           subPath: {{ .name }}-init.sh
         - name: {{ $.Values.name }}
@@ -89,16 +96,9 @@ spec:
         - name: {{ $.Values.name }}
           mountPath: '/liveness.sh'
           subPath: {{ .name }}-liveness.sh
-        - name: {{ $.Values.name }}
-          mountPath: '/readiness.sh'
-          subPath: {{ .name }}-readiness.sh
-        {{- if eq .name "daemon" }}
-        - name: {{ $.Values.name }}
-          mountPath: '/evm.sh'
-          subPath: 'evm.sh'
         {{- else }}
         - name: {{ $.Values.name }}
-          mountPath: '/indexer-config.json'
+          mountPath: '/config.json'
           subPath: 'indexer-config.json'
         {{- end }}
       {{- end }}

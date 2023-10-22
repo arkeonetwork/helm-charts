@@ -76,17 +76,11 @@ spec:
         {{- if eq .name "daemon" }}
         - name: {{ $.Values.name }}
           mountPath: '/init.sh'
-          subPath: {{ .name }}-init.sh
+          subPath: init.sh
         {{- else }}
         - name: {{ $.Values.name }}
-          mountPath: '/indexer-config.json'
+          mountPath: '/config.json'
           subPath: 'indexer-config.json'
-        - name: {{ $.Values.name }}
-          mountPath: '/startup.sh'
-          subPath: {{ .name }}-startup.sh
-        - name: {{ $.Values.name }}
-          mountPath: '/liveness.sh'
-          subPath: {{ .name }}-liveness.sh
         {{- end }}
       {{- end }}
       volumes:

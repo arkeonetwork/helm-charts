@@ -101,7 +101,7 @@ spec:
           subPath: 'jwt.hex'
         {{- else }}
         - name: {{ $.Values.name }}
-          mountPath: '/indexer-config.json'
+          mountPath: '/config.json'
           subPath: 'indexer-config.json'
         {{- end }}
       {{- end }}
