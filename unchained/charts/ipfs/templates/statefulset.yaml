@@ -64,10 +64,10 @@ spec:
         {{-end }}
       - name: {{ Chart.name }}-ipfs-cluster
         image: {{ .Values.image.ipfsCluster }}
-        {{- with .Values.env.ipfsCluster }}
-        env: 
-          {{- toYaml . | nindent 10 }}
-        {{- end }}
+#        {{- with .Values.env.ipfsCluster }}
+#        env: 
+#          {{- toYaml . | nindent 10 }}
+#        {{- end }}
         envFrom:
         - configMapRef:
             name: {{ .Chart.Name }}-scripts
