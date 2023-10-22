@@ -9,37 +9,37 @@ avalanche:
   enabled: true
 
 bitcoin:
-  enabled: false
+  enabled: true
 
 bitcoincash:
-  enabled: false
+  enabled: true
 
 bnbsmartchain:
-  enabled: false
+  enabled: true
 
 cosmos:
-  enabled: false
+  enabled: true
 
 dogecoin:
-  enabled: false
+  enabled: true
 
 ethereum:
-  enabled: false
+  enabled: true
 
 gnosis:
-  enabled: false
+  enabled: true
 
 litecoin:
-  enabled: false
+  enabled: true
 
 optimism:
-  enabled: false
+  enabled: true
 
 polygon:
-  enabled: false
+  enabled: true
 
 thorchain:
-  enabled: false
+  enabled: true
 
 ipfs:
   enabled: false
