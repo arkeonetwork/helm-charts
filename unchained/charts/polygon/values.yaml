@@ -55,7 +55,7 @@ statefulset:
       - name: heimdall-api
         containerPort: 1317
       - name: heimdall-rpc
-        containerPort:
+        containerPort: 26657
       env:
       - name: ETH_RPC_URL
         value: 'http://ethereum-svc.ethereum.svc.cluster.local:8545'

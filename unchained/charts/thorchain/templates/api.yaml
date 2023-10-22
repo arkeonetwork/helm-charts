@@ -9,13 +9,13 @@ metadata:
 spec:
   selector:
     matchLabels:
-      {{- include "unchained.apiLabels" . | nindent 4 }}
+      {{- include "unchained.apiLabels" . | nindent 6 }}
   replicas: {{ .Values.api.replicas }}
   template:
     metadata:
       namespace: {{ .Release.Name }}
       labels: 
-        {{- include "unchained.apiLabels" . | nindent 4 }}
+        {{- include "unchained.apiLabels" . | nindent 8 }}
     spec:
       containers:
       - name: {{ .Chart.Name }}-{{ .Values.api.tier }}
