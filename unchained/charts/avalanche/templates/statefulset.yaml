@@ -82,23 +82,23 @@ spec:
           mountPath: {{ default "/data" .dataDir }}
         - name: {{ $.Values.name }}
           mountPath: '/readiness.sh'
-          subPath: readiness.sh      
+          subPath: daemon-readiness.sh      
         - name: {{ $.Values.name }}
           mountPath: '/startup.sh'
-          subPath: startup.sh
+          subPath: daemon-startup.sh
         - name: {{ $.Values.name }}
           mountPath: '/liveness.sh'
-          subPath: liveness.sh
+          subPath: daemon-liveness.sh
         {{- if eq .name "daemon" }}
         - name: {{ $.Values.name }}
           mountPath: '/init.sh'
-          subPath: init.sh
+          subPath: daemon-init.sh
         - name: {{ $.Values.name }}
           mountPath: '/evm.sh'
           subPath: 'evm.sh'
         - name: {{ $.Values.name }}
           mountPath: '/configs/chains/C/config.json'
-          subPath: 'c-chain-config.json'
+          subPath: 'config.json'
         {{- else }}
         - name: {{ $.Values.name }}
           mountPath: '/config.json'
