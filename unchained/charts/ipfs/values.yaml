@@ -7,30 +7,15 @@ image:
   ipfs: "ipfs/go-ipfs:latest"
   ipfsCluster: "ipfs/ipfs-cluster:latest"
 
-#env:
-#  ipfs:
-#  - name: "IPFS_FD_MAX"
-#    value: "8192"
-#  ipfsCluster:
-#  - name: "CLUSTER_ID"
-#    valueFrom: 
-#      configMapKeyRef: 
-#        name: "ipfs-scripts"
-#        key: "cluster-id"
-#  - name: "CLUSTER_PRIVATEKEY"
-#    valueFrom: 
-#      secretKeyRef: 
-#        name: "ipfs-secret"
-#        key: "cluster-priv-key"
-#  - name: "CLUSTER_SECRET"
-#    valueFrom: 
-#      secretKeyRef: 
-#        name: "ipfs-secret"
-#        key: "cluster-secret"
-#  - name: "CLUSTER_MONITOR_PING_INTERVAL"
-#    value: "3m"
-#  - name: "SVC_NAME"
-#    value: "ipfs-svc"
+env:
+  ipfs:
+  - name: "IPFS_FD_MAX"
+    value: "8192"
+  ipfsCluster:
+  - name: "CLUSTER_MONITOR_PING_INTERVAL"
+    value: "3m"
+  - name: "SVC_NAME"
+    value: "ipfs-svc"
 
 ports:
   ipfs:
@@ -67,11 +52,6 @@ limits:
   ipfsCluster:
     cpu: '100m'
     memory: '128Mi'
-
-command: 
-  ipfsCluster:
-  - 'sh'
-  - '/custom/entrypoint.sh'
 
 volumeMounts: 
 - name: "ipfs-storage"

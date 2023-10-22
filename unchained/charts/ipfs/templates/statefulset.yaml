@@ -39,35 +39,54 @@ spec:
       containers: 
       - name: {{ Chart.name }}-ipfs
         image: {{ .Values.image.ipfs }}
-        {{- with .Values.env.ipfs }}
         env: 
-          {{- toYaml . | nindent 10 }}
+        {{- range $env := .Values.env.ipfs }}
+        - name: {{ $env.name }}
+          value: {{ $env.value | quote }}
         {{- end }}
-        {{- with .Values.ports.ipfs }}
         ports: 
-          {{- toYaml . | nindent 10 }}
+        {{- range $port := .Values.ports.ipfs }}
+        - name: {{ $port.name }}
+          containerPort: {{ $port.containerPort }}
+          protocol: {{ $port.protocol }}
         {{- end }}
         resources:
-          {{- with .Values.limits.ipfs }}
           limits:
-            {{- toYaml . | nindent 12 }}
-          {{- end }}
+            cpu: {{ .Values.limits.ipfs.cpu }}
+            memory: {{ .Values.limits.ipfs.memory }}
         livenessProbe:
           initialDelaySeconds: 5
           periodSeconds: 30
           timeoutSeconds: 10
           tcpSocket:
             port: 'swarm'
-        {{- with .Values.volumeMounts }}
         volumeMounts:
-          {{- toYaml . | nindent 10 }}
+        {{- range $mounts := .Values.volumeMounts }}
+        - name: {{ $mounts.name }}
+          mountPath: {{ $mounts.mountPath }}
         {{-end }}
       - name: {{ Chart.name }}-ipfs-cluster
         image: {{ .Values.image.ipfsCluster }}
-#        {{- with .Values.env.ipfsCluster }}
-#        env: 
-#          {{- toYaml . | nindent 10 }}
-#        {{- end }}
+        env: 
+        {{- range $env := .Values.env.ipfsCluster }}
+        - name: {{ $env.name }}
+          value: {{ $env.value | quote }}
+        {{- end }}
+        - name: "CLUSTER_ID"
+          valueFrom: 
+            configMapKeyRef: 
+              name: "ipfs-scripts"
+              key: "cluster-id"
+        - name: "CLUSTER_PRIVATEKEY"
+          valueFrom: 
+            secretKeyRef: 
+              name: "ipfs-secret"
+              key: "cluster-priv-key"
+        - name: "CLUSTER_SECRET"
+          valueFrom: 
+            secretKeyRef: 
+              name: "ipfs-secret"
+              key: "cluster-secret"
         envFrom:
         - configMapRef:
             name: {{ .Chart.Name }}-scripts
@@ -76,20 +95,22 @@ spec:
           {{- toYaml . | nindent 10 }}
         {{- end }}
         resources:
-          {{- with .Values.limits.ipfsCluster }}
           limits:
-            {{- toYaml . | nindent 12 }}
-          {{- end }}
-        command: {{- toYaml .Values.command.ipfsCluster | nindent 10 }} 
+            cpu: {{ .Values.limits.ipfs.cpu }}
+            memory: {{ .Values.limits.ipfs.memory }}   
+        command: 
+        - 'sh'
+        - '/custom/entrypoint.sh' 
         livenessProbe:
           initialDelaySeconds: 5
           periodSeconds: 5
           timeoutSeconds: 10
           tcpSocket:
             port: 'cluster-swarm'
-        {{- with .Values.volumeMounts }}
         volumeMounts:
-          {{- toYaml . | nindent 10 }}
+        {{- range $mounts := .Values.volumeMounts }}
+        - name: {{ $mounts.name }}
+          mountPath: {{ $mounts.mountPath }}
         {{-end }}
       volumes:
         - name: 'configure-script'
