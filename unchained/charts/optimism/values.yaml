@@ -65,7 +65,7 @@ statefulset:
         cpu: 1
       storage_size: 100Gi
     - name: indexer
-      image: "shapeshiftdao/unchained-blockbook:optimism-7c8d054"
+      image: "shapeshiftdao/unchained-blockbook:optimism-bf8a472"
       command: 
         - '/bin/blockbook'
         - '-blockchaincfg=/config.json'
