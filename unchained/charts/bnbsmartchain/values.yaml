@@ -4,6 +4,7 @@ api:
   tier: api
   image: "shapeshiftdao/unchained-bnbsmartchain-api:latest"
   autoscaling: true
+  replicas: 1
   limits:
     cpu: 1
     memory: 500Mi
@@ -24,7 +25,7 @@ api:
 
 statefulset:
   name: bnbsmartchain
-  replicas: 2
+  replicas: 1
   containers:
     - name: daemon
       image: "shapeshiftdao/bnb-smart-chain:v1.2.11"

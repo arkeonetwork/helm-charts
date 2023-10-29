@@ -4,6 +4,7 @@ api:
   tier: api
   image: "shapeshiftdao/unchained-polygon-api:latest"
   autoscaling: true
+  replicas: 1
   limits:
     cpu: 1
     memory: 500Mi
@@ -24,7 +25,7 @@ api:
 
 statefulset:
   name: polygon
-  replicas: 2
+  replicas: 1
   containers:
     - name: daemon
       image: "0xpolygon/bor:0.4.0"

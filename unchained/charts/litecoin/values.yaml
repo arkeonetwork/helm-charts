@@ -3,6 +3,7 @@ name: litecoin
 api:
   tier: api
   image: "shapeshiftdao/unchained-litecoin-api:latest"
+  replicas: 1
   autoscaling: true
   limits:
     cpu: 500m
@@ -24,7 +25,7 @@ api:
 
 statefulset:
   name: litecoin
-  replicas: 3
+  replicas: 1
   containers:
     - name: daemon
       image: "shapeshiftdao/litecoin-core:v0.21.2.2"

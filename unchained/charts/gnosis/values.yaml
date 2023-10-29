@@ -3,6 +3,7 @@ name: gnosis
 api:
   tier: api
   image: "shapeshiftdao/unchained-gnosis-api:latest"
+  replicas: 1
   autoscaling: true
   limits:
     cpu: 500m
@@ -24,7 +25,7 @@ api:
 
 statefulset:
   name: gnosis
-  replicas: 2
+  replicas: 1
   containers:
     - name: daemon
       image: "nethermind/nethermind:1.20.1"

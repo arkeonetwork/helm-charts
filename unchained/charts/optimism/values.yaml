@@ -3,6 +3,7 @@ name: optimism
 api:
   tier: api
   image: "shapeshiftdao/unchained-optimism-api:latest"
+  replicas: 1
   autoscaling: true
   limits:
     cpu: 500m
@@ -24,7 +25,7 @@ api:
 
 statefulset:
   name: optimism
-  replicas: 2
+  replicas: 1
   containers:
     - name: daemon
       image: "us-docker.pkg.dev/oplabs-tools-artifacts/images/op-geth:v1.101200.0"

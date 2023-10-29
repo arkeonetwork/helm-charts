@@ -83,8 +83,8 @@ metadata:
   name: {{ .Chart.Name }}-hpa
   namespace: {{ .Release.Name }}
 spec:
-  minReplicas: 2
-  maxReplicas: 6
+  minReplicas: 1
+  maxReplicas: 3
   scaleTargetRef:
     apiVersion: apps/v1
     kind: Deployment

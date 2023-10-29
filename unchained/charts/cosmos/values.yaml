@@ -4,6 +4,7 @@ api:
   tier: api
   image: "shapeshiftdao/unchained-cosmos-api:latest"
   autoscaling: true
+  replicas: 1
   limits:
     cpu: 500m
     memory: 500Mi
@@ -22,7 +23,7 @@ api:
 
 statefulset:
   name: cosmos
-  replicas: 2
+  replicas: 1
   containers:
     - name: daemon
       image: "shapeshiftdao/cosmoshub:v11.0.0"

@@ -3,6 +3,7 @@ name: thorchain
 api:
   tier: api
   image: "shapeshiftdao/unchained-thorchain-api:latest"
+  replicas: 1
   autoscaling: true
   limits:
     cpu: 500m
@@ -20,7 +21,7 @@ api:
 
 statefulset:
   name: thorchain
-  replicas: 2
+  replicas: 1
   containers:
     - name: daemon
       image: "registry.gitlab.com/thorchain/thornode:mainnet-1.120.1"
