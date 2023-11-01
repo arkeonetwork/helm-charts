@@ -58,10 +58,10 @@ spec:
             port: 8001
           {{- end }}
         livenessProbe:
-          failureThreshold: 5
           periodSeconds: 30
           timeoutSeconds: 10
           {{- if ne .name "indexer" }}
+          failureThreshold: 5
           exec:
             command: 
             - '/liveness.sh'
@@ -80,6 +80,10 @@ spec:
         volumeMounts:
         - name: {{ $.Chart.Name }}-{{ .name }}-data
           mountPath: {{ default "/data" .dataDir }}
+        {{- if eq .name "daemon" }}
+        - name: {{ $.Values.name }}
+          mountPath: '/init.sh'
+          subPath: daemon-init.sh
         - name: {{ $.Values.name }}
           mountPath: '/readiness.sh'
           subPath: daemon-readiness.sh      
@@ -89,10 +93,6 @@ spec:
         - name: {{ $.Values.name }}
           mountPath: '/liveness.sh'
           subPath: daemon-liveness.sh
-        {{- if eq .name "daemon" }}
-        - name: {{ $.Values.name }}
-          mountPath: '/init.sh'
-          subPath: daemon-init.sh
         - name: {{ $.Values.name }}
           mountPath: '/evm.sh'
           subPath: 'evm.sh'
@@ -103,6 +103,9 @@ spec:
         - name: {{ $.Values.name }}
           mountPath: '/config.json'
           subPath: 'indexer-config.json'
+        - name: {{ $.Values.name }}
+          mountPath: '/readiness.sh'
+          subPath: 'indexer-readiness.sh'
         {{- end }}
       {{- end }}
       volumes:
