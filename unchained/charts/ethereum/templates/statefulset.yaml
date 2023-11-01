@@ -101,10 +101,10 @@ spec:
           subPath: 'evm.sh'
         - name: {{ $.Values.name }}
           mountPath: '/startup.sh'
-          subPath: {{ .name }}-startup.sh
+          subPath: daemon-startup.sh
         - name: {{ $.Values.name }}
           mountPath: '/liveness.sh'
-          subPath: {{ .name }}-liveness.sh
+          subPath: daemon-liveness.sh
         {{- else if .name "indexer" }}
         - name: {{ $.Values.name }}
           mountPath: '/config.json'
