@@ -86,20 +86,19 @@ spec:
           mountPath: '/readiness.sh'
           subPath: {{ .name }}-readiness.sh
         - name: {{ $.Values.name }}
+          mountPath: '/jwt.hex'
+          subPath: 'jwt.hex'
+        {{- if eq .name "daemon" }}
+        - name: {{ $.Values.name }}
+          mountPath: '/init.sh'
+          subPath: {{ .name }}-init.sh
+        - name: {{ $.Values.name }}
           mountPath: '/startup.sh'
           subPath: {{ .name }}-startup.sh
         - name: {{ $.Values.name }}
           mountPath: '/liveness.sh'
           subPath: {{ .name }}-liveness.sh
-        {{- if eq .name "daemon" }}
-        - name: {{ $.Values.name }}
-          mountPath: '/init.sh'
-          subPath: {{ .name }}-init.sh
-        {{- else if ne .name "indexer" }}
-        - name: {{ $.Values.name }}
-          mountPath: '/jwt.hex'
-          subPath: 'jwt.hex'
-        {{- else }}
+        {{- else if eq .name "indexer" }}
         - name: {{ $.Values.name }}
           mountPath: '/config.json'
           subPath: 'indexer-config.json'
