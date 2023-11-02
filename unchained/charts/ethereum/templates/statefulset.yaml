@@ -105,7 +105,7 @@ spec:
         - name: {{ $.Values.name }}
           mountPath: '/liveness.sh'
           subPath: daemon-liveness.sh
-        {{- else if .name "indexer" }}
+        {{- else if eq .name "indexer" }}
         - name: {{ $.Values.name }}
           mountPath: '/config.json'
           subPath: 'indexer-config.json'
