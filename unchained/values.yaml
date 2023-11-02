@@ -12,10 +12,10 @@ bitcoin:
   enabled: true
 
 bitcoincash:
-  enabled: false
+  enabled: true
 
 bnbsmartchain:
-  enabled: false
+  enabled: true
 
 cosmos:
   enabled: false
