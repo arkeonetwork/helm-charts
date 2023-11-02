@@ -18,16 +18,16 @@ bnbsmartchain:
   enabled: true
 
 cosmos:
-  enabled: false
+  enabled: true
 
 dogecoin:
-  enabled: false
+  enabled: true
 
 ethereum:
   enabled: true
 
 gnosis:
-  enabled: false
+  enabled: true
 
 litecoin:
   enabled: false
