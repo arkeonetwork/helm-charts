@@ -1,5 +1,7 @@
 #!/bin/bash
 
+    apt update && apt install -y curl jq
+    
     SYNCING=$(curl -sf http://localhost:5052/eth/v1/node/syncing) || exit 1
     IS_SYNCING=$(echo "$SYNCING" | jq -r '.data.is_syncing')
 
