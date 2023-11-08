@@ -49,7 +49,7 @@ statefulset:
         value: mainnet
     - name: daemon-beacon
       image: "gcr.io/prysmaticlabs/prysm/beacon-chain:v4.0.8"
-      command:
+      args:
         - '--datadir=/data'
         - '--execution-endpoint=http://localhost:8551'
         - '--jwt-secret=/jwt.hex'
