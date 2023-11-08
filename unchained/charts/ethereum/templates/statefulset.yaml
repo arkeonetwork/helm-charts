@@ -43,11 +43,7 @@ spec:
           requests:
             {{- toYaml . | nindent 12 }}
           {{- end }}
-        {{- if or (eq .name "daemon") (eq .name "indexer") }}
         command: {{- toYaml .command | nindent 10 }} 
-        {{- else }}
-        args: {{- toYaml .args | nindent 10 }} 
-        {{- end }}
         {{- if or (eq .name "daemon") (eq .name "indexer") }}
         startupProbe:
           failureThreshold: 60
