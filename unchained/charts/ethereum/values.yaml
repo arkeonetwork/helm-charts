@@ -50,11 +50,15 @@ statefulset:
     - name: daemon-beacon
       image: "gcr.io/prysmaticlabs/prysm/beacon-chain:v4.0.8"
       args:
-        - '--datadir=/data'
-        - '--execution-endpoint=http://localhost:8551'
-        - '--jwt-secret=/jwt.hex'
+        - '--datadir'
+        - '/data'
+        - '--execution-endpoint'
+        - 'http://localhost:8551'
+        - '--jwt-secret'
+        - '/jwt.hex'
+        - '--checkpoint-sync-url'
+        - 'https://mainnet-checkpoint-sync.attestant.io'
         - '--accept-terms-of-use'
-        - '--checkpoint-sync-url=https://mainnet-checkpoint-sync.attestant.io'
       limits:
         cpu: 2
         memory: 12Gi

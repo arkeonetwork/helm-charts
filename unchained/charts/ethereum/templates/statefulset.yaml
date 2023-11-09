@@ -46,7 +46,7 @@ spec:
         {{- if or (eq .name "daemon") (eq .name "indexer") }}
         command: {{- toYaml .command | nindent 10 }} 
         {{- else }}
-        args: {{- toYaml .command | nindent 10 }} 
+        args: {{- toYaml .args | nindent 10 }} 
         {{- end }}
         {{- if or (eq .name "daemon") (eq .name "indexer") }}
         startupProbe:

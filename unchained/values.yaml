@@ -30,16 +30,16 @@ gnosis:
   enabled: true
 
 litecoin:
-  enabled: false
+  enabled: true
 
 optimism:
-  enabled: false
+  enabled: true
 
 polygon:
-  enabled: false
+  enabled: true
 
 thorchain:
-  enabled: false
+  enabled: true
 
 ipfs:
   enabled: false
