@@ -1,27 +1,27 @@
- #!/bin/sh
+#!/bin/sh
 
-    set -e
+set -e
 
-    apk add bash curl jq
+apk add bash curl jq
 
-    start() {
-      op-node \
-        --network $NETWORK \
-        --rpc.addr 0.0.0.0 \
-        --rpc.port 9545 \
-        --l1 $L1_RPC_ENDPOINT \
-        --l1.trustrpc \
-        --l1.rpckind debug_geth \
-        --l2 http://localhost:8551 \
-        --l2.jwt-secret /jwt.hex &
-      PID="$!"
-    }
+start() {
+  op-node \
+    --network $NETWORK \
+    --rpc.addr 0.0.0.0 \
+    --rpc.port 9545 \
+    --l1 $L1_RPC_ENDPOINT \
+    --l1.trustrpc \
+    --l1.rpckind debug_geth \
+    --l2 http://localhost:8551 \
+    --l2.jwt-secret /jwt.hex &
+  PID="$!"
+}
 
-    stop() {
-      echo "Catching signal and sending to PID: $PID" && kill $PID
-      while $(kill -0 $PID 2>/dev/null); do sleep 1; done
-    }
+stop() {
+  echo "Catching signal and sending to PID: $PID" && kill $PID
+  while $(kill -0 $PID 2>/dev/null); do sleep 1; done
+}
 
-    trap 'stop' TERM INT
-    start
-    wait $PID
+trap 'stop' TERM INT
+start
+wait $PID
