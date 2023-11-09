@@ -58,7 +58,7 @@ spec:
             command:
             - 'pg_isready'
             - '-U'
-            - '$POSTGRES_USER'
+            - '$(POSTGRES_USER)'
             {{- end }}
           {{- else }}
           tcpSocket:
@@ -77,7 +77,7 @@ spec:
             command:
             - 'pg_isready'
             - '-U'
-            - '$POSTGRES_USER'
+            - '$(POSTGRES_USER)'
             {{- end }}
           {{- else }}
           tcpSocket:
@@ -95,7 +95,7 @@ spec:
             command:
             - 'pg_isready'
             - '-U'
-            - '$POSTGRES_USER'
+            - '$(POSTGRES_USER)'
             {{- end }}
         volumeMounts:
         - name: {{ $.Chart.Name }}-{{ .name }}-data
@@ -103,6 +103,9 @@ spec:
         - name: {{ $.Values.name }}
           mountPath: '/init.sh'
           subPath: {{ .name }}-init.sh
+        - name: {{ $.Values.name }}
+          mountPath: '/readiness.sh'
+          subPath: {{ .name }}-readiness.sh
         {{- if eq .name "daemon" }}
         - name: {{ $.Values.name }}
           mountPath: '/startup.sh'
@@ -113,10 +116,6 @@ spec:
         - name: {{ $.Values.name }}
           mountPath: '/tendermint.sh'
           subPath: 'tendermint.sh'
-        {{- else if or (eq .name "daemon") (eq .name "indexer") }}
-        - name: {{ $.Values.name }}
-          mountPath: '/readiness.sh'
-          subPath: {{ .name }}-readiness.sh
         {{- else if eq .name "indexer" }}
         - name: {{ $.Values.name }}
           mountPath: '/config.json'
