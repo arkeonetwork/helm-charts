@@ -29,15 +29,15 @@ statefulset:
   replicas: 1
   containers:
     - name: daemon
-      image: "avaplatform/avalanchego:v1.10.9"
+      image: "avaplatform/avalanchego:v1.10.15"
       command:
         - '/init.sh'
       limits:
         cpu: 2
-        memory: 12Gi
+        memory: 8Gi
       requests:
         cpu: 1
-      storage_size: 500Gi
+      storage_size: 5500Gi
       ports:
       - name: daemon-rpc
         containerPort: 9650
