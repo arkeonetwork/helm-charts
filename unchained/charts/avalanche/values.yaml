@@ -29,7 +29,7 @@ statefulset:
   replicas: 1
   containers:
     - name: daemon
-      image: "avaplatform/avalanchego:v1.10.15"
+      image: "avaplatform/avalanchego:v1.10.16"
       command:
         - '/init.sh'
       limits:
@@ -42,7 +42,7 @@ statefulset:
       - name: daemon-rpc
         containerPort: 9650
     - name: indexer
-      image: "shapeshiftdao/unchained-blockbook:95ee9b5"
+      image: "shapeshiftdao/unchained-blockbook:559cfbc"
       command: 
         - '/bin/blockbook'
         - '-blockchaincfg=/config.json'

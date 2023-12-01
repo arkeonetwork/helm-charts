@@ -28,7 +28,7 @@ statefulset:
   replicas: 1
   containers:
     - name: daemon
-      image: "0xpolygon/bor:0.4.0"
+      image: "0xpolygon/bor:1.1.0"
       command: 
         - '/init.sh'
       ports:
@@ -49,7 +49,7 @@ statefulset:
         memory: 32Gi
       storage_size: 4000Gi
     - name: heimdall
-      image: "0xpolygon/heimdall:0.3.4"
+      image: "0xpolygon/heimdall:1.0.3"
       command: 
         - '/init.sh'
       ports:
@@ -59,7 +59,7 @@ statefulset:
         containerPort: 26657
       env:
       - name: ETH_RPC_URL
-        value: 'http://ethereum-svc.ethereum.svc.cluster.local:8545'
+        value: 'http://ethereum-daemon.ethereum-daemon.svc.cluster.local:8545'
       - name: SNAPSHOT
         value: 'https://snapshot-download.polygon.technology/snapdown.sh'
       limits:
@@ -70,7 +70,7 @@ statefulset:
       storage_size: 500Gi
       dataDir: /root
     - name: indexer
-      image: "shapeshiftdao/unchained-blockbook:95ee9b5"
+      image: "shapeshiftdao/unchained-blockbook:559cfbc"
       command: 
         - '/bin/blockbook'
         - '-blockchaincfg=/config.json'

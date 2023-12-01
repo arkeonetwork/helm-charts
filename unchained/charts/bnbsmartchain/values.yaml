@@ -28,7 +28,7 @@ statefulset:
   replicas: 1
   containers:
     - name: daemon
-      image: "shapeshiftdao/bnb-smart-chain:v1.2.11"
+      image: "shapeshiftdao/bnb-smart-chain:v1.2.13"
       command: 
         - '/init.sh' 
       limits:
@@ -44,7 +44,7 @@ statefulset:
         containerPort: 8546
       storage_size: 4500Gi
     - name: indexer
-      image: "shapeshiftdao/unchained-blockbook:95ee9b5"
+      image: "shapeshiftdao/unchained-blockbook:559cfbc"
       command: 
         - '/bin/blockbook'
         - '-blockchaincfg=/config.json'

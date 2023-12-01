@@ -41,7 +41,7 @@ statefulset:
         containerPort: 8332
       storage_size: 650Gi
     - name: indexer
-      image: "shapeshiftdao/unchained-blockbook:95ee9b5"
+      image: "shapeshiftdao/unchained-blockbook:559cfbc"
       command: 
         - '/bin/blockbook'
         - '-blockchaincfg=/config.json'

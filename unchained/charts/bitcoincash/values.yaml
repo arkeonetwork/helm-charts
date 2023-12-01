@@ -44,7 +44,7 @@ statefulset:
         value: 'https://pub-c0627345c16f47ab858c9469133073a8.r2.dev/geth-20230719.tar.lz4'
       storage_size: 250Gi
     - name: indexer
-      image: "shapeshiftdao/unchained-blockbook:95ee9b5"
+      image: "shapeshiftdao/unchained-blockbook:559cfbc"
       command: 
         - '/bin/blockbook'
         - '-blockchaincfg=/config.json'
