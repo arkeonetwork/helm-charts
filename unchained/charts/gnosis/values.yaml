@@ -28,7 +28,7 @@ statefulset:
   replicas: 1
   containers:
     - name: daemon
-      image: "nethermind/nethermind:1.20.1"
+      image: "nethermind/nethermind:1.22.0"
       command: 
         - '/init.sh'
       ports:
@@ -45,7 +45,7 @@ statefulset:
         cpu: 1
       storage_size: 1000Gi
     - name: daemon-beacon
-      image: "sigp/lighthouse:v4.3.0"
+      image: "sigp/lighthouse:v4.5.0"
       command: 
         - '/usr/local/bin/lighthouse'
         - 'beacon_node'
@@ -63,7 +63,7 @@ statefulset:
         cpu: 1
       storage_size: 500Gi
     - name: indexer
-      image: "shapeshiftdao/unchained-blockbook:gnosis-f0ab749"
+      image: "shapeshiftdao/unchained-blockbook:gnosis-f21acf1"
       command: 
         - '/bin/blockbook'
         - '-blockchaincfg=/config.json'

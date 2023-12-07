@@ -6,19 +6,19 @@ global:
 etherscan_api_key: ""
 
 avalanche: 
-  enabled: false
+  enabled: true
 
 bitcoin:
-  enabled: false
+  enabled: true
 
 bitcoincash:
-  enabled: false
+  enabled: true
 
 bnbsmartchain:
-  enabled: false
+  enabled: true
 
 cosmos:
-  enabled: false
+  enabled: true
 
 dogecoin:
   enabled: true
@@ -27,16 +27,16 @@ ethereum:
   enabled: true
 
 gnosis:
-  enabled: false
+  enabled: true
 
 litecoin:
   enabled: true
 
 optimism:
-  enabled: false
+  enabled: true
 
 polygon:
-  enabled: false
+  enabled: true
 
 thorchain:
   enabled: true

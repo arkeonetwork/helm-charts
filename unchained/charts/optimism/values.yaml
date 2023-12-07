@@ -28,12 +28,12 @@ statefulset:
   replicas: 1
   containers:
     - name: daemon
-      image: "us-docker.pkg.dev/oplabs-tools-artifacts/images/op-geth:v1.101200.0"
+      image: "us-docker.pkg.dev/oplabs-tools-artifacts/images/op-geth:v1.101304.1"
       command: 
         - '/init.sh'
       env:
       - name: SNAPSHOT
-        value: 'https://storage.googleapis.com/oplabs-mainnet-data/mainnet-bedrock.tar'
+        value: 'https://datadirs.optimism.io/mainnet-bedrock.tar.zst' 
       ports:
       - name: daemon-rpc
         containerPort: 8545
@@ -48,7 +48,7 @@ statefulset:
         cpu: 2
       storage_size: 1000Gi
     - name: op-node
-      image: "us-docker.pkg.dev/oplabs-tools-artifacts/images/op-node:v1.1.3"
+      image: "us-docker.pkg.dev/oplabs-tools-artifacts/images/op-node:v1.3.0"
       command: 
         - '/init.sh'
       ports:
@@ -66,7 +66,7 @@ statefulset:
         cpu: 1
       storage_size: 100Gi
     - name: indexer
-      image: "shapeshiftdao/unchained-blockbook:optimism-bf8a472"
+      image: "shapeshiftdao/unchained-blockbook:optimism-83a7ac3"
       command: 
         - '/bin/blockbook'
         - '-blockchaincfg=/config.json'

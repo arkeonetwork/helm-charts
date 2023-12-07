@@ -28,7 +28,7 @@ statefulset:
   replicas: 1
   containers:
     - name: daemon
-      image: "shapeshiftdao/bitcoin-core:25.0"
+      image: "shapeshiftdao/bitcoin-core:25.1"
       command: 
         - '/init.sh'
       limits:
