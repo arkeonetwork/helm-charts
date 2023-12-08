@@ -2,7 +2,7 @@
 
 set -e
 
-apk add bash curl jq aria2
+apk add bash curl jq aria2 tar
 
 DATA_DIR=/data
 CHAINDATA_DIR=$DATA_DIR/geth/chaindata
