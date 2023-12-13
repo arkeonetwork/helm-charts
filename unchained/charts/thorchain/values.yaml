@@ -24,7 +24,7 @@ statefulset:
   replicas: 1
   containers:
     - name: daemon
-      image: "registry.gitlab.com/thorchain/thornode:mainnet-1.124.2"
+      image: "registry.gitlab.com/thorchain/thornode:mainnet-1.125.0"
       ports:
       - name: daemon-api
         containerPort: 1317
@@ -40,7 +40,7 @@ statefulset:
         memory: 12Gi
       requests:
         cpu: 1
-      storage_size: 2500Gi
+      storage_size: 3250Gi
       dataDir: /root
     - name: timescaledb
       image: "timescale/timescaledb:2.2.0-pg13"
@@ -58,7 +58,7 @@ statefulset:
         containerPort: 5432
       limits:
         cpu: 2
-        memory: 8Gi
+        memory: 6Gi
       requests:
         cpu: 1
       storage_size: 500Gi
@@ -74,9 +74,9 @@ statefulset:
       - name: midgard
         containerPort: 8080      
       limits:
-        cpu: 500m
+        cpu: 1
         memory: 1Gi
       requests:
-        cpu: 250m
+        cpu: 500m
       storage_size: 100Gi
       dataDir: '/blockstore'

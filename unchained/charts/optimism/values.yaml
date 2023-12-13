@@ -42,10 +42,10 @@ statefulset:
       - name: daemon-auth
         containerPort: 8551
       limits:
-        cpu: 4
+        cpu: 2
         memory: 24Gi
       requests:
-        cpu: 2
+        cpu: 1
       storage_size: 1000Gi
     - name: op-node
       image: "us-docker.pkg.dev/oplabs-tools-artifacts/images/op-node:v1.3.0"
@@ -75,6 +75,7 @@ statefulset:
         - '-public=:8001'
         - '-enablesubnewtx'
         - '-logtostderr'
+        - '-dbcache=268435456'
       limits:
         cpu: 2
         memory: 8Gi

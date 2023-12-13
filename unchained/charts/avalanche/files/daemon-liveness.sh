@@ -1,4 +1,4 @@
- #!/bin/bash
+#!/bin/bash
 
 DISABLE_LIVENESS_PROBE=/data/disable_liveness
 

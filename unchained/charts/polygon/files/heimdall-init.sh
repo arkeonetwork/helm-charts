@@ -2,7 +2,7 @@
 
 set -e
 
-apk add bash curl jq wget zstd tar pv aria2 sudo
+apk add bash curl jq wget zstd tar pv aria2
 
 [ "$DEBUG" = "true" ] && set -x
 

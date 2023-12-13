@@ -28,24 +28,23 @@ statefulset:
   replicas: 1
   containers:
     - name: daemon
-      image: "shapeshiftdao/bnb-smart-chain:v1.2.13"
+      image: "shapeshiftdao/bnb-smart-chain:v1.3.5"
       env:
       - name: SNAPSHOT
         value: 'https://pub-c0627345c16f47ab858c9469133073a8.r2.dev/geth-20230719.tar.lz4'
       command: 
         - '/init.sh' 
       limits:
-        cpu: 8
+        cpu: 16
         memory: 72Gi
       requests:
-        cpu: 4
-        memory: 48Gi
+        cpu: 8
       ports:
       - name: daemon-rpc
         containerPort: 8545
       - name: daemon-ws
         containerPort: 8546
-      storage_size: 4500Gi
+      storage_size: 5500Gi
     - name: indexer
       image: "shapeshiftdao/unchained-blockbook:559cfbc"
       command: 
@@ -56,9 +55,10 @@ statefulset:
         - '-public=:8001'
         - '-enablesubnewtx'
         - '-logtostderr'
+        - '-dbcache=268435456'
       limits:
         cpu: 4
-        memory: 24Gi
+        memory: 16Gi
       requests:
         cpu: 2
       storage_size: 1000Gi

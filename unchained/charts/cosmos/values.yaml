@@ -33,10 +33,10 @@ statefulset:
       - name: daemon-rpc
         containerPort: 26657
       limits:
-        cpu: 2
-        memory: 32Gi
+        cpu: 4
+        memory: 48Gi
       requests:
-        cpu: 1
-      storage_size: 3500Gi
+        cpu: 2
+      storage_size: 4500Gi
       dataDir: /root
       

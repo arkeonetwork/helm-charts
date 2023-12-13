@@ -50,10 +50,10 @@ statefulset:
         - '-public=:8001'
         - '-enablesubnewtx'
         - '-logtostderr'
-        - '-workers=1'
+        - '-dbcache=268435456'
       limits:
         cpu: 2
-        memory: 12Gi
+        memory: 16Gi
       requests:
         cpu: 1
       storage_size: 250Gi

@@ -28,7 +28,7 @@ statefulset:
   replicas: 1
   containers:
     - name: daemon
-      image: "nethermind/nethermind:1.22.0"
+      image: "nethermind/nethermind:1.23.0"
       command: 
         - '/init.sh'
       ports:
@@ -42,7 +42,7 @@ statefulset:
         cpu: 2
         memory: 6Gi
       requests:
-        cpu: 1
+        cpu: 2
       storage_size: 1000Gi
     - name: daemon-beacon
       image: "sigp/lighthouse:v4.5.0"
@@ -58,7 +58,7 @@ statefulset:
         - '--checkpoint-sync-url=https://checkpoint.gnosischain.com/'
       limits:
         cpu: 2
-        memory: 4Gi
+        memory: 2Gi
       requests:
         cpu: 1
       storage_size: 500Gi
@@ -72,9 +72,10 @@ statefulset:
         - '-public=:8001'
         - '-enablesubnewtx'
         - '-logtostderr'
+        - '-dbcache=268435456'
       limits:
         cpu: 2
-        memory: 24Gi
+        memory: 12Gi
       requests:
         cpu: 1
       storage_size: 500Gi

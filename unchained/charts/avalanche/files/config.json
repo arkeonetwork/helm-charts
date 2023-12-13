@@ -1,16 +1,18 @@
 {
-    "eth-apis": [
-      "eth",
-      "eth-filter",
-      "net",
-      "debug-tracer",
-      "web3",
-      "internal-eth",
-      "internal-blockchain",
-      "internal-transaction",
-      "internal-tx-pool",
-      "internal-debug"
-    ],
-    "pruning-enabled": true,
-    "allow-unfinalized-queries": true
-  }
+  "eth-apis": [
+    "eth",
+    "eth-filter",
+    "net",
+    "debug-tracer",
+    "web3",
+    "internal-eth",
+    "internal-blockchain",
+    "internal-transaction",
+    "internal-tx-pool",
+    "internal-debug"
+  ],
+  "state-sync-enabled": false,
+  "pruning-enabled": false,
+  "local-txs-enabled": true,
+  "allow-unfinalized-queries": true
+}

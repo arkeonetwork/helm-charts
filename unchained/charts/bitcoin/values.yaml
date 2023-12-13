@@ -28,7 +28,7 @@ statefulset:
   replicas: 1
   containers:
     - name: daemon
-      image: "shapeshiftdao/bitcoin-core:25.1"
+      image: "shapeshiftdao/bitcoin-core:26.0"
       command: 
         - '/init.sh'
       limits:
@@ -50,7 +50,7 @@ statefulset:
         - '-public=:8001'
         - '-enablesubnewtx'
         - '-logtostderr'
-        - '-workers=1'
+        - '-dbcache=268435456'
       limits:
         cpu: 2
         memory: 32Gi

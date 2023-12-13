@@ -79,6 +79,7 @@ statefulset:
         - '-public=:8001'
         - '-enablesubnewtx'
         - '-logtostderr'
+        - '-dbcache=268435456'
       limits:
         cpu: 4
         memory: 24Gi
