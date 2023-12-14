@@ -56,6 +56,8 @@ statefulset:
         - 'http://localhost:8551'
         - '--jwt-secret'
         - '/jwt.hex'
+        - '--checkpoint-sync-url'
+        - 'https://mainnet-checkpoint-sync.attestant.io'
         - '--accept-terms-of-use'
       limits:
         cpu: 2
