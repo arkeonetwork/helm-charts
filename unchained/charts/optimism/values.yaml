@@ -58,7 +58,7 @@ statefulset:
       - name: NETWORK 
         value: mainnet
       - name: L1_RPC_ENDPOINT
-        value: "http://ethereum-svc.ethereum.svc.cluster.local:8545"
+        value: "http://ethereum-daemon.ethereum-daemon.svc.cluster.local:8545"
       limits:
         cpu: 2
         memory: 2Gi
