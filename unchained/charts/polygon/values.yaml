@@ -28,7 +28,7 @@ statefulset:
   replicas: 1
   containers:
     - name: daemon
-      image: "0xpolygon/bor:1.1.0"
+      image: "0xpolygon/bor:1.2.0"
       command: 
         - '/init.sh'
       ports:
@@ -79,7 +79,7 @@ statefulset:
         - '-public=:8001'
         - '-enablesubnewtx'
         - '-logtostderr'
-        - '-dbcache=268435456'
+        - '-workers=1'
       limits:
         cpu: 4
         memory: 24Gi

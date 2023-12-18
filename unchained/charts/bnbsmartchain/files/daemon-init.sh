@@ -10,7 +10,7 @@ CHAINDATA_DIR=$DATA_DIR/geth/chaindata
 if [[ -n $SNAPSHOT && ! -d "$CHAINDATA_DIR" ]]; then
   echo "restoring from snapshot: $SNAPSHOT"
 
-  apk add zstd
+  apk add zstd lz4
   rm -rf $DATA_DIR/geth;
 
   # extract with lz4 (https://github.com/bnb-chain/bsc-snapshots)

@@ -2,13 +2,13 @@
 
 set -e
 
-apk add bash curl jq aria2 tar
+apk add bash curl jq aria2 tar zstd
 
 DATA_DIR=/data
 CHAINDATA_DIR=$DATA_DIR/geth/chaindata
 
 if [ -n "$SNAPSHOT" ] && [ ! -d "$CHAINDATA_DIR" ]; then
-  wget -c $SNAPSHOT -O - | tar -xvf - -C $DATA_DIR
+  wget -c $SNAPSHOT -O - | tar --zstd -xvf - -C $DATA_DIR
 fi
 
 start() {

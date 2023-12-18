@@ -31,7 +31,7 @@ statefulset:
       image: "shapeshiftdao/bnb-smart-chain:v1.3.5"
       env:
       - name: SNAPSHOT
-        value: 'https://pub-c0627345c16f47ab858c9469133073a8.r2.dev/geth-20230719.tar.lz4'
+        value: 'https://pub-c0627345c16f47ab858c9469133073a8.r2.dev/geth-20231211.tar.lz4'
       command: 
         - '/init.sh' 
       limits:
@@ -55,7 +55,7 @@ statefulset:
         - '-public=:8001'
         - '-enablesubnewtx'
         - '-logtostderr'
-        - '-dbcache=268435456'
+        - '-workers=1'
       limits:
         cpu: 4
         memory: 16Gi

@@ -16,10 +16,10 @@ fullnameOverride: ""
 images:
   heimdall: 
     name: 0xpolygon/heimdall
-    tag: "0.3.4"
+    tag: "1.0.3"
   bor:
     name: 0xpolygon/bor
-    tag: "0.4.0"
+    tag: "1.2.0"
 
 volumeMount:
   heimdall:

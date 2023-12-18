@@ -26,7 +26,7 @@ statefulset:
   replicas: 1
   containers:
     - name: daemon
-      image: "shapeshiftdao/cosmoshub:v13.0.2"
+      image: "shapeshiftdao/cosmoshub:v14.1.0"
       ports:
       - name: daemon-api
         containerPort: 1317
