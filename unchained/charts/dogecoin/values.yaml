@@ -33,7 +33,7 @@ statefulset:
         - '/init.sh' 
       limits:
         cpu: 2
-        memory: 4Gi
+        memory: 5Gi
       requests:
         cpu: 1
       ports:
