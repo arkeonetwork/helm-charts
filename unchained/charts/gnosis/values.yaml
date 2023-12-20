@@ -58,7 +58,7 @@ statefulset:
         - '--checkpoint-sync-url=https://checkpoint.gnosischain.com/'
       limits:
         cpu: 2
-        memory: 2Gi
+        memory: 4Gi
       requests:
         cpu: 1
       storage_size: 500Gi
@@ -75,7 +75,7 @@ statefulset:
         - '-workers=1'
       limits:
         cpu: 2
-        memory: 12Gi
+        memory: 16Gi
       requests:
         cpu: 1
       storage_size: 500Gi
