@@ -37,7 +37,7 @@ statefulset:
         memory: 12Gi
       requests:
         cpu: 1
-      storage_size: 1Ti
+      storage_size: 5500Gi
       ports:
       - name: daemon-rpc
         containerPort: 9650
