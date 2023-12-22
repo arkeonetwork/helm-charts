@@ -8,7 +8,6 @@ apk add openssl
 
 DATA_DIR=/data
 CHAINDATA_DIR=$DATA_DIR/geth/chaindata
-CHECKSUM=$(openssl sha256 /data/$dirName)
 EXPECTED_CHECKSUM=b8b13f93cba9bb5b4f62d1586a10ae3b9615a3975e129503ab8692dff698bae0
 
 #if [[ -n $SNAPSHOT && ! -d "$CHAINDATA_DIR" ]]; then
@@ -35,10 +34,8 @@ EXPECTED_CHECKSUM=b8b13f93cba9bb5b4f62d1586a10ae3b9615a3975e129503ab8692dff698ba
 #  fi
 #fi
 
-if [[ -n $SNAPSHOT ]]; then
-  # Check for initial run or checksum mismatch
-  if [[ ! -d "$CHAINDATA_DIR" || $CHECKSUM != $EXPECTED_CHECKSUM ]]; then
-    echo "Restoring from snapshot or rerunning due to checksum mismatch: $SNAPSHOT"
+if [[ -n $SNAPSHOT && ! -d "$CHAINDATA_DIR" ]]; then
+    echo "Restoring from snapshot"
 
     apk add zstd lz4
 
@@ -47,7 +44,17 @@ if [[ -n $SNAPSHOT ]]; then
     dirName=$(echo "$baseName" | sed 's/\.[^.]*$//')
     
     # Download and extract the snapshot
+    if [[ ! -f $DATA_DIR/$dirName ]]; then
     aria2c -s4 -x4 -k1024M $SNAPSHOT -o $DATA_DIR
+    fi 
+
+    CHECKSUM=$(openssl sha256 /$DATA_DIR/$dirName)
+
+    while [[ $CHECKSUM -ne $EXPECTED_CHECKSUM ]]; do
+      echo "rerunning due to checksum mismatch"
+      aria2c -s4 -x4 -k1024M $SNAPSHOT -o $DATA_DIR;
+    done
+
     zstd -cd $DATA_DIR | tar xf -
 
     # Move extracted data to $DATA_DIR/geth
