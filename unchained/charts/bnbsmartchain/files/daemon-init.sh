@@ -4,7 +4,7 @@ set -e
 
 [ "$DEBUG" == "true" ] && set -x
 
-apk add openssl
+apk add openssl aria2
 
 DATA_DIR=/data
 CHAINDATA_DIR=$DATA_DIR/geth/chaindata
