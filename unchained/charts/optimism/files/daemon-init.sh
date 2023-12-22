@@ -6,10 +6,24 @@ apk add bash curl jq aria2 tar zstd
 
 DATA_DIR=/data
 CHAINDATA_DIR=$DATA_DIR/geth/chaindata
+CHECKSUM=$(sha512sum mainnet-bedrock.tar.zst)
+EXPECTED_CHECKSUM=c17067b7bc39a6daa14f71d448c6fa0477834c3e68a25e96f26fe849c12a09bffe510e96f7eacdef19e93e3167d15250f807d252dd6f6f9053d0e4457c73d5fb mainnet-bedrock.tar.zst
 
-if [ -n "$SNAPSHOT" ] && [ ! -d "$CHAINDATA_DIR" ]; then
-  wget -c $SNAPSHOT -O - | tar --zstd -xvf - -C $DATA_DIR
-fi
+#if [ -n "$SNAPSHOT" ] && [ ! -d "$CHAINDATA_DIR" ]; then
+#  wget -c $SNAPSHOT -O - | tar --zstd -xvf - -C $DATA_DIR
+#fi
+
+if [[ -n $SNAPSHOT ]]; then
+  # Check for initial run or checksum mismatch
+  if [[ $CHECKSUM != $EXPECTED_CHECKSUM ]]; then
+    echo "Restoring from snapshot or rerunning due to checksum mismatch: $SNAPSHOT"
+
+    # Download and extract the snapshot
+    aria2c -s4 -x4 -k100M $SNAPSHOT -o $DATA_DIR
+    zstd -cd $DATA_DIR | tar xf -
+  fi
+fi  
+
 
 start() {
   geth \

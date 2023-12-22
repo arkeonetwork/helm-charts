@@ -6,12 +6,13 @@ set -e
 
 DATA_DIR=/data
 CHAINDATA_DIR=$DATA_DIR/geth/chaindata
+CHECKSUM=$(openssl sha256 /data/$dirName)
 EXPECTED_CHECKSUM=b8b13f93cba9bb5b4f62d1586a10ae3b9615a3975e129503ab8692dff698bae0
 
-if [[ -n $SNAPSHOT && ! -d "$CHAINDATA_DIR" ]]; then
-  echo "restoring from snapshot: $SNAPSHOT"
-
-  apk add zstd lz4
+#if [[ -n $SNAPSHOT && ! -d "$CHAINDATA_DIR" ]]; then
+#  echo "restoring from snapshot: $SNAPSHOT"
+#
+#  apk add zstd lz4
 #  rm -rf $DATA_DIR/geth;
 
   # extract with lz4 (https://github.com/bnb-chain/bsc-snapshots)
@@ -34,7 +35,7 @@ if [[ -n $SNAPSHOT && ! -d "$CHAINDATA_DIR" ]]; then
 
 if [[ -n $SNAPSHOT ]]; then
   # Check for initial run or checksum mismatch
-  if [[ ! -d "$CHAINDATA_DIR" || $(openssl sha256 /data/$dirName) != $EXPECTED_CHECKSUM ]]; then
+  if [[ ! -d "$CHAINDATA_DIR" || $CHECKSUM != $EXPECTED_CHECKSUM ]]; then
     echo "Restoring from snapshot or rerunning due to checksum mismatch: $SNAPSHOT"
 
     apk add zstd lz4
