@@ -6,27 +6,52 @@ set -e
 
 DATA_DIR=/data
 CHAINDATA_DIR=$DATA_DIR/geth/chaindata
+EXPECTED_CHECKSUM=b8b13f93cba9bb5b4f62d1586a10ae3b9615a3975e129503ab8692dff698bae0
 
 if [[ -n $SNAPSHOT && ! -d "$CHAINDATA_DIR" ]]; then
   echo "restoring from snapshot: $SNAPSHOT"
 
   apk add zstd lz4
-  rm -rf $DATA_DIR/geth;
+#  rm -rf $DATA_DIR/geth;
 
   # extract with lz4 (https://github.com/bnb-chain/bsc-snapshots)
-  if echo "$SNAPSHOT" | grep -q "tar\.lz4$"; then
-    wget -c $SNAPSHOT -O - | lz4 -cd | tar xf - -C $DATA_DIR
-    mv /data/server/data-seed/geth $DATA_DIR/geth
-  fi
+#  if echo "$SNAPSHOT" | grep -q "tar\.lz4$"; then
+#    wget -c $SNAPSHOT -O - | lz4 -cd | tar xf - -C $DATA_DIR
+#    mv /data/server/data-seed/geth $DATA_DIR/geth
+#  fi
 
   # extract with zstd (https://github.com/48Club/bsc-snapshots)
-  if echo "$SNAPSHOT" | grep -q "tar\.zst$"; then
+#  if echo "$SNAPSHOT" | grep -q "tar\.zst$"; then
+#    baseName=$(basename "$SNAPSHOT" .tar.zst)
+#    dirName=$(echo "$baseName" | sed 's/\.[^.]*$//')
+#    wget -c $SNAPSHOT -O - | zstd -cd | tar xf - -C $DATA_DIR
+#    aria2c -s4 -x4 -k1024M $SNAPSHOT -o /data/$dirName
+#    zstd -cd /data/$dirName | tar xf -
+#    openssl sha256 /data/$dirName # checksum verification, optional
+#    mv /data/$dirName/geth $DATA_DIR/geth
+#  fi
+#fi
+
+if [[ -n $SNAPSHOT ]]; then
+  # Check for initial run or checksum mismatch
+  if [[ ! -d "$CHAINDATA_DIR" || $(openssl sha256 /data/$dirName) != $EXPECTED_CHECKSUM ]]; then
+    echo "Restoring from snapshot or rerunning due to checksum mismatch: $SNAPSHOT"
+
+    apk add zstd lz4
+
+    # Extract with zstd
     baseName=$(basename "$SNAPSHOT" .tar.zst)
     dirName=$(echo "$baseName" | sed 's/\.[^.]*$//')
-    wget -c $SNAPSHOT -O - | zstd -cd | tar xf - -C $DATA_DIR
+    
+    # Download and extract the snapshot
+    aria2c -s4 -x4 -k1024M $SNAPSHOT -o $DATA_DIR
+    zstd -cd $DATA_DIR | tar xf -
+
+    # Move extracted data to $DATA_DIR/geth
     mv /data/$dirName/geth $DATA_DIR/geth
   fi
 fi
+
 
 
 if [ ! -d "$CHAINDATA_DIR" ]; then
