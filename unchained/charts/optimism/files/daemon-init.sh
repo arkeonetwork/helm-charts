@@ -31,7 +31,6 @@ if [ -n "$SNAPSHOT" ] && [ ! -d "$CHAINDATA_DIR" ]; then
 
     zstd -cd $DATA_DIR | tar xf -
     mkdir $CHAINDATA_DIR
-  fi
 fi  
 
 
