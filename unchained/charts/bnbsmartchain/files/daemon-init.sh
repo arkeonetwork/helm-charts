@@ -41,18 +41,19 @@ if [[ -n $SNAPSHOT && ! -d "$CHAINDATA_DIR" ]]; then
 
     # Extract with zstd
     baseName=$(basename "$SNAPSHOT" .tar.zst)
+    file=$(basename "$SNAPSHOT")
     dirName=$(echo "$baseName" | sed 's/\.[^.]*$//')
     
     # Download and extract the snapshot
-    if [[ ! -f $DATA_DIR/$dirName ]]; then
+    if [[ ! -f $file ]]; then
     aria2c -s4 -x4 -k1024M $SNAPSHOT
     fi 
 
-    CHECKSUM=$(openssl sha256 /$DATA_DIR/$dirName)
+    CHECKSUM=$(openssl sha256 $file)
 
     while [[ $CHECKSUM -ne $EXPECTED_CHECKSUM ]]; do
       echo "rerunning due to checksum mismatch"
-      aria2c -s4 -x4 -k100M $SNAPSHOT;
+      aria2c -s4 -x4 -k1024M $SNAPSHOT;
     done
 
     zstd -cd $DATA_DIR | tar xf -

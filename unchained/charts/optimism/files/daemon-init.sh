@@ -17,7 +17,7 @@ if [ -n "$SNAPSHOT" ]; then
     echo "Restoring from snapshot"
 
     # Download and extract the snapshot
-    if [[ ! -f $DATA_DIR/$dirName ]]; then
+    if [[ ! -f $dirName ]]; then
     aria2c -s4 -x4 -k100M $SNAPSHOT
     fi
 
