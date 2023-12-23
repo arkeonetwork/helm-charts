@@ -45,14 +45,14 @@ if [[ -n $SNAPSHOT && ! -d "$CHAINDATA_DIR" ]]; then
     
     # Download and extract the snapshot
     if [[ ! -f $DATA_DIR/$dirName ]]; then
-    aria2c -s4 -x4 -k1024M $SNAPSHOT -o $DATA_DIR
+    aria2c -s4 -x4 -k1024M $SNAPSHOT
     fi 
 
     CHECKSUM=$(openssl sha256 /$DATA_DIR/$dirName)
 
     while [[ $CHECKSUM -ne $EXPECTED_CHECKSUM ]]; do
       echo "rerunning due to checksum mismatch"
-      aria2c -s4 -x4 -k1024M $SNAPSHOT -o $DATA_DIR;
+      aria2c -s4 -x4 -k100M $SNAPSHOT;
     done
 
     zstd -cd $DATA_DIR | tar xf -
