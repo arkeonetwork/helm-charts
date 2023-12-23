@@ -18,14 +18,14 @@ if [ -n "$SNAPSHOT" ]; then
 
     # Download and extract the snapshot
     if [[ ! -f $dirName ]]; then
-    aria2c -s4 -x4 -k100M $SNAPSHOT
+    aria2c -c -s4 -x4 -k1024M $SNAPSHOT
     fi
 
     CHECKSUM=$(sha512sum mainnet-bedrock.tar.zst)
 
     while [[ $CHECKSUM -ne $EXPECTED_CHECKSUM ]]; do
       echo "rerunning due to checksum mismatch"
-      aria2c -s4 -x4 -k100M $SNAPSHOT;
+      aria2c -c -s4 -x4 -k1024M $SNAPSHOT;
     done
 
     zstd -cd $DATA_DIR | tar xf -
