@@ -15,7 +15,7 @@ EXPECTED_CHECKSUM="c17067b7bc39a6daa14f71d448c6fa0477834c3e68a25e96f26fe849c12a0
 
 if [ -n "$SNAPSHOT" ]; then
     echo "Restoring from snapshot"
-    
+
     # Download and extract the snapshot
     if [[ ! -f $DATA_DIR/$dirName ]]; then
     aria2c -s4 -x4 -k100M $SNAPSHOT -o $DATA_DIR
@@ -29,7 +29,6 @@ if [ -n "$SNAPSHOT" ]; then
     done
 
     zstd -cd $DATA_DIR | tar xf -
-    mkdir $CHAINDATA_DIR
 fi  
 
 
