@@ -13,27 +13,21 @@ EXPECTED_CHECKSUM="c17067b7bc39a6daa14f71d448c6fa0477834c3e68a25e96f26fe849c12a0
 #  wget -c $SNAPSHOT -O - | tar --zstd -xvf - -C $DATA_DIR
 #fi
 
-if [ -n "$SNAPSHOT" ]; then
+if [ -n "$SNAPSHOT" && ! -f "/data/fin" ]; then
     echo "Restoring from snapshot"
 
-    if [[ -f $dirName ]]; then
-    echo "$dirName exists"
+    if [[ -f "$DATA_DIR/$dirName" ]]; then
+    echo "$DATA_DIR/$dirName exists"
     fi 
-    ls -al
+    
     # Download and extract the snapshot
-    if [[ ! -f $dirName ]]; then
-    echo "$dirName does not exist"
-    aria2c -c -s4 -x4 -k1024M $SNAPSHOT -d $DATA_DIR
-    fi
+    aria2c -c -s4 -x4 -k1024M $SNAPSHOT -d $DATA_DIR --checksum=sha-512=c17067b7bc39a6daa14f71d448c6fa0477834c3e68a25e96f26fe849c12a09bffe510e96f7eacdef19e93e3167d15250f807d252dd6f6f9053d0e4457c73d5fb
 
-    CHECKSUM=$(sha512sum mainnet-bedrock.tar.zst)
+#    CHECKSUM=$(sha512sum /data/mainnet-bedrock.tar.zst)
 
-    while [[ $CHECKSUM -ne $EXPECTED_CHECKSUM ]]; do
-      echo "rerunning due to checksum mismatch"
-      aria2c -c -s4 -x4 -k1024M $SNAPSHOT;
-    done
-
-    zstd -cd $DATA_DIR | tar xf -
+    zstd -cd $DATA_DIR/$dirName | tar xf -
+    echo "$dirName uncompressed"
+    touch /data/fin
 fi  
 
 
