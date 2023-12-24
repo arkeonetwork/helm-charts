@@ -16,9 +16,14 @@ EXPECTED_CHECKSUM="c17067b7bc39a6daa14f71d448c6fa0477834c3e68a25e96f26fe849c12a0
 if [ -n "$SNAPSHOT" ]; then
     echo "Restoring from snapshot"
 
+    if [[ -f $dirName ]]; then
+    echo "$dirName exists"
+    fi 
+
     # Download and extract the snapshot
     if [[ ! -f $dirName ]]; then
-    aria2c -c -s4 -x4 -k1024M $SNAPSHOT
+    echo "$dirName does not exist"
+    aria2c -c -s4 -x4 -k1024M $SNAPSHOT -d $DATA_DIR
     fi
 
     CHECKSUM=$(sha512sum mainnet-bedrock.tar.zst)
