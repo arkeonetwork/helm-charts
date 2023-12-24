@@ -19,7 +19,7 @@ if [ -n "$SNAPSHOT" ]; then
     if [[ -f $dirName ]]; then
     echo "$dirName exists"
     fi 
-
+    ls -al
     # Download and extract the snapshot
     if [[ ! -f $dirName ]]; then
     echo "$dirName does not exist"
