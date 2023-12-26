@@ -75,7 +75,6 @@ spec:
             path: '/api/v2'
             port: 8001
           {{- end }}
-        {{- end }}
         readinessProbe:
           failureThreshold: 10
           periodSeconds: 30
@@ -83,6 +82,7 @@ spec:
           exec:
             command: 
             - '/readiness.sh'
+        {{- end }}
         volumeMounts:
         - name: {{ $.Chart.Name }}-{{ .name }}-data
           mountPath: {{ default "/data" .dataDir }}
