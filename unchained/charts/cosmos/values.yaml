@@ -7,10 +7,10 @@ api:
   replicas: 1
   limits:
     cpu: 500m
-    memory: 500Mi
+    memory: 1Gi
   requests:
     cpu: 250m
-    memory: 250Mi
+    memory: 500Mi
   env:
   - name: LCD_URL
     value: "http://cosmos-svc.unchained.svc.cluster.local:1317"
@@ -37,6 +37,6 @@ statefulset:
         memory: 48Gi
       requests:
         cpu: 2
-      storage_size: 4500Gi
+      storage_size: 4750Gi
       dataDir: /root
       

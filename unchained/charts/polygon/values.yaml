@@ -64,7 +64,7 @@ statefulset:
         value: 'https://snapshot-download.polygon.technology/snapdown.sh'
       limits:
         cpu: 2
-        memory: 2Gi
+        memory: 1Gi
       requests:
         cpu: 1
       storage_size: 500Gi
@@ -82,7 +82,7 @@ statefulset:
         - '-workers=1'
       limits:
         cpu: 4
-        memory: 24Gi
+        memory: 32Gi
       requests:
         cpu: 2
       storage_size: 750Gi
