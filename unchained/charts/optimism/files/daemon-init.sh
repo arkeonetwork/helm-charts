@@ -13,21 +13,19 @@ EXPECTED_CHECKSUM="c17067b7bc39a6daa14f71d448c6fa0477834c3e68a25e96f26fe849c12a0
 #  wget -c $SNAPSHOT -O - | tar --zstd -xvf - -C $DATA_DIR
 #fi
 
-if [[ -n "$SNAPSHOT" && ! -f "/data/fin" ]]; then
+if [[ -n "$SNAPSHOT" && ! -f "/data/end" ]]; then
     echo "Restoring from snapshot"
 
     if [[ -f "$DATA_DIR/$dirName" ]]; then
     echo "$DATA_DIR/$dirName exists"
-    fi 
-
     # Download and extract the snapshot
     aria2c -c -s4 -x4 -k1024M $SNAPSHOT -d $DATA_DIR --checksum=sha-512=c17067b7bc39a6daa14f71d448c6fa0477834c3e68a25e96f26fe849c12a09bffe510e96f7eacdef19e93e3167d15250f807d252dd6f6f9053d0e4457c73d5fb
-
+    fi 
 #    CHECKSUM=$(sha512sum /data/mainnet-bedrock.tar.zst)
-
-    zstd -cd $DATA_DIR/$dirName | tar xf -
+    echo "uncompressing..."
+    zstd -cd $DATA_DIR/$dirName | tar xf - -C $DATA_DIR
     echo "$dirName uncompressed"
-    touch /data/fin
+    touch /data/end
 fi  
 
 
