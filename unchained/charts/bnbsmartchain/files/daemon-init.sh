@@ -56,13 +56,14 @@ if [[ -n $SNAPSHOT && ! -d "$CHAINDATA_DIR" ]]; then
     echo "uncompressing..."
     zstd -cd $DATA_DIR/$file | tar -xvf - -C $DATA_DIR
     echo "$dirName uncompressed"
+    touch /data/ending
 
 
 
     # Move extracted data to $DATA_DIR/geth
     mv /data/$dirName/geth $DATA_DIR/geth
     echo "$dirName moved"
-  fi
+  
 fi
 
 
