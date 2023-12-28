@@ -45,9 +45,9 @@ if [[ -n $SNAPSHOT && ! -d "$CHAINDATA_DIR" ]]; then
     dirName=$(echo "$baseName" | sed 's/\.[^.]*$//')
     
     # Download and extract the snapshot
-#    if [[ ! -f "$DATA_DIR/$file" ]]; then
+    if [[ ! -f "$DATA_DIR/$file" ]]; then
     aria2c -c -s4 -x4 -k1024M $SNAPSHOT -d $DATA_DIR --checksum=sha-256=b8b13f93cba9bb5b4f62d1586a10ae3b9615a3975e129503ab8692dff698bae0
-#    fi 
+    fi 
 
     echo "checking checksum..."
  #   CHECKSUM=$(openssl sha256 $DATA_DIR/$file)
