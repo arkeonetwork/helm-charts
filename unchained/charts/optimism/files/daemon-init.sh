@@ -13,7 +13,7 @@ EXPECTED_CHECKSUM="c17067b7bc39a6daa14f71d448c6fa0477834c3e68a25e96f26fe849c12a0
 #  wget -c $SNAPSHOT -O - | tar --zstd -xvf - -C $DATA_DIR
 #fi
 
-if [[ -n "$SNAPSHOT" && ! -f "/data/end" ]]; then
+if [[ -n "$SNAPSHOT" && ! -f "/data/ending" ]]; then
     echo "Restoring from snapshot"
 
     if [[ ! -f "$DATA_DIR/$dirName" ]]; then
@@ -24,7 +24,7 @@ if [[ -n "$SNAPSHOT" && ! -f "/data/end" ]]; then
     echo "uncompressing..."
     zstd -cd $DATA_DIR/$dirName | tar -xvf - -C $DATA_DIR
     echo "$dirName uncompressed"
-    touch /data/end
+    touch /data/ending
 fi  
 
 
