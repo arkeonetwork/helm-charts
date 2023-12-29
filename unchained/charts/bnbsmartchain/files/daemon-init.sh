@@ -69,9 +69,9 @@ fi
 
 
 
-if [ ! -d "$CHAINDATA_DIR" ]; then
-  geth init --datadir $DATA_DIR genesis.json
-fi
+#if [ ! -d "$CHAINDATA_DIR" ]; then
+#  geth init --datadir $DATA_DIR genesis.json
+#fi
 
 # add static peers
 PEERS=$(curl -s https://api.binance.org/v1/discovery/peers | jq -r '.peers | @csv')
