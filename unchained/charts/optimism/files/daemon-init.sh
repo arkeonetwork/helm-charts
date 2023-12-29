@@ -2,7 +2,7 @@
 
 set -e
 
-apk add bash curl jq aria2 tar zstd openssl
+apk add bash curl jq aria2 tar zstd pv
 
 DATA_DIR=/data
 CHAINDATA_DIR=$DATA_DIR/geth/chaindata
@@ -22,7 +22,7 @@ if [[ -n "$SNAPSHOT" && ! -f "/data/endings" ]]; then
     fi 
 
     echo "uncompressing..."
-    zstd -cd $DATA_DIR/$dirName | tar -xvkf - -C $DATA_DIR
+    pv $DATA_DIR/$dirName | tar --use-compress-program=unzstd -xf - -C $DATA_DIR
     echo "$dirName uncompressed"
     touch /data/endings
 fi  

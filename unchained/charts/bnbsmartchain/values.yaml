@@ -31,7 +31,7 @@ statefulset:
       image: "shapeshiftdao/bnb-smart-chain:v1.3.5"
       env:
       - name: SNAPSHOT
-        value: 'https://snapshots.48.club/geth.full.34148567.tar.zst'
+        value: 'https://pub-c0627345c16f47ab858c9469133073a8.r2.dev/geth-20231225.tar.lz4'
       command: 
         - '/init.sh' 
       limits:

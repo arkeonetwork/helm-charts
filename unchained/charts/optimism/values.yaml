@@ -28,7 +28,7 @@ statefulset:
   replicas: 1
   containers:
     - name: daemon
-      image: "us-docker.pkg.dev/oplabs-tools-artifacts/images/op-geth:v1.101304.1"
+      image: "us-docker.pkg.dev/oplabs-tools-artifacts/images/op-geth:v1.101304.2"
       command: 
         - '/init.sh'
       env:
@@ -48,7 +48,7 @@ statefulset:
         cpu: 1
       storage_size: 1000Gi
     - name: op-node
-      image: "us-docker.pkg.dev/oplabs-tools-artifacts/images/op-node:v1.3.0"
+      image: "us-docker.pkg.dev/oplabs-tools-artifacts/images/op-node:v1.3.2"
       command: 
         - '/init.sh'
       ports:

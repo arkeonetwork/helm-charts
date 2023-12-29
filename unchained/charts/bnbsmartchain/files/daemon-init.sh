@@ -4,11 +4,10 @@ set -e
 
 [ "$DEBUG" == "true" ] && set -x
 
-apk add openssl aria2
+apk add openssl aria2 pv rsync
 
 DATA_DIR=/data
 CHAINDATA_DIR=$DATA_DIR/geth/chaindata
-EXPECTED_CHECKSUM=b8b13f93cba9bb5b4f62d1586a10ae3b9615a3975e129503ab8692dff698bae0
 
 #if [[ -n $SNAPSHOT && ! -d "$CHAINDATA_DIR" ]]; then
 #  echo "restoring from snapshot: $SNAPSHOT"
@@ -34,37 +33,32 @@ EXPECTED_CHECKSUM=b8b13f93cba9bb5b4f62d1586a10ae3b9615a3975e129503ab8692dff698ba
 #  fi
 #fi
 
-if [[ -n $SNAPSHOT && ! -f "/data/endingss" ]]; then
+if [[ -n $SNAPSHOT && ! -f "/data/end" ]]; then
     echo "Restoring from snapshot"
 
     apk add zstd lz4
 
-    # Extract with zstd
-    baseName=$(basename "$SNAPSHOT" .tar.zst)
     file=$(basename "$SNAPSHOT")
-    dirName=$(echo "$baseName" | sed 's/\.[^.]*$//')
     
     # Download and extract the snapshot
     if [[ ! -f "$DATA_DIR/$file" ]]; then
-    aria2c -c -s4 -x4 -k1024M $SNAPSHOT -d $DATA_DIR --checksum=sha-256=b8b13f93cba9bb5b4f62d1586a10ae3b9615a3975e129503ab8692dff698bae0
+    rm -rf $DATA_DIR/geth/
+    aria2c -c -s4 -x4 -k1024M $SNAPSHOT -d $DATA_DIR
     fi 
-
-    echo "checking checksum..."
- #   CHECKSUM=$(openssl sha256 $DATA_DIR/$file)
 
 
     echo "uncompressing..."
-    zstd -cd $DATA_DIR/$file | tar -xvkf - -C $DATA_DIR
+    pv $DATA_DIR/$file | tar -I lz4 -xf - -C $DATA_DIR
     echo "$dirName uncompressed"
-    touch /data/endings
+    touch /data/fin
 
 
 
     # Move extracted data to $DATA_DIR/geth
-    mv /data/$dirName/geth $DATA_DIR/geth
+    rsync -avz /data/server/data-seed/geth/ $DATA_DIR/geth
+    rm -rf /data/server/data-seed/geth
     echo "$dirName moved"
-    touch /data/endingss
-  
+    touch /data/end  
 fi
 
 

@@ -96,6 +96,9 @@ spec:
         - name: {{ $.Values.name }}
           mountPath: '/evm.sh'
           subPath: 'evm.sh'
+        - name: {{ $.Values.name }}
+          mountPath: '/snapdown.sh'
+          subPath: 'snapdown.sh'
         {{- else }}
         - name: {{ $.Values.name }}
           mountPath: '/config.json'

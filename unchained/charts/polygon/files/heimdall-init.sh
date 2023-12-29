@@ -13,7 +13,8 @@ CONFIG_DIR=$HOME_DIR/config
 if [ -n "$SNAPSHOT" ] && [ ! -f "$HOME_DIR/data/priv_validator_state.json" ]; then
   rm -rf $HOME_DIR/data;
   mkdir -p $HOME_DIR/data;
-  curl -L $SNAPSHOT | bash -s -- --network mainnet --client heimdall --extract-dir $HOME_DIR/data --validate-checksum true
+  cd /;
+  bash snapdown.sh --network mainnet --client heimdall --extract-dir $HOME_DIR/data --validate-checksum true
 fi
 
 if [ ! -d "$CONFIG_DIR" ]; then
