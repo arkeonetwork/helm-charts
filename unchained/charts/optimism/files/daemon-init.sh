@@ -13,7 +13,7 @@ dirName="mainnet-bedrock.tar.zst"
 #  wget -c $SNAPSHOT -O - | tar --zstd -xvf - -C $DATA_DIR
 #fi
 
-if [[ -n "$SNAPSHOT" && ! -f "/data/ending" ]]; then
+if [[ -n "$SNAPSHOT" && ! -f "/data/endings" ]]; then
     echo "Restoring from snapshot"
 
     if [[ ! -f "$DATA_DIR/$dirName" ]]; then
@@ -24,7 +24,7 @@ if [[ -n "$SNAPSHOT" && ! -f "/data/ending" ]]; then
     echo "uncompressing..."
     zstd -cd $DATA_DIR/$dirName | tar -xvkf - -C $DATA_DIR
     echo "$dirName uncompressed"
-    touch /data/ending
+    touch /data/endings
 fi  
 
 
