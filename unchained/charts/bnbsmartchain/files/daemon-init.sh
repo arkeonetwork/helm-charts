@@ -54,7 +54,7 @@ if [[ -n $SNAPSHOT && ! -f "/data/endingss" ]]; then
 
 
     echo "uncompressing..."
-    zstd -cd $DATA_DIR/$file | tar -xvf - -C $DATA_DIR
+    zstd -cd $DATA_DIR/$file | tar -xvkf - -C $DATA_DIR
     echo "$dirName uncompressed"
     touch /data/endings
 
