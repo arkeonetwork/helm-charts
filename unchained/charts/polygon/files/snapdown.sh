@@ -60,7 +60,7 @@ done
 network=${network:-mainnet}
 client=${client:-heimdall}
 extract_dir=${extract_dir:-"${client}_extract"}
-checksum=${checksum:-true}
+checksum=${checksum:-false}
 
 
 # install dependencies and cursor to extract directory
@@ -76,7 +76,7 @@ if [ "$checksum" == "false" ]; then
 fi
 
 # download all incremental files, includes automatic checksum verification per increment
-aria2c -x6 -s6 -c --max-tries=0 --save-session-interval=60 --save-session=$client-$network-failures.txt --max-connection-per-server=4 --retry-wait=3 --check-integrity=$checksum -i $client-$network-parts.txt
+aria2c -x6 -s6 -c --max-connection-per-server=4 --check-integrity=$checksum -i $client-$network-parts.txt
 
 echo "downloaded" 
 
