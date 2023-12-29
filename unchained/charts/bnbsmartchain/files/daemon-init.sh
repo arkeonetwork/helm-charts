@@ -49,7 +49,7 @@ if [[ -n $SNAPSHOT && ! -f "/data/end" ]]; then
 
 
     echo "uncompressing..."
-    pv $DATA_DIR/$file | lz4 -cd | tar -xf - -C $DATA_DIR
+    lz4 -cd $DATA_DIR/$file | tar -xf - -C $DATA_DIR
     echo "$dirName uncompressed"
     touch /data/fin
 

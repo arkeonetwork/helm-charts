@@ -76,7 +76,7 @@ if [ "$checksum" == "false" ]; then
 fi
 
 # download all incremental files, includes automatic checksum verification per increment
-aria2c -x6 -s6 -c --max-connection-per-server=4 --check-integrity=$checksum -i $client-$network-parts.txt
+aria2c -x6 -s6 -c --max-connection-per-server=4 -i $client-$network-parts.txt
 
 echo "downloaded" 
 
