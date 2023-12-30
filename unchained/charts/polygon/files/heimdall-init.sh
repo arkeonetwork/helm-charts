@@ -10,11 +10,12 @@ HOME_DIR=/root/.heimdalld
 CONFIG_DIR=$HOME_DIR/config
 
 # shapshots provided by: https://snapshot.polygon.technology/
-if [ -n "$SNAPSHOT" ] && [ ! -f "$HOME_DIR/data/priv_validator_state.json" ]; then
-  rm -rf $HOME_DIR/data;
+if [ -n "$SNAPSHOT" ] && [ ! -f "$HOME_DIR/data/snapshot.sh" ]; then
+#  rm -rf $HOME_DIR/data;
   mkdir -p $HOME_DIR/data;
   cd /;
-  bash snapdown.sh --network mainnet --client heimdall --extract-dir $HOME_DIR/data --validate-checksum false
+  bash snapdown.sh --network mainnet --client heimdall --extract-dir $HOME_DIR/data --validate-checksum true
+  touch snapshot.sh
 fi
 
 if [ ! -d "$CONFIG_DIR" ]; then
