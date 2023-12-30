@@ -77,6 +77,7 @@ fi
 
 # download all incremental files, includes automatic checksum verification per increment
 aria2c -c -x6 -s6 -k1024M --check-integrity=$checksum -i $client-$network-parts.txt
+touch $extract_dir/snapshot.sh
 
 echo "downloaded" 
 

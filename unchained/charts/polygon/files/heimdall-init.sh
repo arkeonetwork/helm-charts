@@ -15,7 +15,6 @@ if [ -n "$SNAPSHOT" ] && [ ! -f "$HOME_DIR/data/snapshot.sh" ]; then
   mkdir -p $HOME_DIR/data;
   cd /;
   bash snapdown.sh --network mainnet --client heimdall --extract-dir $HOME_DIR/data --validate-checksum true
-  touch snapshot.sh
 fi
 
 if [ ! -d "$CONFIG_DIR" ]; then
