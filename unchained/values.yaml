@@ -33,7 +33,7 @@ litecoin:
   enabled: true
 
 optimism:
-  enabled: false
+  enabled: true
 
 polygon:
   enabled: true
