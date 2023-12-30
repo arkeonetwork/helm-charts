@@ -41,11 +41,11 @@ if [[ -n $SNAPSHOT && ! -f "/data/end" ]]; then
     file=$(basename "$SNAPSHOT")
     
     # Download and extract the snapshot
-    if [[ ! -f "$DATA_DIR/$file" && ! -f "/data/check" ]]; then
+#    if [[ ! -f "$DATA_DIR/$file" && ! -f "/data/check" ]]; then
     rm -rf $DATA_DIR/geth/
     aria2c -c -s4 -x4 -k1024M $SNAPSHOT -d $DATA_DIR
-    touch /data/check
-    fi 
+#    touch /data/check
+#    fi 
 
 
     echo "uncompressing..."
