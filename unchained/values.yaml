@@ -36,7 +36,7 @@ optimism:
   enabled: true
 
 polygon:
-  enabled: false
+  enabled: true
 
 thorchain:
   enabled: true
