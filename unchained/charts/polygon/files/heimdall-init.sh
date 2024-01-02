@@ -17,7 +17,7 @@ if [ -n "$SNAPSHOT" ] && [ ! -f "$HOME_DIR/data/snapshot.sh" ]; then
   bash snapdown.sh --network mainnet --client heimdall --extract-dir $HOME_DIR/data --validate-checksum true
 fi
 
-if [ ! -d "$CONFIG_DIR" ]; then
+if [ -d "$CONFIG_DIR" ]; then
   # init chain
   heimdalld init --home $HOME_DIR
 
