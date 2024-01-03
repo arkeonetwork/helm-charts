@@ -4,7 +4,7 @@ set -e
 
 [ "$DEBUG" == "true" ] && set -x
 
-apk add openssl aria2 pv rsync
+apk add openssl aria2 pv rsync tar
 
 DATA_DIR=/data
 CHAINDATA_DIR=$DATA_DIR/geth/chaindata
@@ -41,15 +41,16 @@ if [[ -n $SNAPSHOT && ! -f "/data/end" ]]; then
     file=$(basename "$SNAPSHOT")
     
     # Download and extract the snapshot
-#    if [[ ! -f "$DATA_DIR/$file" && ! -f "/data/check" ]]; then
+    if [[ ! -f "/data/check" ]]; then
     rm -rf $DATA_DIR/geth/
     aria2c -c -s4 -x4 -k1024M $SNAPSHOT -d $DATA_DIR
-#    touch /data/check
-#    fi 
+    touch /data/check
+    fi 
 
 
     echo "uncompressing..."
-    lz4 -cd $DATA_DIR/$file | tar -xf - -C $DATA_DIR
+    pv $DATA_DIR/$file  | tar -I lz4 -xkf - -C $DATA_DIR
+#    lz4 -cd $DATA_DIR/$file | tar -xf - -C $DATA_DIR
     echo "$dirName uncompressed"
     touch /data/fin
 
