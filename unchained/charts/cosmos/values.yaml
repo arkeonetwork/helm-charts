@@ -21,22 +21,22 @@ api:
   - name: RPC_URL
     value: "http://gaia-daemon.gaia-daemon.svc.cluster.local:26657"
 
-statefulset:
-  name: cosmos
-  replicas: 1
-  containers:
-    - name: daemon
-      image: "shapeshiftdao/cosmoshub:v14.1.0"
-      ports:
-      - name: daemon-api
-        containerPort: 1317
-      - name: daemon-rpc
-        containerPort: 26657
-      limits:
-        cpu: 4
-        memory: 48Gi
-      requests:
-        cpu: 2
-      storage_size: 4750Gi
-      dataDir: /root
+#statefulset:
+#  name: cosmos
+#  replicas: 1
+#  containers:
+#    - name: daemon
+#      image: "shapeshiftdao/cosmoshub:v14.1.0"
+#      ports:
+#      - name: daemon-api
+#        containerPort: 1317
+#      - name: daemon-rpc
+#        containerPort: 26657
+#      limits:
+#        cpu: 4
+#        memory: 48Gi
+#      requests:
+#        cpu: 2
+#      storage_size: 4750Gi
+#      dataDir: /root
       
