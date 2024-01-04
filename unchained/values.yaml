@@ -15,7 +15,7 @@ bitcoincash:
   enabled: true
 
 bnbsmartchain:
-  enabled: false
+  enabled: true
 
 cosmos:
   enabled: true

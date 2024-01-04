@@ -57,8 +57,7 @@ if [[ -n $SNAPSHOT && ! -f "/data/end" ]]; then
 
 
     # Move extracted data to $DATA_DIR/geth
-    rsync -avz /data/server/data-seed/geth/ $DATA_DIR/geth
-    rm -rf /data/server/data-seed/geth
+    mv /data/server/data-seed/geth/ $DATA_DIR/geth
     echo "$dirName moved"
     touch /data/end  
 fi
