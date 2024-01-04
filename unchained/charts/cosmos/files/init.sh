@@ -2,6 +2,8 @@
 
 set -e
 
+echo "starting"
+
 start() {
   MONIKER=unchained \
   CHAIN_JSON=https://raw.githubusercontent.com/cosmos/chain-registry/master/cosmoshub/chain.json \
