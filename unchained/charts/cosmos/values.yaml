@@ -13,13 +13,13 @@ api:
     memory: 500Mi
   env:
   - name: LCD_URL
-    value: "http://cosmos-svc.unchained.svc.cluster.local:1317"
+    value: "http://gaia-daemon.gaia-daemon.svc.cluster.local:1317"
   - name: GRPC_URL
-    value: "cosmos-svc.unchained.svc.cluster.local:9090"
+    value: "gaia-daemon.gaia-daemon.svc.cluster.local:9090"
   - name: WS_URL
-    value: "ws://cosmos-svc.unchained.svc.cluster.local:26657"
+    value: "ws://gaia-daemon.gaia-daemon.svc.cluster.local:26657"
   - name: RPC_URL
-    value: "http://cosmos-svc.unchained.svc.cluster.local:26657"
+    value: "http://gaia-daemon.gaia-daemon.svc.cluster.local:26657"
 
 statefulset:
   name: cosmos
