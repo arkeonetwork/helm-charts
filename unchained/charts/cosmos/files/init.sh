@@ -11,7 +11,7 @@ start() {
   POLKACHU_NETWORK=cosmos \
   run.sh gaiad start \
     --rpc.laddr tcp://0.0.0.0:26657 \
-    --minimum-gas-prices 0uatom &
+    --minimum-gas-prices 0.0025uatom &
   PID="$!"
 }
 

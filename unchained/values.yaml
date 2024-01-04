@@ -18,7 +18,7 @@ bnbsmartchain:
   enabled: false
 
 cosmos:
-  enabled: true
+  enabled: false
 
 dogecoin:
   enabled: true
