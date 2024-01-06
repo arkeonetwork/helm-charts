@@ -7,6 +7,10 @@ version: 1.0.0
 appVersion: 1.0.0
 
 dependencies:
+- name: arbitrum
+  version: "1.0.0"
+  repository: file://infra/unchained/chart/arbitrum
+  condition: arbitrum.enabled
 - name: avalanche
   version: "1.0.0"
   repository: file://infra/unchained/chart/avalanche

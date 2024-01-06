@@ -1,0 +1,68 @@
+name: arbitrum
+
+api: 
+  name: arbitrum
+  tier: api
+  replicas: 1
+  image: "shapeshiftdao/unchained-arbitrum-api:latest"
+  autoscaling: true
+  limits:
+    cpu: 500m
+    memory: 500Mi
+  requests:
+    cpu: 250m
+    memory: 250Mi
+  env:
+  - name: INDEXER_URL
+    value: "http://arbitrum-svc.unchained.svc.cluster.local:8001"
+  - name: INDEXER_WS_URL
+    value: "ws://arbitrum-svc.unchained.svc.cluster.local:8001/websocket"
+  - name: LOG_LEVEL
+    value: "debug"
+  - name: NETWORK
+    value: "mainnet"
+  - name: RPC_URL
+    value: "http://arbitrum-svc.unchained.svc.cluster.local:8547"
+
+statefulset:
+  name: avalanche
+  replicas: 1
+  containers:
+    - name: daemon
+      image: "offchainlabs/nitro-node:v2.2.2-8f33fea"
+      command:
+        - '/init.sh'
+      limits:
+        cpu: 2
+        memory: 24Gi
+      requests:
+        cpu: 1
+      storage_size: 750Gi
+      ports:
+      - name: daemon-http
+        containerPort: 8547
+      - name: daemon-ws
+        containerPort: 8548
+      env:
+      - name: L1_RPC_ENDPOINT
+        value: "http://ethereum-svc.unchained.svc.cluster.local:8545"
+    - name: indexer
+      image: "shapeshiftdao/unchained-blockbook:arbitrum-0e84937"
+      command: 
+        - '/bin/blockbook'
+        - '-blockchaincfg=/config.json'
+        - '-datadir=/data'
+        - '-sync'
+        - '-public=:8001'
+        - '-enablesubnewtx'
+        - '-logtostderr' 
+        - '-workers=1'
+      limits:
+        cpu: 2
+        memory: 16Gi
+      requests:
+        cpu: 1
+      storage_size: 500Gi
+      ports:
+      - name: indexer
+        containerPort: 8001
