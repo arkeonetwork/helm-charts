@@ -6,10 +6,10 @@ global:
 etherscan_api_key: ""
 
 arbitrum: 
-  enabled: false
+  enabled: true
 
 avalanche: 
-  enabled: false
+  enabled: true
 
 bitcoin:
   enabled: true
