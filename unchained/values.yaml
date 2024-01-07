@@ -6,7 +6,7 @@ global:
 etherscan_api_key: ""
 
 arbitrum: 
-  enabled: true
+  enabled: false
 
 avalanche: 
   enabled: false
