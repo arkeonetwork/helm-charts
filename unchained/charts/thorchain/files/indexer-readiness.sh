@@ -1,5 +1,6 @@
-#!/bin/bash
+#!/bin/sh
 
+    apk add curl jq
     HEALTH=$(curl -sf http://localhost:8080/v2/health) || exit 1
 
     IN_SYNC=$(echo $HEALTH | jq -r '.inSync')

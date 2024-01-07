@@ -1,5 +1,7 @@
 #!/bin/bash
 
+apk add curl jq
+
 DISABLE_READINESS_PROBE=/root/disable_readiness
 
 if [[ -f "$DISABLE_READINESS_PROBE" ]]; then
