@@ -1,11 +1,9 @@
 #!/bin/sh
 
-    apk add curl jq
-    HEALTH=$(curl -sf http://localhost:8080/v2/health) || exit 1
+    HEALTH=$(wget -q -O - -T 20 localhost:8080/v2/health | grep '\"inSync\": true') || exit 1
 
-    IN_SYNC=$(echo $HEALTH | jq -r '.inSync')
 
-    if [[ $IN_SYNC == true ]]; then
+    if [[ $HEALTH == '"inSync": true' ]]; then
       echo "midgard is synced"
       exit 0
     fi
