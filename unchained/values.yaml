@@ -9,7 +9,7 @@ arbitrum:
   enabled: true
 
 avalanche: 
-  enabled: true
+  enabled: false
 
 bitcoin:
   enabled: true
