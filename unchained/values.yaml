@@ -42,7 +42,7 @@ polygon:
   enabled: true
 
 thorchain:
-  enabled: true
+  enabled: false
 
 ipfs:
   enabled: false
