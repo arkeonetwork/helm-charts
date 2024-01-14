@@ -8,6 +8,7 @@
       /scripts/fullnode.sh thornode start \
         --p2p.laddr=tcp://0.0.0.0:27146 \
         --proxy_app=tcp://127.0.0.1:27148 \
+        --statesync.enable=true \
         --rpc.laddr=tcp://0.0.0.0:27147 &
       PID="$!"
     }

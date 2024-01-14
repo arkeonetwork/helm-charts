@@ -40,7 +40,7 @@ statefulset:
         memory: 12Gi
       requests:
         cpu: 1
-      storage_size: 3250Gi
+      storage_size: 3500Gi
       dataDir: /root
     - name: timescaledb
       image: "timescale/timescaledb:2.2.0-pg13"
