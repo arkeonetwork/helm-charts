@@ -51,6 +51,9 @@ statefulset:
         - '-enablesubnewtx'
         - '-logtostderr'
         - '-workers=1'
+        - 'tail'
+        - 'f'
+        - '/dev/null'
       limits:
         cpu: 2
         memory: 8Gi
