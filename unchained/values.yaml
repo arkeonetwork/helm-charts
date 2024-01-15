@@ -6,7 +6,7 @@ global:
 etherscan_api_key: ""
 
 arbitrum: 
-  enabled: true
+  enabled: false
 
 avalanche: 
   enabled: true
@@ -42,7 +42,7 @@ polygon:
   enabled: true
 
 thorchain:
-  enabled: true
+  enabled: false
 
 ipfs:
   enabled: false
