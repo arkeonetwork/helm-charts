@@ -8,7 +8,7 @@
   "rpc_url": "http://localhost:8332",
   "rpc_user": "user",
   "rpc_pass": "password",
-  "rpc_timeout": 25,
+  "rpc_timeout": 50,
   "parse": true,
   "message_queue_binding": "tcp://localhost:28332",
   "subversion": "",
