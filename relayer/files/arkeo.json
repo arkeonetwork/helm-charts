@@ -1,0 +1,18 @@
+{
+    "type": "cosmos",
+    "value": {
+      "key": "testkey",
+      "chain-id": "arkeo-1",
+      "rpc-addr": "http://arkeo.arkeo-testnet.svc.cluster.local:26657",
+      "grpc-addr": "",
+      "account-prefix": "arkeo",
+      "keyring-backend": "test",
+      "gas-adjustment": 1.5,
+      "gas-prices": "0.025uarkeo",
+      "debug": true,
+      "timeout": "10s",
+      "output-format": "json",
+      "sign-mode": "direct"
+    }
+  }
+  

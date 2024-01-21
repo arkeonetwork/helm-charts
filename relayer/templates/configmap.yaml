@@ -1,0 +1,7 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata: 
+  name: {{ .Chart.Name }}
+  namespace: {{ .Release.Name }}
+data: {{ (.Files.Glob "files/*").AsConfig | nindent 2 }} 
