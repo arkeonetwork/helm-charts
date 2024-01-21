@@ -5,7 +5,7 @@
       "chain-id": "arkeo",
       "rpc-addr": "http://arkeo.arkeo-testnet.svc.cluster.local:26657",
       "grpc-addr": "",
-      "account-prefix": "arkeo",
+      "account-prefix": "tarkeo",
       "keyring-backend": "test",
       "gas-adjustment": 1.5,
       "gas-prices": "0.025uarkeo",
@@ -14,5 +14,5 @@
       "output-format": "json",
       "sign-mode": "direct"
     }
-  }
+}
   
