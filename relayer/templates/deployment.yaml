@@ -21,9 +21,5 @@ spec:
       - name: {{ .Chart.Name }}
         image: {{ .Values.image.name }}:{{ .Values.image.tag }}
         command: 
-        - 'rly'
-        - 'config'
-        - 'init'
-        - 'tail'
-        - 'f'
-        - '/dev/null'
+        - 'sleep'
+        - '3600'
