@@ -24,10 +24,10 @@ spec:
         - 'init.sh'
         volumeMounts:
         - name: scripts
-          mountPath: '{{ .Values.home }}/arkeo.json'
+          mountPath: '/arkeo.json'
           subPath: arkeo.json
         - name: scripts
-          mountPath: '{{ .Values.home }}/init.sh'
+          mountPath: '/init.sh'
           subPath: init.sh
       volumes:
       - name: scripts
