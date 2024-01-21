@@ -1,0 +1,7 @@
+apiVersion: v2
+name: relayer
+description: IBC Go relayer
+type: application
+version: 0.1.0
+
+appVersion: v1.0.0
