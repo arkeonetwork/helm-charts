@@ -21,7 +21,7 @@ spec:
       - name: {{ .Chart.Name }}
         image: {{ .Values.image.name }}:{{ .Values.image.tag }}
         command: 
-        - 'init.sh'
+        - '/init.sh'
         volumeMounts:
         - name: scripts
           mountPath: '/arkeo.json'
