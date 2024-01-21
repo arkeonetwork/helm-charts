@@ -24,3 +24,6 @@ spec:
         - 'rly'
         - 'config'
         - 'init'
+        - 'tail'
+        - 'f'
+        - '/dev/null'
