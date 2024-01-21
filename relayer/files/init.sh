@@ -4,7 +4,7 @@
   rly config init
 
 #add the chains to the config
-   rly chains add --file arkeo.json arkeo
+   rly chains add --file /arkeo.json arkeo
    rly chains add osmosistestnet --testnet
 
 #add new keys
