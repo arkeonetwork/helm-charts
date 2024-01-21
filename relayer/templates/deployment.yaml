@@ -23,9 +23,14 @@ spec:
         command: 
         - 'init.sh'
         volumeMounts:
-        - name: {{ .Chart.Name }}
+        - name: scripts
           mountPath: '{{ .Values.home }}/arkeo.json'
           subPath: arkeo.json
-        - name: {{ .Chart.Name }}
+        - name: scripts
           mountPath: '{{ .Values.home }}/init.sh'
           subPath: init.sh
+      volumes:
+      - name: scripts
+        configMap:
+          name: {{ .Chart.Name }}
+          defaultMode: 0777
