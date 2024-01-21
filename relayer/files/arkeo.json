@@ -2,7 +2,7 @@
     "type": "cosmos",
     "value": {
       "key": "testkey",
-      "chain-id": "arkeo-1",
+      "chain-id": "arkeo",
       "rpc-addr": "http://arkeo.arkeo-testnet.svc.cluster.local:26657",
       "grpc-addr": "",
       "account-prefix": "arkeo",

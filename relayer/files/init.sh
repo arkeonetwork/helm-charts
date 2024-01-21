@@ -16,7 +16,7 @@
    rly keys use osmosistestnet osmokey
 
 #create path
-   rly paths new arkeo-1 osmo-test-5 arkeo-osmosistestnet
+   rly paths new arkeo osmo-test-5 arkeo-osmosistestnet
 
 #create client, connection, channel
    rly tx link arkeo-osmosistestnet -d -t 3s
