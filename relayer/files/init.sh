@@ -8,7 +8,7 @@
    rly chains add osmosistestnet --testnet
 
 #add new keys
-   rly keys add arkeo arkeokey
+   rly keys restore arkeo arkeokey "head hollow rally wink choice multiply embrace parrot picnic vehicle burden own sleep figure fancy spy produce assume couch yard country purpose draw owner"
    rly keys add osmosistestnet osmokey
 
 #set keys as default 
