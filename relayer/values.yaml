@@ -3,3 +3,7 @@ image:
   tag: "main"
 
 home: "/home/relayer"
+
+mnemonic:
+  arkeo: ""
+  osmo: ""

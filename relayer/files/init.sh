@@ -8,16 +8,20 @@
    rly chains add osmosistestnet --testnet
 
 #add new keys
-   rly keys add arkeo arkeokey 
-   rly keys add osmosistestnet osmokey
+   rly keys restore arkeo arkeokey "{{ .Values.mnemonic.arkeo }}"
+   rly keys restore osmosistestnet osmokey "{{ .Values.mnemonic.osmo }}"
 
 #set keys as default 
    rly keys use arkeo arkeokey
    rly keys use osmosistestnet osmokey
 
+#query balance
+   rly q balance arkeo
+   rly q balance osmosistestnet
+
 #create path
    rly paths new arkeo osmo-test-5 arkeo-osmosistestnet
 
 #create client, connection, channel
-   rly tx link arkeo-osmosistestnet -d -t 3s
+   rly tx link arkeo-osmosistestnet -d
    sleep 3600
