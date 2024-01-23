@@ -4,4 +4,52 @@ kind: ConfigMap
 metadata: 
   name: {{ .Chart.Name }}
   namespace: {{ .Release.Name }}
-data: {{ (.Files.Glob "files/*").AsConfig | nindent 2 }} 
+data: 
+  init.sh: |
+    #!/bin/sh
+
+    #initialize the relayer config file
+      rly config init
+
+    #add the chains to the config
+      rly chains add --file /arkeo.json arkeo
+      rly chains add osmosistestnet --testnet
+
+    #add new keys
+      rly keys restore arkeo arkeokey "{{ .Values.mnemonic.arkeo }}"
+      rly keys restore osmosistestnet osmokey "{{ .Values.mnemonic.osmo }}"
+
+    #set keys as default 
+      rly keys use arkeo arkeokey
+      rly keys use osmosistestnet osmokey
+
+    #query balance
+      rly q balance arkeo
+      rly q balance osmosistestnet
+
+    #create path
+      rly paths new arkeo osmo-test-5 arkeo-osmosistestnet
+
+    #create client, connection, channel
+      rly tx link arkeo-osmosistestnet -d
+      sleep 3600
+  
+  arkeo.json: |
+    {
+      "type": "cosmos",
+      "value": {
+        "key": "testkey",
+        "chain-id": "arkeo",
+        "rpc-addr": "http://arkeo.arkeo-testnet.svc.cluster.local:26657",
+        "grpc-addr": "",
+        "account-prefix": "tarkeo",
+        "keyring-backend": "test",
+        "gas-adjustment": 1.5,
+        "gas-prices": "0.025uarkeo",
+        "debug": true,
+        "timeout": "10s",
+        "output-format": "json",
+        "sign-mode": "direct"
+      }
+    }
+ 
