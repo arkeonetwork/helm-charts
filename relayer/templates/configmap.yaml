@@ -12,27 +12,28 @@ data:
       rly config init
 
     #add the chains to the config
-      rly chains add --file /arkeo.json arkeo
-      rly chains add osmosistestnet --testnet
+      rly chains add --file /arkeo.json {{ .Values.chain1.name }}
+      rly chains add {{ .Values.chain2.name }} --testnet
 
     #add new keys
-      rly keys restore arkeo arkeokey "{{ .Values.mnemonic.arkeo }}"
-      rly keys restore osmosistestnet osmokey "{{ .Values.mnemonic.osmo }}"
+      rly keys restore {{ .Values.chain1.name }} {{ .Values.chain1.keyname }} "{{ .Values.mnemonic.arkeo }}"
+      rly keys restore {{ .Values.chain2.name }} {{ .Values.chain2.keyname }} "{{ .Values.mnemonic.osmo }}"
 
     #set keys as default 
-      rly keys use arkeo arkeokey
-      rly keys use osmosistestnet osmokey
+      rly keys use {{ .Values.chain1.name }} {{ .Values.chain1.keyname }}
+      rly keys use {{ .Values.chain2.name }} {{ .Values.chain2.keyname }}
 
     #query balance
-      rly q balance arkeo
-      rly q balance osmosistestnet
+      rly q balance {{ .Values.chain1.name }}
+      rly q balance {{ .Values.chain2.name }}
 
     #create path
-      rly paths new arkeo osmo-test-5 arkeo-osmosistestnet
+      rly paths new arkeo osmo-test-5 {{ .Values.pathname }}
 
     #create client, connection, channel
-      rly tx link arkeo-osmosistestnet -d
-      sleep 3600
+      rly tx link {{ .Values.pathname }} -d
+
+    
   
   arkeo.json: |
     {

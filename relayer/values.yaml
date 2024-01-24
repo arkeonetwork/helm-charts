@@ -7,3 +7,13 @@ home: "/home/relayer"
 mnemonic:
   arkeo: ""
   osmo: ""
+
+chain1:
+  name: arkeo
+  keyname: arkeokey
+
+chain2:
+  name: osmosistestnet
+  keyname: osmokey
+
+pathname: arkeo-osmosistestnet
