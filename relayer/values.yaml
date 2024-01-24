@@ -8,11 +8,11 @@ mnemonic:
   arkeo: ""
   osmo: ""
 
-chain1:
+src_chain:
   name: arkeo
   keyname: arkeokey
 
-chain2:
+dst_chain:
   name: osmosistestnet
   keyname: osmokey
 
