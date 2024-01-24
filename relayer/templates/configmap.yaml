@@ -32,7 +32,9 @@ data:
 
     #create client, connection, channel
       rly tx link {{ .Values.pathname }} -d
-      sleep 7200
+    
+    #start relayer
+      rly start {{ .Values.pathname }}
 
     
   
