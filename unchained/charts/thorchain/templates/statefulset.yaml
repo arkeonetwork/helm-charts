@@ -27,7 +27,7 @@ spec:
       - name: {{ .name }}
         image: {{ .image }}
         command:
-        - 'init.sh'
+        - '/init.sh'
         {{- with .env }}
         env: 
           {{- toYaml . | nindent 10 }}
@@ -50,7 +50,7 @@ spec:
           {{- if eq .name "daemon" }}
           httpGet:
             path: /status
-            port: daemon-rpc
+            port: 27147
           {{- else if eq .name "timescaledb" }}
           exec:
             command:
@@ -67,7 +67,7 @@ spec:
           {{- if eq .name "daemon" }}
           httpGet:
             path: /status
-            port: daemon-rpc
+            port: 27147
           {{- else if eq .name "timescaledb" }}
           exec:
             command:
@@ -83,7 +83,7 @@ spec:
           {{- if eq .name "daemon" }}
           httpGet:
             path: /status
-            port: daemon-rpc
+            port: 27147
           {{- else }}
           exec:
             {{- if eq .name "timescaledb" }}
