@@ -135,4 +135,3 @@ spec:
         requests:
           storage: {{ .storage_size }}
   {{- end }}
-      
