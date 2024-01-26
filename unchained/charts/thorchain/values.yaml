@@ -22,9 +22,6 @@ api:
 statefulset:
   name: thorchain
   replicas: 1
-  signer:
-    name: thorchain
-    password: password
   containers:
     - name: daemon
       image: "registry.gitlab.com/thorchain/thornode:mainnet-1.126.0"
@@ -46,6 +43,10 @@ statefulset:
         value: mainnet
       - name: CHAIN_ID
         value: 'thorchain-mainnet-v1'
+      - name: SIGNER_NAME
+        value: thorchain
+      - name: SIGNER_PASSWD
+        value: password
       limits:
         cpu: 2
         memory: 12Gi
