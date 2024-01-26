@@ -12,3 +12,7 @@ else
   echo "successful"
   touch successful.sh
 fi
+
+echo "initializing..."
+./scripts/fullnode.sh
+echo "done"

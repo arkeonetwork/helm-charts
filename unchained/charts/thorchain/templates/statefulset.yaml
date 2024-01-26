@@ -26,6 +26,8 @@ spec:
       {{- range .Values.statefulset.containers }}
       - name: {{ .name }}
         image: {{ .image }}
+        command:
+        - 'init.sh'
         {{- with .env }}
         env: 
           {{- toYaml . | nindent 10 }}
@@ -58,7 +60,7 @@ spec:
           {{- else if eq .name "indexer" }}
           tcpSocket:
             port: 8080
-            {{- end }}
+          {{- end }}
         startupProbe:
           failureThreshold: 30
           timeoutSeconds: 10
@@ -84,7 +86,7 @@ spec:
             port: daemon-rpc
           {{- else }}
           exec:
-          {{- if eq .name "timescaledb" }}
+            {{- if eq .name "timescaledb" }}
             command:
             - 'pg_isready'
             - '-U'
@@ -93,6 +95,7 @@ spec:
             command: 
             - '/readiness.sh'
             {{- end }}
+          {{- end }}
         volumeMounts:
         - name: {{ $.Chart.Name }}-{{ .name }}-data
           mountPath: {{ default "/data" .dataDir }}
@@ -102,9 +105,6 @@ spec:
         - name: {{ $.Values.name }}
           mountPath: '/readiness.sh'
           subPath: {{ .name }}-readiness.sh
-        - name: {{ $.Values.name }}
-          mountPath: '/mnemonic.sh'
-          subPath: '/mnemonic.sh'
         - name: {{ $.Values.name }}
           mountPath: '/config.json'
           subPath: 'indexer-config.json'
