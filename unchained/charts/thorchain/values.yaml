@@ -32,19 +32,19 @@ statefulset:
         containerPort: 27147
       env:
       - name: DEBUG
-        value: false
+        value: 'false'
       - name: THOR_AUTO_STATE_SYNC_ENABLED
-        value: true
+        value: 'true'
       - name: THOR_TENDERMINT_LOG_FORMAT
         value: "json"
       - name: NETWORK
-        value: mainnet
+        value: 'mainnet'
       - name: CHAIN_ID
         value: 'thorchain-mainnet-v1'
       - name: SIGNER_NAME
-        value: thorchain
+        value: 'thorchain'
       - name: SIGNER_PASSWD
-        value: password
+        value: 'password'
       limits:
         cpu: 2
         memory: 12Gi
