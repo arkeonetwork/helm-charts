@@ -22,15 +22,26 @@ api:
 statefulset:
   name: thorchain
   replicas: 1
+  signer:
+    name: thorchain
+    password: password
   containers:
     - name: daemon
       image: "registry.gitlab.com/thorchain/thornode:mainnet-1.126.0"
+      command: ["/bin/sh","-c"]
+      args: ["/mnemonic.sh && /scripts/fullnode.sh"]
       ports:
       - name: daemon-api
         containerPort: 1317
       - name: daemon-rpc
         containerPort: 27147
       env:
+      - name: DEBUG
+        value: false
+      - name: THOR_AUTO_STATE_SYNC_ENABLED
+        value: true
+      - name: THOR_TENDERMINT_LOG_FORMAT
+        value: "json"
       - name: NETWORK
         value: mainnet
       - name: CHAIN_ID

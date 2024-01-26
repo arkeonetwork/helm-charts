@@ -26,17 +26,19 @@ spec:
       {{- range .Values.statefulset.containers }}
       - name: {{ .name }}
         image: {{ .image }}
-        command: 
-          - '/init.sh'
-        {{- with .env }}
-        env: 
-          {{- toYaml . | nindent 10 }}
-        {{- end }}
-        {{- with .ports }}
-        ports: 
-          {{- toYaml . | nindent 10 }}
-        {{- end }}
-        resources:
+          {{- with .env }}
+          env: 
+            {{- toYaml . | nindent 10 }}
+          {{- end }}
+            - name: SIGNER_NAME
+              value: {{ $.Values.signer.name }}
+            - name: SIGNER_PASSWD
+              value: {{ $.Values.signer.password }}
+          {{- with .ports }}
+          ports: 
+            {{- toYaml . | nindent 10 }}
+          {{- end }}
+          resources:
           {{- with .limits }}
           limits:
             {{- toYaml . | nindent 12 }}
@@ -45,85 +47,73 @@ spec:
           requests:
             {{- toYaml . | nindent 12 }}
           {{- end }}
-        startupProbe:
-          failureThreshold: 60
-          periodSeconds: 30
-          timeoutSeconds: 10 
-          {{- if or (eq .name "daemon") (eq .name "timescaledb") }}
-          exec:
+          livenessProbe:
+            timeoutSeconds: 10
             {{- if eq .name "daemon" }}
-            command: 
-            - '/startup.sh'
+            httpGet:
+              path: /status
+              port: daemon-rpc
             {{- else if eq .name "timescaledb" }}
+            exec:
             command:
             - 'pg_isready'
             - '-U'
             - '$(POSTGRES_USER)'
+            {{- else if eq .name "indexer" }}
+            tcpSocket:
+              port: 8080
             {{- end }}
-          {{- else }}
-          tcpSocket:
-            port: 8080
-          {{- end }}
-        livenessProbe:
-          failureThreshold: 5
-          periodSeconds: 30
-          timeoutSeconds: 10
-          {{- if or (eq .name "daemon") (eq .name "timescaledb") }}
-          exec:
+          startupProbe:
+            failureThreshold: 30
+            timeoutSeconds: 10
             {{- if eq .name "daemon" }}
-            command: 
-            - '/liveness.sh'
+            httpGet:
+              path: /status
+              port: daemon-rpc
             {{- else if eq .name "timescaledb" }}
+            exec:
             command:
             - 'pg_isready'
             - '-U'
             - '$(POSTGRES_USER)'
+            {{- else if eq .name "indexer" }}
+            tcpSocket:
+              port: 8080
             {{- end }}
-          {{- else }}
-          tcpSocket:
-            port: 8080
-          {{- end }}
-        readinessProbe:
-          failureThreshold: 10
-          periodSeconds: 30
-          timeoutSeconds: 10
-          exec:
-            {{- if or (eq .name "daemon") (eq .name "indexer") }}
+          readinessProbe:
+            timeoutSeconds: 10
+            {{- if eq .name "daemon" }}
+            httpGet:
+              path: /status
+              port: daemon-rpc
+            {{- else }}
+            exec:
+            {{- if eq .name "timescaledb" }}
+            command:
+            - 'pg_isready'
+            - '-U'
+            - '$(POSTGRES_USER)'
+            {{- else }}
             command: 
             - '/readiness.sh'
-            {{- else }}
-            command:
-            - 'pg_isready'
-            - '-U'
-            - '$(POSTGRES_USER)'
             {{- end }}
-        volumeMounts:
-        - name: {{ $.Chart.Name }}-{{ .name }}-data
-          mountPath: {{ default "/data" .dataDir }}
-        - name: {{ $.Values.name }}
-          mountPath: '/init.sh'
-          subPath: {{ .name }}-init.sh
-        - name: {{ $.Values.name }}
-          mountPath: '/readiness.sh'
-          subPath: {{ .name }}-readiness.sh
-        {{- if eq .name "daemon" }}
-        - name: {{ $.Values.name }}
-          mountPath: '/startup.sh'
-          subPath: {{ .name }}-startup.sh
-        - name: {{ $.Values.name }}
-          mountPath: '/liveness.sh'
-          subPath: {{ .name }}-liveness.sh
-        - name: {{ $.Values.name }}
-          mountPath: '/tendermint.sh'
-          subPath: 'tendermint.sh'
-        {{- else if eq .name "indexer" }}
-        - name: {{ $.Values.name }}
-          mountPath: '/config.json'
-          subPath: 'indexer-config.json'
-        {{- else }}
-        - name: dshm
-          mountPath: '/dev/shm'
-        {{- end }}
+          volumeMounts:
+          - name: {{ $.Chart.Name }}-{{ .name }}-data
+            mountPath: {{ default "/data" .dataDir }}
+          - name: {{ $.Values.name }}
+            mountPath: '/init.sh'
+            subPath: {{ .name }}-init.sh
+          - name: {{ $.Values.name }}
+            mountPath: '/readiness.sh'
+            subPath: {{ .name }}-readiness.sh
+          - name: {{ $.Values.name }}
+            mountPath: '/mnemonic.sh'
+            subPath: '/mnemonic.sh'
+          - name: {{ $.Values.name }}
+            mountPath: '/config.json'
+            subPath: 'indexer-config.json'
+          - name: dshm
+            mountPath: '/dev/shm'
       {{- end }}
       volumes:
         - name: {{ .Values.name }}
@@ -145,3 +135,4 @@ spec:
         requests:
           storage: {{ .storage_size }}
   {{- end }}
+      
