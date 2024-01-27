@@ -110,6 +110,11 @@ spec:
           subPath: 'indexer-config.json'
         - name: dshm
           mountPath: '/dev/shm'
+        {{- if eq .name "indexer" }}
+        - name: {{ $.Values.name }}
+          mountPath: /resources/hashes/thorchain
+          subPath: blockstore-hashes
+        {{- end }}
     {{- end }}
       volumes:
         - name: {{ .Values.name }}
