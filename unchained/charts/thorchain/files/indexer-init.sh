@@ -2,6 +2,8 @@
 
 set -e
 
+apk add curl
+
 MIDGARD_HASHES="https://storage.googleapis.com/public-snapshots-ninerealms/midgard-blockstore/mainnet/v2/hashes"
 
 curl -s "$MIDGARD_HASHES"  >>/resources/hashes/thorchain
