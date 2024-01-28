@@ -45,7 +45,7 @@ statefulset:
         containerPort: 8548
       env:
       - name: L1_RPC_ENDPOINT
-        value: "http://ethereum-daemon.ethereum-daemon.svc.cluster.local:8545"
+        value: "http://ethereum-svc.unchained.svc.cluster.local:8545"
     - name: indexer
       image: "shapeshiftdao/unchained-blockbook:arbitrum-0e84937"
       command: 
