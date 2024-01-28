@@ -59,7 +59,3 @@ dependencies:
   version: "1.0.0"
   repository: file://infra/unchained/chart/thorchain
   condition: thorchain.enabled
-- name: ipfs
-  version: "1.0.0"
-  repository: file://infra/unchained/chart/ipfs
-  condition: ipfs.enabled
