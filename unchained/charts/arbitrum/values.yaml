@@ -25,11 +25,11 @@ api:
     value: "http://arbitrum-svc.unchained.svc.cluster.local:8547"
 
 statefulset:
-  name: avalanche
+  name: arbitrum
   replicas: 1
   containers:
     - name: daemon
-      image: "offchainlabs/nitro-node:v2.2.2-8f33fea"
+      image: "offchainlabs/nitro-node:v2.1.3-e815395"
       command:
         - '/init.sh'
       limits:
