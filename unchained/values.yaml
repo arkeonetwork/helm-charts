@@ -30,7 +30,7 @@ ethereum:
   enabled: true
 
 gnosis:
-  enabled: true
+  enabled: false
 
 litecoin:
   enabled: true
