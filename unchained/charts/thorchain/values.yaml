@@ -24,7 +24,7 @@ statefulset:
   replicas: 1
   containers:
     - name: daemon
-      image: "registry.gitlab.com/thorchain/thornode:mainnet-1.126.0"
+      image: "registry.gitlab.com/thorchain/thornode:mainnet-1.127.1"
       ports:
       - name: daemon-api
         containerPort: 1317
