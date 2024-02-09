@@ -15,7 +15,7 @@ bitcoin:
   enabled: true
 
 bitcoincash:
-  enabled: true
+  enabled: false
 
 bnbsmartchain:
   enabled: false
@@ -33,7 +33,7 @@ gnosis:
   enabled: false
 
 litecoin:
-  enabled: true
+  enabled: false
 
 optimism:
   enabled: true
