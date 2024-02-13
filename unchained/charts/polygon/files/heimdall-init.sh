@@ -9,7 +9,7 @@ apk add bash curl jq wget zstd tar pv aria2 sudo
 HOME_DIR=/root/.heimdalld
 CONFIG_DIR=$HOME_DIR/config
 
-# shapshots provided by: https://snapshot.polygon.technology/
+# snapshots provided by: https://snapshot.polygon.technology/
 if [ -n "$SNAPSHOT" ] && [ ! -f "$HOME_DIR/data/snapshot.sh" ]; then
 #  rm -rf $HOME_DIR/data;
   mkdir -p $HOME_DIR/data;

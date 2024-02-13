@@ -2,18 +2,18 @@
 
 set -e
 
-apk add bash curl jq wget zstd tar pv aria2
+apk add bash curl jq wget zstd tar pv aria2 sudo
 
 [ "$DEBUG" = "true" ] && set -x
 
 DATA_DIR=/data
 CHAINDATA_DIR=$DATA_DIR/bor/chaindata
 
-# shapshots provided by: https://snapshot.polygon.technology/
-if [ -n "$SNAPSHOT" ] && [ ! -d "$CHAINDATA_DIR" ]; then
-  rm -rf $DATA_DIR/bor;
+# snapshots provided by: https://snapshot.polygon.technology/
+if [ -n "$SNAPSHOT" ] && [ ! -f "$CHAINDATA_DIR/snapshot.sh" ]; then
   mkdir -p $CHAINDATA_DIR;
-  curl -L $SNAPSHOT | bash -s -- --network mainnet --client bor --extract-dir $CHAINDATA_DIR --validate-checksum true
+  cd /;
+  bash snapdown.sh --network mainnet --client bor --extract-dir $CHAINDATA_DIR --validate-checksum true
 fi
 
 # copy genesis file

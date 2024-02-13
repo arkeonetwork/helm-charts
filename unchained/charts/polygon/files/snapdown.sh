@@ -77,7 +77,6 @@ fi
 
 # download all incremental files, includes automatic checksum verification per increment
 aria2c -c -x6 -s6 -k1024M --check-integrity=$checksum -i $client-$network-parts.txt
-touch $extract_dir/snapshot.sh
 
 echo "downloaded" 
 
@@ -112,3 +111,5 @@ for file in $(find . -name "$client-$network-snapshot-*-part-*" -print | sort); 
         pv $output_tar | tar -I zstd -xf - -C . --strip-components=3 && rm $output_tar
     fi
 done
+
+touch $extract_dir/snapshot.sh
