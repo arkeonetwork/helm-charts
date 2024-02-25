@@ -20,6 +20,7 @@ start_coin() {
     -rpcworkqueue=1100 \
     -rpcport=8332 \
     -maxmempool=2000 \
+    -reindex \
     -dbcache=4000 &
   PID="$!"
 }
