@@ -13,7 +13,7 @@ CHAINDATA_DIR=$DATA_DIR/bor/chaindata
 if [ -n "$SNAPSHOT" ] && [ ! -f "$CHAINDATA_DIR/snapshot.sh" ]; then
   mkdir -p $CHAINDATA_DIR;
   cd /;
-  bash snapdown.sh --network mainnet --client bor --extract-dir $CHAINDATA_DIR --validate-checksum true
+  bash snapdown.sh --network mainnet --client bor --extract-dir $CHAINDATA_DIR --validate-checksum false
 fi
 
 # copy genesis file
