@@ -28,7 +28,7 @@ statefulset:
   replicas: 1
   containers:
     - name: daemon
-      image: "ethereum/client-go:v1.13.5"
+      image: "ethereum/client-go:v1.13.14"
       command: 
         - '/init.sh' 
       limits:
@@ -48,7 +48,7 @@ statefulset:
       - name: NETWORK
         value: mainnet
     - name: daemon-beacon
-      image: "gcr.io/prysmaticlabs/prysm/beacon-chain:v4.1.1"
+      image: "gcr.io/prysmaticlabs/prysm/beacon-chain:v5.0.0"
       args:
         - '--datadir'
         - '/data'
@@ -66,7 +66,7 @@ statefulset:
         cpu: 1
       storage_size: 500Gi
     - name: indexer
-      image: "shapeshiftdao/unchained-blockbook:559cfbc"
+      image: "shapeshiftdao/unchained-blockbook:c2cb648"
       command: 
         - '/bin/blockbook'
         - '-blockchaincfg=/config.json'
