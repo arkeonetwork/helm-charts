@@ -46,6 +46,8 @@ statefulset:
       env:
       - name: L1_RPC_ENDPOINT
         value: "http://ethereum-svc.unchained.svc.cluster.local:8545"
+      - name: L1_BEACON_ENDPOINT
+        value: "http://ethereum-svc.unchained.svc.cluster.local:3500"
     - name: indexer
       image: "shapeshiftdao/unchained-blockbook:arbitrum-0e84937"
       command: 

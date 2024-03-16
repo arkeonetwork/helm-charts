@@ -41,8 +41,10 @@ statefulset:
         containerPort: 8545
       - name: daemon-ws
         containerPort: 8546
-      - name: daemon-beacon
+      - name: daemon-auth
         containerPort: 8551
+      - name: daemon-beacon
+        containerPort: 3500
       storage_size: 1250Gi
       env:
       - name: NETWORK
@@ -54,6 +56,10 @@ statefulset:
         - '/data'
         - '--execution-endpoint'
         - 'http://localhost:8551'
+        - '--grpc-gateway-host'
+        - '0.0.0.0'
+        - '--grpc-gateway-port'
+        - '3500'
         - '--jwt-secret'
         - '/jwt.hex'
         - '--checkpoint-sync-url'
