@@ -29,7 +29,7 @@ statefulset:
   replicas: 1
   containers:
     - name: daemon
-      image: "avaplatform/avalanchego:v1.10.17"
+      image: "avaplatform/avalanchego:v1.11.2"
       command:
         - '/init.sh'
       limits:
