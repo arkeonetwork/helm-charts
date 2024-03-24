@@ -24,7 +24,7 @@ statefulset:
   replicas: 1
   containers:
     - name: daemon
-      image: "registry.gitlab.com/thorchain/thornode:mainnet-1.130.1"
+      image: "registry.gitlab.com/thorchain/thornode:mainnet-1.129.0"
       ports:
       - name: daemon-api
         containerPort: 1317
@@ -74,7 +74,7 @@ statefulset:
       storage_size: 500Gi
       dataDir: '/var/lib/postgresql/data'
     - name: indexer
-      image: "registry.gitlab.com/thorchain/midgard:2.20.1"
+      image: "registry.gitlab.com/thorchain/midgard:2.19.1"
       env:
       - name: MIDGARD_BLOCKSTORE_LOCAL
         value: '/blockstore'
