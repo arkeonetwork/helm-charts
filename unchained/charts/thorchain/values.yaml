@@ -53,7 +53,7 @@ statefulset:
       storage_size: 3500Gi
       dataDir: /root
     - name: timescaledb
-      image: "timescale/timescaledb:2.2.0-pg13"
+      image: "timescale/timescaledb:2.13.0-pg15"
       env:
       - name: POSTGRES_DB
         value: 'midgard'
@@ -74,7 +74,7 @@ statefulset:
       storage_size: 500Gi
       dataDir: '/var/lib/postgresql/data'
     - name: indexer
-      image: "registry.gitlab.com/thorchain/midgard:2.19.1"
+      image: "registry.gitlab.com/thorchain/midgard:2.20.1"
       env:
       - name: MIDGARD_BLOCKSTORE_LOCAL
         value: '/blockstore'
