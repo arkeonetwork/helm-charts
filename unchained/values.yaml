@@ -42,4 +42,4 @@ polygon:
   enabled: true
 
 thorchain:
-  enabled: false
+  enabled: true
