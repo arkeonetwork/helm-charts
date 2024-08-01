@@ -2,44 +2,19 @@ global:
   backupSchedule: "0 4 * * 0"
   backupCount: "3"
   storageClassName: "microk8s-hostpath"
-
 etherscan_api_key: ""
-
-arbitrum: 
-  enabled: true
-
-avalanche: 
-  enabled: true
-
-bitcoin:
-  enabled: true
-
-bitcoincash:
-  enabled: false
-
-bnbsmartchain:
-  enabled: false
-
-cosmos:
-  enabled: true
-
-dogecoin:
-  enabled: true
-
-ethereum:
-  enabled: true
-
-gnosis:
-  enabled: false
-
-litecoin:
-  enabled: false
-
-optimism:
-  enabled: false
-
-polygon:
-  enabled: false
-
-thorchain:
-  enabled: false
+blockchains:
+  arbitrum: true
+  avalanche: false
+  bitcoin: true
+  bitcoincash: false
+  bnbsmartchain: true
+  cosmos: true
+  dogecoin: false
+  ethereum: false
+  gnosis: true
+  litecoin: false
+  optimism: true
+  polygon: false
+  thorchain: false
+  polyg: false
