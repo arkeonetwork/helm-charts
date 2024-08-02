@@ -304,7 +304,7 @@ get_arkeonode_image() {
   # shellcheck disable=SC2086
   (
     set -eo pipefail
-    helm template ./relayer $EXTRA_ARGS | grep 'image:.*thorchain/arkeonode' | head -n1 | awk '{print $2}'
+    helm template ./relayer $EXTRA_ARGS | grep 'image:.*cosmos/relayer' | head -n1 | awk '{print $2}'
   )
 }
 
