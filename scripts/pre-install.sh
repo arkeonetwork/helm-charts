@@ -6,7 +6,7 @@ get_node_info
 
 case $NET in
   mainnet)
-    EXTRA_ARGS="-f ./thornode-stack/mainnet.yaml"
+    EXTRA_ARGS="-f ./relayer/values.yaml"
     ;;
 esac
 

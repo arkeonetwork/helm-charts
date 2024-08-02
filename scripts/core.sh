@@ -304,7 +304,7 @@ get_arkeonode_image() {
   # shellcheck disable=SC2086
   (
     set -eo pipefail
-    helm template ./arkeonode-stack $EXTRA_ARGS | grep 'image:.*thorchain/arkeonode' | head -n1 | awk '{print $2}'
+    helm template ./relayer $EXTRA_ARGS | grep 'image:.*thorchain/arkeonode' | head -n1 | awk '{print $2}'
   )
 }
 
@@ -414,14 +414,14 @@ display_status() {
 deploy_validator() {
   local args
   [ "$NET" = "mainnet" ] && args="--set global.passwordSecret=arkeonode-password"
-  helm diff upgrade -C 3 --install "$NAME" ./arkeonode-stack -n "$NAME" \
+  helm diff upgrade -C 3 --install "$NAME" ./relayer -n "$NAME" \
     $args $EXTRA_ARGS \
     --set global.mnemonicSecret=arkeonode-mnemonic \
     --set global.net="$NET" \
     --set arkeonode.type="validator"
   echo -e "=> Changes for a $boldgreen$TYPE$reset arkeonode on $boldgreen$NET$reset named $boldgreen$NAME$reset"
   confirm
-  helm upgrade --install "$NAME" ./arkeonode-stack -n "$NAME" \
+  helm upgrade --install "$NAME" ./relayer -n "$NAME" \
     --create-namespace $args $EXTRA_ARGS \
     --set global.mnemonicSecret=arkeonode-mnemonic \
     --set global.net="$NET" \
@@ -435,7 +435,7 @@ deploy_validator() {
 }
 
 deploy_datahost() {
-  helm diff upgrade -C 3 --install "$NAME" ./arkeonode-stack -n "$NAME" \
+  helm diff upgrade -C 3 --install "$NAME" ./relayer -n "$NAME" \
     $args $EXTRA_ARGS \
     --set global.mnemonicSecret=arkeonode-mnemonic \
     --set global.net="$NET" \
@@ -447,7 +447,7 @@ deploy_datahost() {
     --set arkeonode.type="datahost",gateway.validator=false,gateway.midgard=true,gateway.rpc.limited=false,gateway.api=true
   echo -e "=> Changes for a $boldgreen$TYPE$reset arkeonode on $boldgreen$NET$reset named $boldgreen$NAME$reset"
   confirm
-  helm upgrade --install "$NAME" ./arkeonode-stack -n "$NAME" \
+  helm upgrade --install "$NAME" ./relayer -n "$NAME" \
     --create-namespace $EXTRA_ARGS \
     --set global.mnemonicSecret=arkeonode-mnemonic \
     --set global.net="$NET" \
@@ -466,14 +466,14 @@ deploy_datahost() {
 deploy_daemon-dealer() {
   local args
   [ "$NET" = "mainnet" ] && args="--set global.passwordSecret=arkeonode-password"
-  helm diff upgrade -C 3 --install "$NAME" ./arkeonode-stack -n "$NAME" \
+  helm diff upgrade -C 3 --install "$NAME" ./relayer -n "$NAME" \
     $args $EXTRA_ARGS \
     --set global.mnemonicSecret=arkeonode-mnemonic \
     --set global.net="$NET" \
     --set arkeonode.type="daemon-dealer"
   echo -e "=> Changes for a $boldgreen$TYPE$reset arkeonode on $boldgreen$NET$reset named $boldgreen$NAME$reset"
   confirm
-  helm upgrade --install "$NAME" ./arkeonode-stack -n "$NAME" \
+  helm upgrade --install "$NAME" ./relayer -n "$NAME" \
     --create-namespace $args $EXTRA_ARGS \
     --set global.mnemonicSecret=arkeonode-mnemonic \
     --set global.net="$NET" \
