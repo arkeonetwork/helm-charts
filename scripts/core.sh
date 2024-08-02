@@ -41,13 +41,13 @@ confirm() {
 
 get_node_net() {
   if [ "$NET" != "" ]; then
-    if [ "$NET" != "mainnet" ] && [ "$NET" != "testnet" ]; then
-      die "Error NET variable=$NET. NET variable should be either 'mainnet' or 'testnet'."
+    if [ "$NET" != "mainnet" ]; then
+      die "Error NET variable=$NET. NET variable should be 'mainnet'."
     fi
     return
   fi
   echo "=> Select net"
-  menu mainnet mainnet testnet
+  menu mainnet mainnet
   NET=$MENU_SELECTED
   echo
 }
@@ -65,9 +65,6 @@ get_node_name() {
   case $NET in
     "mainnet")
       NAME=arkeonode
-      ;;
-    "testnet")
-      NAME=arkeonode-testnet
       ;;
   esac
   read -r -p "=> Enter arkeonode name [$NAME]: " name
@@ -417,7 +414,6 @@ display_status() {
 deploy_validator() {
   local args
   [ "$NET" = "mainnet" ] && args="--set global.passwordSecret=arkeonode-password"
-  [ "$NET" = "testnet" ] && args="--set global.passwordSecret=arkeonode-password"
   helm diff upgrade -C 3 --install "$NAME" ./arkeonode-stack -n "$NAME" \
     $args $EXTRA_ARGS \
     --set global.mnemonicSecret=arkeonode-mnemonic \
@@ -470,7 +466,6 @@ deploy_datahost() {
 deploy_daemon-dealer() {
   local args
   [ "$NET" = "mainnet" ] && args="--set global.passwordSecret=arkeonode-password"
-  [ "$NET" = "testnet" ] && args="--set global.passwordSecret=arkeonode-password"
   helm diff upgrade -C 3 --install "$NAME" ./arkeonode-stack -n "$NAME" \
     $args $EXTRA_ARGS \
     --set global.mnemonicSecret=arkeonode-mnemonic \

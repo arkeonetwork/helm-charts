@@ -37,13 +37,13 @@ pull: ## Git pull helm-charts repository
 	@git clean -idf
 	@git pull origin $(shell git rev-parse --abbrev-ref HEAD)
 
-## NEEDS WORK
+## NEEDS WORK ***
 ## Error: directory unchained/infra/unchained/chart/arbitrum not found
 update-dependencies:
 	@echo "=> Updating Helm chart dependencies"
 	@helm dependencies update ./relayer
-	@helm dependencies update ./unchained
-	@helm dependencies update ./blockchain-daemons
+	#@helm dependencies update ./unchained
+	#@helm dependencies update ./blockchain-daemons
 	@echo
 
 ## NEEDS WORK
@@ -61,7 +61,7 @@ password: ## Retrieve and display current password for backup from your arkeonod
 pods: ## Get arkeonode Kubernetes pods
 	@./scripts/pods.sh
 
-## NEEDS WORK
+## NEEDS WORK ***
 ## Error: directory unchained/infra/unchained/chart/arbitrum not found
 pre-install: update-dependencies ## Pre deploy steps for a arkeonode (secret creation)
 	@./scripts/pre-install.sh
@@ -76,74 +76,96 @@ install: update-dependencies ## Deploy a THORNode
 recycle: update-dependencies ## Destroy and recreate a THORNode recycling existing daemons to avoid re-sync
 	@./scripts/recycle.sh
 
-# NEEDS UPDATES
+## NEEDS WORK
+## Error: directory unchained/infra/unchained/chart/arbitrum not found
 update: pull update-dependencies ## Update a THORNode to latest version
 	@./scripts/update.sh
 
-# NEEDS UPDATES
+# NEEDS UPDATE -> ARKEO
 status: ## Display current status of your THORNode
 	@./scripts/status.sh
-# NEEDS UPDATES
+
+# NEEDS UPDATES -> ARKEO
 reset: ## Reset and resync a service from scratch on your THORNode. This command can take a while to sync back to 100%.
 	@./scripts/reset.sh
-# NEEDS UPDATES
+
+# NEEDS UPDATES -> ARKEO
 hard-reset-thornode: ## Hard reset and resync thornode service from scratch on your THORNode, leaving no bak/* files.
 	@./scripts/hard-reset-thornode.sh
-# NEEDS UPDATES
+
+# NEEDS UPDATES -> ARKEO
 backup: ## Backup specific files from either thornode of bifrost service of a THORNode.
 	@./scripts/backup.sh
-# NEEDS UPDATES
+
+# NEEDS UPDATES -> ARKEO
 full-backup: ## Create volume snapshots and backups for both thornode and bifrost services.
 	@./scripts/full-backup.sh
-# NEEDS UPDATES
+
+# NEEDS UPDATES -> ARKEO
 restore-backup: ## Restore backup specific files from either thornode of bifrost service of a THORNode.
 	@./scripts/restore-backup.sh
-# NEEDS UPDATES
+
+# NEEDS UPDATES -> ARKEO
 snapshot: ## Snapshot a volume for a specific THORNode service.
 	@./scripts/snapshot.sh
-# NEEDS UPDATES
+
+# NEEDS UPDATES -> ARKEO
 restore-snapshot: ## Restore a volume for a specific THORNode service from a snapshot.
 	@./scripts/restore-snapshot.sh
-# NEEDS UPDATES
+
+# NEEDS UPDATES -> ARKEO
 wait-ready: ## Wait for all pods to be in Ready state
 	@./scripts/wait-ready.sh
+
 # NEEDS UPDATES
 destroy: ## Uninstall current THORNode
 	@./scripts/destroy.sh
 
+# NEEDS UPDATES -> ARKEO
 export-state: ## Export chain state
 	@./scripts/export-state.sh
 
+# NEEDS UPDATES -> ARKEO
 shell: ## Open a shell for a selected THORNode service
 	@./scripts/shell.sh
 
+# NEEDS UPDATES -> ARKEO
 debug: ## Open a shell for THORNode service mounting volume to debug
 	@./scripts/debug.sh
 
+# NEEDS UPDATES -> ARKEO
 restore-external-snapshot: ## Restore THORNode from external snapshot.
 	@./scripts/restore-external-snapshot.sh
 
+# NEEDS UPDATES -> ARKEO
 watch: ## Watch the THORNode pods in real time
 	@./scripts/watch.sh
 
+# NEEDS UPDATES -> ARKEO
 logs: ## Display logs for a selected THORNode service
 	@./scripts/logs.sh
 
+# NEEDS UPDATES -> ARKEO
 restart: ## Restart a selected THORNode service
 	@./scripts/restart.sh
 
+# NEEDS UPDATES -> ARKEO
 halt: ## Halt a selected THORNode service
 	@./scripts/halt.sh
 
+# NEEDS UPDATES -> ARKEO
 set-node-keys: ## Send a set-node-keys transaction to your THORNode
 	@./scripts/set-node-keys.sh
 
+# NEEDS UPDATES -> ARKEO
 set-version: ## Send a set-version transaction to your THORNode
 	@./scripts/set-version.sh
 
+# NEEDS UPDATES -> ARKEO
 set-ip-address: ## Send a set-ip-address transaction to your THORNode
 	@./scripts/set-ip-address.sh
 
+# NEEDS UPDATES -> ARKEO
 set-monitoring: ## Enable PagerDuty or Deadmans Snitch monitoring via Prometheus/Grafana re-deploy
 	@./scripts/set-monitoring.sh
 
