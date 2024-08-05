@@ -37,36 +37,27 @@ pull: ## Git pull helm-charts repository
 	@git clean -idf
 	@git pull origin $(shell git rev-parse --abbrev-ref HEAD)
 
-## NEEDS WORK ***
-## Error: directory unchained/infra/unchained/chart/arbitrum not found
+## NEEDS WORK
+## any more dependencies needed? 
 update-dependencies:
 	@echo "=> Updating Helm chart dependencies"
 	@helm dependencies update ./relayer
 	@helm dependencies update ./arkeo-stack
 	@echo
 
-## NEEDS WORK
-## Error from server (NotFound): namespaces "arkeo" not found
 mnemonic: ## Retrieve and display current mnemonic for backup from your arkeonode
 	@./scripts/mnemonic.sh
 
-## NEEDS WORK
-## Error from server (NotFound): namespaces "arkeo" not found
+# stores plaintext password
 password: ## Retrieve and display current password for backup from your arkeonode
 	@./scripts/password.sh
 
-## NEEDS WORK
-## No resources found in arkeo namespace.
 pods: ## Get arkeonode Kubernetes pods
 	@./scripts/pods.sh
 
-## NEEDS WORK ***
-## Error: directory unchained/infra/unchained/chart/arbitrum not found
 pre-install: update-dependencies ## Pre deploy steps for a arkeonode (secret creation)
 	@./scripts/pre-install.sh
 
-## NEEDS WORK
-## Error: directory unchained/infra/unchained/chart/arbitrum not found
 install: update-dependencies ## Deploy a THORNode
 	@./scripts/install.sh
 
