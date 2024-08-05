@@ -31,6 +31,7 @@ spec:
       initContainers:
       - name: init-external-ip
         image: alpine/k8s:{{ .Values.global.images.alpineK8s.tag }}@sha256:{{ .Values.global.images.alpineK8s.hash }}
+        imagePullPolicy: IfNotPresent
         {{- if .Values.global.gateway.enabled }}
         command: ['/scripts/external-ip.sh', 'false', '{{ .Values.global.gateway.name }}', '{{ include "arkeo.fullname" . }}-external-ip']
         {{- else }}
@@ -38,7 +39,7 @@ spec:
         {{- end }}
         volumeMounts:
         - name: scripts
-          mountPath: /scripts
+          mountPath: /scripts/
 
       {{- if .Values.haltHeight }}
       - name: halt-height
@@ -47,18 +48,20 @@ spec:
         command: ['sh', '-c', '[ ! -e /root/.arkeo/data/priv_validator_state.json ] || [ $(cat /root/.arkeo/data/priv_validator_state.json | jq -r .height) -lt {{ .Values.haltHeight }} ] || sleep infinity']
         volumeMounts:
           - name: data
-            mountPath: /root/
+            mountPath: /root
       {{- end }}
 
       {{- if default .Values.peer .Values.global.peer }}
       - name: init-peer
         image: busybox:{{ .Values.global.images.busybox.tag }}@sha256:{{ .Values.global.images.busybox.hash }}
+        imagePullPolicy: IfNotPresent
         command: ['sh', '-c', 'until nc -zv {{ default .Values.peer .Values.global.peer }}:{{ include "arkeo.rpc" . }}; do echo waiting for peer arkeo; sleep 2; done']
       {{- end }}
 
       {{- if .Values.peerApi }}
       - name: init-peer-api
         image: busybox:{{ .Values.global.images.busybox.tag }}@sha256:{{ .Values.global.images.busybox.hash }}
+        imagePullPolicy: IfNotPresent
         command: ['sh', '-c', "until nc -zv {{ .Values.peerApi }}:1317; do echo waiting for peer arkeo; sleep 2; done"]
       {{- end }}
       containers:

@@ -64,7 +64,7 @@ get_node_name() {
   [ "$NAME" != "" ] && return
   case $NET in
     "mainnet")
-      NAME=arkeonode
+      NAME=arkeo
       ;;
   esac
   read -r -p "=> Enter arkeonode name [$NAME]: " name
@@ -139,7 +139,7 @@ get_node_info_short() {
 get_node_service() {
   [ "$SERVICE" != "" ] && return
   echo "=> Select arkeonode service"
-  menu arkeonode arkeonode bifrost midgard gateway binance-smart-daemon dogecoin-daemon gaia-daemon avalanche-daemon ethereum-daemon bitcoin-daemon litecoin-daemon bitcoin-cash-daemon midgard-timescaledb
+  menu arkeo arkeo sentinel midgard gateway binance-daemon dogecoin-daemon gaia-daemon avalanche-daemon ethereum-daemon bitcoin-daemon litecoin-daemon bitcoin-cash-daemon midgard-timescaledb
   SERVICE=$MENU_SELECTED
   echo
 }
@@ -153,7 +153,7 @@ create_namespace() {
 }
 
 node_exists() {
-  kubectl get -n "$NAME" deploy/arkeonode >/dev/null 2>&1
+  kubectl get -n "$NAME" deploy/arkeo >/dev/null 2>&1
 }
 
 snapshot_available() {
@@ -286,11 +286,11 @@ EOF
   day=$(date +%Y-%m-%d)
   mkdir -p "backups/$NAME/$service/$day"
   if [ "$service" = "bifrost" ]; then
-    kubectl exec -it -n "$NAME" "$pod" -c "$service" -- sh -c "cd /root/.arkeonode && tar cfz \"$service-$seconds.tar.gz\" localstate-*.json"
+    kubectl exec -it -n "$NAME" "$pod" -c "$service" -- sh -c "cd /root/.arkeo && tar cfz \"$service-$seconds.tar.gz\" localstate-*.json"
   else
-    kubectl exec -it -n "$NAME" "$pod" -c "$service" -- sh -c "cd /root/.arkeonode && tar cfz \"$service-$seconds.tar.gz\" config/"
+    kubectl exec -it -n "$NAME" "$pod" -c "$service" -- sh -c "cd /root/.arkeo && tar cfz \"$service-$seconds.tar.gz\" config/"
   fi
-  kubectl exec -n "$NAME" "$pod" -c "$service" -- sh -c "cd /root/.arkeonode && tar cfz - \"$service-$seconds.tar.gz\"" | tar xfz - -C "$PWD/backups/$NAME/$service/$day"
+  kubectl exec -n "$NAME" "$pod" -c "$service" -- sh -c "cd /root/.arkeo && tar cfz - \"$service-$seconds.tar.gz\"" | tar xfz - -C "$PWD/backups/$NAME/$service/$day"
 
   if (kubectl get pod -n "$NAME" -l "app.kubernetes.io/name=$service" 2>&1 | grep "No resources found") >/dev/null 2>&1; then
     kubectl delete pod --now=true -n "$NAME" "backup-$service"
@@ -299,19 +299,10 @@ EOF
   echo "Backup available in path ./backups/$NAME/$service/$day"
 }
 
-get_arkeonode_image() {
-  [ -z "$EXTRA_ARGS" ] && die "Cannot determine arkeonode image"
-  # shellcheck disable=SC2086
-  (
-    set -eo pipefail
-    helm template ./relayer $EXTRA_ARGS | grep 'image:.*cosmos/relayer' | head -n1 | awk '{print $2}'
-  )
-}
-
 generate_mnemonic() {
   image=$(get_arkeonode_image)
   echo "=> Generating arkeonode Mnemonic phrase using image $image"
-  kubectl -n "$NAME" run mnemonic --image="$image" --restart=Never --command -- /bin/sh -c 'tail -F /dev/null'
+  kubectl -n "$NAME" run mnemonic --image="registry.gitlab.com/thorchain/thornode" --restart=Never --command -- /bin/sh -c 'tail -F /dev/null'
   kubectl wait --for=condition=ready pods mnemonic -n "$NAME" --timeout=5m >/dev/null 2>&1
   mnemonic=$(kubectl exec -n "$NAME" -it mnemonic -- generate | grep MASTER_MNEMONIC | cut -d '=' -f 2 | tr -d '\r')
   [ "$mnemonic" = "" ] && die "Mnemonic generation failed. Please try again."
@@ -414,18 +405,18 @@ display_status() {
 deploy_validator() {
   local args
   [ "$NET" = "mainnet" ] && args="--set global.passwordSecret=arkeonode-password"
-  helm diff upgrade -C 3 --install "$NAME" ./relayer -n "$NAME" \
+  helm diff upgrade -C 3 --install "$NAME" ./arkeo-stack -n "$NAME" \
     $args $EXTRA_ARGS \
     --set global.mnemonicSecret=arkeonode-mnemonic \
     --set global.net="$NET" \
-    --set arkeonode.type="validator"
+    --set arkeo.type="validator"
   echo -e "=> Changes for a $boldgreen$TYPE$reset arkeonode on $boldgreen$NET$reset named $boldgreen$NAME$reset"
   confirm
-  helm upgrade --install "$NAME" ./relayer -n "$NAME" \
+  helm upgrade --install "$NAME" ./arkeo-stack -n "$NAME" \
     --create-namespace $args $EXTRA_ARGS \
     --set global.mnemonicSecret=arkeonode-mnemonic \
     --set global.net="$NET" \
-    --set arkeonode.type="validator"
+    --set arkeo.type="validator"
 
   [ "$TYPE" = "daemon-dealer" ] && return
 
@@ -435,7 +426,7 @@ deploy_validator() {
 }
 
 deploy_datahost() {
-  helm diff upgrade -C 3 --install "$NAME" ./relayer -n "$NAME" \
+  helm diff upgrade -C 3 --install "$NAME" ./arkeo-stack -n "$NAME" \
     $args $EXTRA_ARGS \
     --set global.mnemonicSecret=arkeonode-mnemonic \
     --set global.net="$NET" \
@@ -447,7 +438,7 @@ deploy_datahost() {
     --set arkeonode.type="datahost",gateway.validator=false,gateway.midgard=true,gateway.rpc.limited=false,gateway.api=true
   echo -e "=> Changes for a $boldgreen$TYPE$reset arkeonode on $boldgreen$NET$reset named $boldgreen$NAME$reset"
   confirm
-  helm upgrade --install "$NAME" ./relayer -n "$NAME" \
+  helm upgrade --install "$NAME" ./arkeo-stack -n "$NAME" \
     --create-namespace $EXTRA_ARGS \
     --set global.mnemonicSecret=arkeonode-mnemonic \
     --set global.net="$NET" \
@@ -466,14 +457,14 @@ deploy_datahost() {
 deploy_daemon-dealer() {
   local args
   [ "$NET" = "mainnet" ] && args="--set global.passwordSecret=arkeonode-password"
-  helm diff upgrade -C 3 --install "$NAME" ./relayer -n "$NAME" \
+  helm diff upgrade -C 3 --install "$NAME" ./arkeo-stack -n "$NAME" \
     $args $EXTRA_ARGS \
     --set global.mnemonicSecret=arkeonode-mnemonic \
     --set global.net="$NET" \
     --set arkeonode.type="daemon-dealer"
   echo -e "=> Changes for a $boldgreen$TYPE$reset arkeonode on $boldgreen$NET$reset named $boldgreen$NAME$reset"
   confirm
-  helm upgrade --install "$NAME" ./relayer -n "$NAME" \
+  helm upgrade --install "$NAME" ./arkeo-stack -n "$NAME" \
     --create-namespace $args $EXTRA_ARGS \
     --set global.mnemonicSecret=arkeonode-mnemonic \
     --set global.net="$NET" \

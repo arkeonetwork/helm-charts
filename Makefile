@@ -42,8 +42,7 @@ pull: ## Git pull helm-charts repository
 update-dependencies:
 	@echo "=> Updating Helm chart dependencies"
 	@helm dependencies update ./relayer
-	#@helm dependencies update ./unchained
-	#@helm dependencies update ./blockchain-daemons
+	@helm dependencies update ./arkeo-stack
 	@echo
 
 ## NEEDS WORK
@@ -152,18 +151,6 @@ restart: ## Restart a selected THORNode service
 # NEEDS UPDATES -> ARKEO
 halt: ## Halt a selected THORNode service
 	@./scripts/halt.sh
-
-# NEEDS UPDATES -> ARKEO
-set-node-keys: ## Send a set-node-keys transaction to your THORNode
-	@./scripts/set-node-keys.sh
-
-# NEEDS UPDATES -> ARKEO
-set-version: ## Send a set-version transaction to your THORNode
-	@./scripts/set-version.sh
-
-# NEEDS UPDATES -> ARKEO
-set-ip-address: ## Send a set-ip-address transaction to your THORNode
-	@./scripts/set-ip-address.sh
 
 # NEEDS UPDATES -> ARKEO
 set-monitoring: ## Enable PagerDuty or Deadmans Snitch monitoring via Prometheus/Grafana re-deploy
