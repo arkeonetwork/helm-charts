@@ -1,0 +1,133 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "binance-daemon.fullname" . }}-scripts
+data:
+  external-ip.sh: |
+    #!/bin/bash
+    # ./external-ip.sh <host_network> <service_name> <config_map>
+    #
+    # Script to extract external ip from a service:
+    # If host network returns public ip of the node
+    # If LoadBalancer returns external IP either directly or from hostname
+    # If ClusterIP return service IP
+    # If NodePort returns node IP
+
+    apk add bind-tools
+
+    HOST_NETWORK=$1
+    SERVICE=$2
+    CONFIGMAP=$3
+
+    if [ "$HOST_NETWORK" = "true" ]; then
+      external_ip=$(curl -s http://whatismyip.akamai.com)
+    else
+      type=$(kubectl get svc "$SERVICE" -o jsonpath='{.spec.type}')
+      external_ip=""
+
+      if [ "$type" = "ClusterIP" ]; then
+        external_ip=$(kubectl get svc "$SERVICE" -o jsonpath='{.spec.clusterIP}')
+      elif [ "$type" = "NodePort" ]; then
+        external_ip=$(kubectl get nodes --selector=kubernetes.io/role!=master -o jsonpath='{.items[0].status.addresses[?(@.type=="ExternalIP")].address}')
+      elif [ "$type" = "LoadBalancer" ]; then
+        # Hack TODO remove when this is fixed here https://github.com/kubernetes/kubernetes/issues/82595
+        kubectl annotate svc "$SERVICE" service.beta.kubernetes.io/aws-load-balancer-cross-zone-load-balancing-enabled=false --overwrite
+        kubectl annotate svc "$SERVICE" service.beta.kubernetes.io/aws-load-balancer-cross-zone-load-balancing-enabled=true --overwrite
+
+        while [ -z "$external_ip" ]; do
+          echo "Waiting for load balancer external endpoint..."
+          external_ip=$(kubectl get svc "$SERVICE" -o jsonpath='{.status.loadBalancer.ingress[0].ip}')
+          if [ -z "$external_ip" ]; then
+            hostname=$(kubectl get svc "$SERVICE" -o jsonpath='{.status.loadBalancer.ingress[0].hostname}')
+            [ -n "$hostname" ] && external_ip=$(dig +short "$hostname" | sort | head -1)
+          fi
+          [ -z "$external_ip" ] && sleep 10
+        done
+      fi
+    fi
+
+    kubectl create configmap "$CONFIGMAP" --from-literal=externalIP="$external_ip" --dry-run=client -o yaml | kubectl apply -f -
+
+  recover.sh: |
+    #!/bin/bash
+
+    FILE=/opt/bnbchaind/.probe_last_height
+    [ ! -f "$FILE" ] && exit 0
+
+    HEIGHT=$(($(cat $FILE) - 1))
+    if [ "$HEIGHT" -gt "1" ]; then
+      su bnbchaind -c "/release/linux/state_recover $HEIGHT /opt/bnbchaind"
+    fi
+
+    # some envs inject a security context that can cause permission issues after recover
+    chown -R bnbchaind:bnbchaind /opt/bnbchaind
+
+  probe.sh: |
+    #!/bin/bash
+
+    FILE=/opt/bnbchaind/.probe_last_height
+    ENDPOINT=localhost:$BINANCE_DAEMON_SERVICE_PORT_RPC/status
+
+    STATUS=$(curl -sL --fail -m 10 "$ENDPOINT") || exit 1
+    if [ ! -f "$FILE" ]; then
+      echo "$STATUS" | jq -r ".result.sync_info.index_height" >$FILE
+      exit 1
+    fi
+
+    PULLING_SNAPSHOT=$(echo "$STATUS" | jq '.result.sync_info.index_height == "0"')
+    [[ "$PULLING_SNAPSHOT" == "true" ]] && exit 0
+
+    OLD=$(cat $FILE)
+    echo "$STATUS" | jq -r ".result.sync_info.index_height" >$FILE
+    CURRENT=$(cat $FILE)
+    [ "$OLD" == "$CURRENT" ] && exit 1
+
+    # reset snapshots if probe found a height
+    if grep -q 'state_sync_reactor = true' /opt/bnbchaind/config/config.toml; then
+      exit 1
+    fi
+
+  entrypoint.sh: |
+    #!/bin/bash
+
+    set -ex
+
+    BNET=${BNET:-mainnet}
+    EXE="ulimit -n 65535 && /release/linux/bnbchaind start --home ${BNCHOME}"
+    PROBE=/opt/bnbchaind/.probe_last_height
+
+    # initialize config
+    if [ ! -d "${BNCHOME}/config/" ]; then
+      mkdir -p "${BNCHOME}/config/"
+    fi
+    cp "/release/${BNET}/config.toml" "${BNCHOME}/config/"
+    cp "/release/${BNET}/app.toml" "${BNCHOME}/config/"
+    cp "/release/${BNET}/genesis.json" "${BNCHOME}/config/"
+    chown -R bnbchaind:bnbchaind "${BNCHOME}/config/"
+
+    # turn on console logging
+    sed -i 's/logToConsole = false/logToConsole = true/g' "${BNCHOME}/config/app.toml"
+
+    # enable telemetry
+    sed -i "s/prometheus = false/prometheus = true/g" "${BNCHOME}/config/config.toml"
+    sed -i -e "s/prometheus_listen_addr = \":26660\"/prometheus_listen_addr = \":28660\"/g" "${BNCHOME}/config/config.toml"
+
+    # disable snapshots and clear if already recovered
+    if [ -f "$PROBE" ] && [ $(cat "$PROBE") -gt "0" ]; then
+      rm -rf /opt/bnbchaind/data/snapshot
+      rm -rf /opt/bnbchaind/snapshots
+      sed -i "s/state_sync_reactor = true/state_sync_reactor = false/g" "${BNCHOME}/config/config.toml"
+    fi
+
+    # reduce log noise
+    sed -i "s/consensus:info/consensus:error/g" "${BNCHOME}/config/config.toml"
+    sed -i "s/dexkeeper:info/dexkeeper:error/g" "${BNCHOME}/config/config.toml"
+    sed -i "s/dex:info/dex:error/g" "${BNCHOME}/config/config.toml"
+    sed -i "s/state:info/state:error/g" "${BNCHOME}/config/config.toml"
+
+    # fix testnet seed
+    if [ "${BNET}" == "testnet" ]; then
+      sed -i -e "s/seeds =.*/seeds = \"9612b570bffebecca4776cb4512d08e252119005@3.114.127.147:27146,8c379d4d3b9995c712665dc9a9414dbde5b30483@3.113.118.255:27146,7156d461742e2a1e569fd68426009c4194830c93@52.198.111.20:27146\"/g" "${BNCHOME}/config/config.toml"
+    fi
+
+    su bnbchaind -c "$EXE"
