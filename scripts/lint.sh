@@ -5,7 +5,7 @@ get_image_versions() {
   local CONF="$1"
   local NET="$1"
   (
-    pushd thornode-stack/
+    pushd arkeo-stack/
     helm dependency build
     popd
   ) &>/dev/null
@@ -48,5 +48,5 @@ find . -type f -name 'Chart.yaml' -printf '%h\n' |
 
 # Check thornode-stack with the various net configs.
 for NET in stagenet mainnet; do
-  helm lint --values thornode-stack/"$NET".yaml thornode-stack/
+  helm lint --values arkeo-stack/"$NET".yaml arkeo-stack/
 done

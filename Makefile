@@ -39,6 +39,7 @@ pull: ## Git pull helm-charts repository
 
 ## NEEDS WORK
 ## any more dependencies needed? 
+# yes - helm-diff plugin
 update-dependencies:
 	@echo "=> Updating Helm chart dependencies"
 	@helm dependencies update ./relayer
@@ -65,39 +66,30 @@ install: update-dependencies ## Deploy Arkeo per configuration options
 status: ## Display current status of your Arkeo deployment and its daemons
 	@./scripts/status.sh
 
-# NEEDS UPDATES -> ARKEO
 reset: ## Reset and resync a service from scratch. This command can take a while to sync back to 100%.
 	@./scripts/reset.sh
 
-# NEEDS UPDATES -> ARKEO
 wait-ready: ## Wait for all pods to be in Ready state
 	@./scripts/wait-ready.sh
 
-# NEEDS UPDATES
 destroy: ## Uninstall current Arkeo deployment
 	@./scripts/destroy.sh
 
-# NEEDS UPDATES -> ARKEO
 shell: ## Open a shell for a selected daemon service
 	@./scripts/shell.sh
 
-# NEEDS UPDATES -> ARKEO
 debug: ## Open a shell for daemon service mounting volume to debug
 	@./scripts/debug.sh
 
-# NEEDS UPDATES -> ARKEO
 watch: ## Watch the daemon pods in real time
 	@./scripts/watch.sh
 
-# NEEDS UPDATES -> ARKEO
 logs: ## Display logs for a selected daemon service
 	@./scripts/logs.sh
 
-# NEEDS UPDATES -> ARKEO
 restart: ## Restart a selected daemon service
 	@./scripts/restart.sh
 
-# NEEDS UPDATES -> ARKEO
 set-monitoring: ## Enable PagerDuty or Deadmans Snitch monitoring via Prometheus/Grafana re-deploy
 	@./scripts/set-monitoring.sh
 
@@ -160,6 +152,6 @@ lint: ## Run linters (development)
 verify-ethereum: ## Verify Ethereum finalized slot state root
 	@./scripts/verify-ethereum.sh
 
-.PHONY: help helm repo pull tools install-loki install-prometheus install-metrics install-dashboard export-state hard-fork destroy-tools destroy-loki destroy-prometheus destroy-metrics prometheus grafana dashboard alert-manager mnemonic update-dependencies reset restart pods deploy update destroy status shell watch logs set-node-keys set-ip-address set-version pause resume lint verify-ethereum
+.PHONY: help helm repo pull tools install-loki install-prometheus install-metrics install-dashboard export-state destroy-tools destroy-loki destroy-prometheus destroy-metrics prometheus grafana dashboard alert-manager mnemonic update-dependencies reset restart pods deploy update destroy status shell watch logs pause resume lint verify-ethereum
 
 .EXPORT_ALL_VARIABLES:

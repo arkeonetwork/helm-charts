@@ -171,10 +171,7 @@ display_password() {
 }
 
 display_status() {
-  APP=arkeonode
-  if [ "$TYPE" = "validator" ]; then
-    APP=bifrost
-  fi
+  APP=arkeo
 
   local initialized
   initialized=$(kubectl get pod -n "$NAME" -l app.kubernetes.io/name=$APP -o 'jsonpath={..status.conditions[?(@.type=="Initialized")].status}')
@@ -186,25 +183,8 @@ display_status() {
     if grep -E "^STATUS\s+Active" <<<"$output" >/dev/null; then
       echo -e "\n=> Detected ${red}active$reset validator arkeonode on $boldgreen$NET$reset named $boldgreen$NAME$reset"
 
-      # prompt for missing mimir votes if mainnet
-      if [ "$NET" = "mainnet" ]; then
-        echo "=> Checking for missing mimir votes..."
-
-        # all reminder votes the node is missing
-        local missing_votes
-        missing_votes=$(kubectl exec -it -n "$NAME" deploy/arkeonode -c arkeonode -- curl -s http://localhost:1317/thorchain/mimir/nodes_all |
-          jq -r "$(curl -s https://api.ninerealms.com/thorchain/votes | jq -c) - [.mimirs[] | select(.signer==\"$NODE_ADDRESS\") | .key] | .[]")
-
-        if [ -n "$missing_votes" ]; then
-          echo
-          echo "$red=> Please vote for the following unvoted mimir values:$reset"
-          echo "$missing_votes"
-        fi
-      fi
-    fi
-
   else
-    echo "arkeonode pod is not currently running, status is unavailable"
+    echo "arkeo pod is not currently running, status is unavailable"
   fi
   return
 }
