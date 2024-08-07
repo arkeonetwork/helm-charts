@@ -58,90 +58,44 @@ pods: ## Get arkeonode Kubernetes pods
 pre-install: update-dependencies ## Pre deploy steps for a arkeonode (secret creation)
 	@./scripts/pre-install.sh
 
-install: update-dependencies ## Deploy a THORNode
+install: update-dependencies ## Deploy Arkeo per configuration options
 	@./scripts/install.sh
 
-## NEEDS WORK
-## Error: directory unchained/infra/unchained/chart/arbitrum not found
-recycle: update-dependencies ## Destroy and recreate a THORNode recycling existing daemons to avoid re-sync
-	@./scripts/recycle.sh
-
-## NEEDS WORK
-## Error: directory unchained/infra/unchained/chart/arbitrum not found
-update: pull update-dependencies ## Update a THORNode to latest version
-	@./scripts/update.sh
-
 # NEEDS UPDATE -> ARKEO
-status: ## Display current status of your THORNode
+status: ## Display current status of your Arkeo deployment and its daemons
 	@./scripts/status.sh
 
 # NEEDS UPDATES -> ARKEO
-reset: ## Reset and resync a service from scratch on your THORNode. This command can take a while to sync back to 100%.
+reset: ## Reset and resync a service from scratch. This command can take a while to sync back to 100%.
 	@./scripts/reset.sh
-
-# NEEDS UPDATES -> ARKEO
-hard-reset-thornode: ## Hard reset and resync thornode service from scratch on your THORNode, leaving no bak/* files.
-	@./scripts/hard-reset-thornode.sh
-
-# NEEDS UPDATES -> ARKEO
-backup: ## Backup specific files from either thornode of bifrost service of a THORNode.
-	@./scripts/backup.sh
-
-# NEEDS UPDATES -> ARKEO
-full-backup: ## Create volume snapshots and backups for both thornode and bifrost services.
-	@./scripts/full-backup.sh
-
-# NEEDS UPDATES -> ARKEO
-restore-backup: ## Restore backup specific files from either thornode of bifrost service of a THORNode.
-	@./scripts/restore-backup.sh
-
-# NEEDS UPDATES -> ARKEO
-snapshot: ## Snapshot a volume for a specific THORNode service.
-	@./scripts/snapshot.sh
-
-# NEEDS UPDATES -> ARKEO
-restore-snapshot: ## Restore a volume for a specific THORNode service from a snapshot.
-	@./scripts/restore-snapshot.sh
 
 # NEEDS UPDATES -> ARKEO
 wait-ready: ## Wait for all pods to be in Ready state
 	@./scripts/wait-ready.sh
 
 # NEEDS UPDATES
-destroy: ## Uninstall current THORNode
+destroy: ## Uninstall current Arkeo deployment
 	@./scripts/destroy.sh
 
 # NEEDS UPDATES -> ARKEO
-export-state: ## Export chain state
-	@./scripts/export-state.sh
-
-# NEEDS UPDATES -> ARKEO
-shell: ## Open a shell for a selected THORNode service
+shell: ## Open a shell for a selected daemon service
 	@./scripts/shell.sh
 
 # NEEDS UPDATES -> ARKEO
-debug: ## Open a shell for THORNode service mounting volume to debug
+debug: ## Open a shell for daemon service mounting volume to debug
 	@./scripts/debug.sh
 
 # NEEDS UPDATES -> ARKEO
-restore-external-snapshot: ## Restore THORNode from external snapshot.
-	@./scripts/restore-external-snapshot.sh
-
-# NEEDS UPDATES -> ARKEO
-watch: ## Watch the THORNode pods in real time
+watch: ## Watch the daemon pods in real time
 	@./scripts/watch.sh
 
 # NEEDS UPDATES -> ARKEO
-logs: ## Display logs for a selected THORNode service
+logs: ## Display logs for a selected daemon service
 	@./scripts/logs.sh
 
 # NEEDS UPDATES -> ARKEO
-restart: ## Restart a selected THORNode service
+restart: ## Restart a selected daemon service
 	@./scripts/restart.sh
-
-# NEEDS UPDATES -> ARKEO
-halt: ## Halt a selected THORNode service
-	@./scripts/halt.sh
 
 # NEEDS UPDATES -> ARKEO
 set-monitoring: ## Enable PagerDuty or Deadmans Snitch monitoring via Prometheus/Grafana re-deploy
@@ -181,12 +135,6 @@ destroy-dashboard: ## Uninstall Kubernetes dashboard
 	@echo "=> Deleting Kubernetes Dashboard"
 	@helm delete kubernetes-dashboard -n kube-system
 	@echo
-
-install-provider: ## Install Thorchain provider
-	@scripts/install-provider.sh
-
-destroy-provider: ## Uninstall Thorchain provider
-	@scripts/destroy-provider.sh
 
 grafana: ## Access Grafana UI through port-forward locally
 	@echo User: admin
