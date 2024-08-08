@@ -182,7 +182,7 @@ display_status() {
 
     if grep -E "^STATUS\s+Active" <<<"$output" >/dev/null; then
       echo -e "\n=> Detected ${red}active$reset validator arkeonode on $boldgreen$NET$reset named $boldgreen$NAME$reset"
-
+    fi
   else
     echo "arkeo pod is not currently running, status is unavailable"
   fi
