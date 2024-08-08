@@ -29,4 +29,6 @@ chmod +x $INSTALLER
 
 $INSTALLER
 
+helm plugin install https://github.com/databus23/helm-diff
+
 rm -f $INSTALLER

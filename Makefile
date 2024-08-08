@@ -20,9 +20,6 @@ help: ## Help message
 helm: ## Install Helm 3 dependency
 	@./scripts/install-helm.sh
 
-helm-plugins: ## Install Helm plugins
-	@helm plugin install https://github.com/databus23/helm-diff
-
 repos: ## Add Helm repositories for dependencies
 	@echo "=> Installing Helm repos"
 	@helm repo add grafana https://grafana.github.io/helm-charts
@@ -33,13 +30,12 @@ repos: ## Add Helm repositories for dependencies
 
 tools: install-prometheus install-loki install-metrics install-dashboard ## Intall/Update Prometheus/Grafana, Loki, Metrics Server, Kubernetes dashboard
 
+destroy-tools: destroy-prometheus destroy-loki destroy-dashboard ## Uninstall Prometheus/Grafana, Loki, Kubernetes dashboard
+
 pull: ## Git pull helm-charts repository
 	@git clean -idf
 	@git pull origin $(shell git rev-parse --abbrev-ref HEAD)
 
-## NEEDS WORK
-## any more dependencies needed? 
-# yes - helm-diff plugin
 update-dependencies:
 	@echo "=> Updating Helm chart dependencies"
 	@helm dependencies update ./relayer
@@ -92,8 +88,6 @@ restart: ## Restart a selected daemon service
 
 set-monitoring: ## Enable PagerDuty or Deadmans Snitch monitoring via Prometheus/Grafana re-deploy
 	@./scripts/set-monitoring.sh
-
-destroy-tools: destroy-prometheus destroy-loki destroy-dashboard ## Uninstall Prometheus/Grafana, Loki, Kubernetes dashboard
 
 install-loki: repos ## Install/Update Loki logs management stack
 	@./scripts/install-loki.sh
@@ -152,6 +146,6 @@ lint: ## Run linters (development)
 verify-ethereum: ## Verify Ethereum finalized slot state root
 	@./scripts/verify-ethereum.sh
 
-.PHONY: help helm repo pull tools install-loki install-prometheus install-metrics install-dashboard export-state destroy-tools destroy-loki destroy-prometheus destroy-metrics prometheus grafana dashboard alert-manager mnemonic update-dependencies reset restart pods deploy update destroy status shell watch logs pause resume lint verify-ethereum
+.PHONY: help helm repo pull tools destroy-tools install-loki destroy-loki install-prometheus destroy-prometheus install-metrics destroy-metrics install-dashboard prometheus grafana dashboard alert-manager mnemonic update-dependencies reset restart pods deploy update destroy status shell watch logs pause resume lint verify-ethereum
 
 .EXPORT_ALL_VARIABLES:
