@@ -52,14 +52,6 @@ get_node_net() {
   echo
 }
 
-get_node_type() {
-  [ "$TYPE" != "" ] && return
-  echo "=> Select arkeonode type"
-  menu validator validator datahost daemon-dealer
-  TYPE=$MENU_SELECTED
-  echo
-}
-
 get_node_name() {
   [ "$NAME" != "" ] && return
   case $NET in
@@ -74,7 +66,6 @@ get_node_name() {
 
 get_node_info() {
   get_node_net
-  get_node_type
   get_node_name
 }
 
@@ -86,7 +77,7 @@ get_node_info_short() {
 get_node_service() {
   [ "$SERVICE" != "" ] && return
   echo "=> Select arkeonode service"
-  menu arkeo arkeo sentinel midgard gateway binance-daemon dogecoin-daemon gaia-daemon avalanche-daemon ethereum-daemon bitcoin-daemon litecoin-daemon bitcoin-cash-daemon midgard-timescaledb
+  menu arkeo arkeo sentinel midgard binance-daemon dogecoin-daemon gaia-daemon avalanche-daemon ethereum-daemon bitcoin-daemon litecoin-daemon bitcoin-cash-daemon midgard-timescaledb
   SERVICE=$MENU_SELECTED
   echo
 }
@@ -182,82 +173,23 @@ display_status() {
 
     if grep -E "^STATUS\s+Active" <<<"$output" >/dev/null; then
       echo -e "\n=> Detected ${red}active$reset validator arkeonode on $boldgreen$NET$reset named $boldgreen$NAME$reset"
-
+    fi
   else
     echo "arkeo pod is not currently running, status is unavailable"
   fi
   return
 }
 
-deploy_validator() {
+deploy() {
   local args
-  [ "$NET" = "mainnet" ] && args="--set global.passwordSecret=arkeonode-password"
   helm diff upgrade -C 3 --install "$NAME" ./arkeo-stack -n "$NAME" \
     $args $EXTRA_ARGS \
     --set global.mnemonicSecret=arkeonode-mnemonic \
-    --set global.net="$NET" \
-    --set arkeo.type="validator"
-  echo -e "=> Changes for a $boldgreen$TYPE$reset arkeonode on $boldgreen$NET$reset named $boldgreen$NAME$reset"
+    --set global.net="$NET"
+  echo -e "=> Changes for a$boldgreen$TYPE$reset arkeonode on $boldgreen$NET$reset named $boldgreen$NAME$reset"
   confirm
   helm upgrade --install "$NAME" ./arkeo-stack -n "$NAME" \
     --create-namespace $args $EXTRA_ARGS \
     --set global.mnemonicSecret=arkeonode-mnemonic \
-    --set global.net="$NET" \
-    --set arkeo.type="validator"
-
-  [ "$TYPE" = "daemon-dealer" ] && return
-
-  echo -e "=> Restarting gateway for a $boldgreen$TYPE$reset arkeonode on $boldgreen$NET$reset named $boldgreen$NAME$reset"
-  confirm
-  kubectl -n "$NAME" rollout restart deploy gateway
-}
-
-deploy_datahost() {
-  helm diff upgrade -C 3 --install "$NAME" ./arkeo-stack -n "$NAME" \
-    $args $EXTRA_ARGS \
-    --set global.mnemonicSecret=arkeonode-mnemonic \
-    --set global.net="$NET" \
-    --set midgard.enabled=true,bifrost.enabled=false \
-    --set bitcoin-daemon.enabled=false,bitcoin-cash-daemon.enabled=false \
-    --set litecoin-daemon.enabled=false,ethereum-daemon.enabled=false \
-    --set dogecoin-daemon.enabled=false,gaia-daemon.enabled=false \
-    --set avalanche-daemon.enabled=false,binance-smart-daemon.enabled=false \
-    --set arkeonode.type="datahost",gateway.validator=false,gateway.midgard=true,gateway.rpc.limited=false,gateway.api=true
-  echo -e "=> Changes for a $boldgreen$TYPE$reset arkeonode on $boldgreen$NET$reset named $boldgreen$NAME$reset"
-  confirm
-  helm upgrade --install "$NAME" ./arkeo-stack -n "$NAME" \
-    --create-namespace $EXTRA_ARGS \
-    --set global.mnemonicSecret=arkeonode-mnemonic \
-    --set global.net="$NET" \
-    --set midgard.enabled=true,bifrost.enabled=false \
-    --set bitcoin-daemon.enabled=false,bitcoin-cash-daemon.enabled=false \
-    --set litecoin-daemon.enabled=false,ethereum-daemon.enabled=false \
-    --set dogecoin-daemon.enabled=false,gaia-daemon.enabled=false \
-    --set avalanche-daemon.enabled=false,binance-smart-daemon.enabled=false \
-    --set arkeonode.type="datahost",gateway.validator=false,gateway.midgard=true,gateway.rpc.limited=false,gateway.api=true
-
-  echo -e "=> Restarting gateway for a $boldgreen$TYPE$reset arkeonode on $boldgreen$NET$reset named $boldgreen$NAME$reset"
-  confirm
-  kubectl -n "$NAME" rollout restart deploy gateway
-}
-
-deploy_daemon-dealer() {
-  local args
-  [ "$NET" = "mainnet" ] && args="--set global.passwordSecret=arkeonode-password"
-  helm diff upgrade -C 3 --install "$NAME" ./arkeo-stack -n "$NAME" \
-    $args $EXTRA_ARGS \
-    --set global.mnemonicSecret=arkeonode-mnemonic \
-    --set global.net="$NET" \
-    --set arkeonode.type="daemon-dealer"
-  echo -e "=> Changes for a $boldgreen$TYPE$reset arkeonode on $boldgreen$NET$reset named $boldgreen$NAME$reset"
-  confirm
-  helm upgrade --install "$NAME" ./arkeo-stack -n "$NAME" \
-    --create-namespace $args $EXTRA_ARGS \
-    --set global.mnemonicSecret=arkeonode-mnemonic \
-    --set global.net="$NET" \
-    --set arkeonode.type="daemon-dealer"
-
-  echo -e "=> Restarting gateway for a $boldgreen$TYPE$reset arkeonode on $boldgreen$NET$reset named $boldgreen$NAME$reset"
-  confirm
-  kubectl -n "$NAME" rollout restart deploy gateway
+    --set global.net="$NET"
 }

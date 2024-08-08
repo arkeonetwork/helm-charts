@@ -1,8 +1,5 @@
 global:
   net: mainnet
-  gateway:
-    enabled: true
-    name: gateway
   images:
     alpine:
       tag: latest
@@ -13,9 +10,6 @@ global:
     busybox:
       tag: latest
       hash: caa382c432891547782ce7140fb3b7304613d3b0438834dce1cad68896ab110a
-
-gateway:
-  fullnameOverride: gateway
 
 arkeo:
   fullnameOverride: arkeo

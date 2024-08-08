@@ -31,11 +31,7 @@ spec:
       initContainers:
       - name: init-external-ip
         image: alpine/k8s:{{ .Values.global.images.alpineK8s.tag }}@sha256:{{ .Values.global.images.alpineK8s.hash }}
-        {{- if .Values.global.gateway.enabled }}
-        command: ['/scripts/external-ip.sh', 'false', '{{ .Values.global.gateway.name }}', '{{ include "sentinel.fullname" . }}-external-ip']
-        {{- else }}
         command: ['/scripts/external-ip.sh', 'false', '{{ include "sentinel.fullname" . }}', '{{ include "sentinel.fullname" . }}-external-ip']
-        {{- end }}
         volumeMounts:
         - name: scripts
           mountPath: /scripts
