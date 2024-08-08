@@ -30,7 +30,7 @@ dogecoin-daemon:
   enabled: false
 
 gaia-daemon:
-  enabled: true
+  enabled: false
 
 avalanche-daemon:
   enabled: false

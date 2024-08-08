@@ -77,7 +77,7 @@ get_node_info_short() {
 get_node_service() {
   [ "$SERVICE" != "" ] && return
   echo "=> Select arkeonode service"
-  menu arkeo arkeo sentinel midgard binance-daemon dogecoin-daemon gaia-daemon avalanche-daemon ethereum-daemon bitcoin-daemon litecoin-daemon bitcoin-cash-daemon midgard-timescaledb
+  menu arkeo arkeo sentinel binance-daemon dogecoin-daemon gaia-daemon avalanche-daemon ethereum-daemon bitcoin-daemon litecoin-daemon bitcoin-cash-daemon
   SERVICE=$MENU_SELECTED
   echo
 }
@@ -104,7 +104,7 @@ generate_mnemonic() {
   kubectl wait --for=condition=ready pods mnemonic -n "$NAME" --timeout=5m >/dev/null 2>&1
   mnemonic=$(kubectl exec -n "$NAME" -it mnemonic -- generate | grep MASTER_MNEMONIC | cut -d '=' -f 2 | tr -d '\r')
   [ "$mnemonic" = "" ] && die "Mnemonic generation failed. Please try again."
-  kubectl -n "$NAME" create secret generic arkeonode-mnemonic --from-literal=mnemonic="$mnemonic"
+  kubectl -n "$NAME" create secret generic arkeo-mnemonic --from-literal=mnemonic="$mnemonic"
   kubectl -n "$NAME" delete pod --now=true mnemonic
   echo
 }
@@ -113,7 +113,7 @@ create_mnemonic() {
   local mnemonic
   local image
   # Do nothing if mnemonic already exists.
-  kubectl -n "${NAME}" get secrets/arkeonode-mnemonic >/dev/null 2>&1 && return
+  kubectl -n "${NAME}" get secrets/arkeo-mnemonic >/dev/null 2>&1 && return
 
   echo "=> Setting arkeonode Mnemonic phrase"
   read -r -s -p "Enter mnemonic (empty to generate): " mnemonic
@@ -130,26 +130,26 @@ create_mnemonic() {
   echo
   [[ ${mnemonic} != "${mnemonicconf}" ]] && die "Mnemonics mismatch"
 
-  kubectl -n "${NAME}" create secret generic arkeonode-mnemonic --from-literal=mnemonic="${mnemonic}"
+  kubectl -n "${NAME}" create secret generic arkeo-mnemonic --from-literal=mnemonic="${mnemonic}"
 }
 
 create_password() {
   local pwd
   local pwdconf
-  if ! kubectl get -n "$NAME" secrets/arkeonode-password >/dev/null 2>&1; then
+  if ! kubectl get -n "$NAME" secrets/arkeo-password >/dev/null 2>&1; then
     echo "=> Creating arkeonode Password"
     read -r -s -p "Enter password: " pwd
     echo
     read -r -s -p "Confirm password: " pwdconf
     echo
     [ "$pwd" != "$pwdconf" ] && die "Passwords mismatch"
-    kubectl -n "$NAME" create secret generic arkeonode-password --from-literal=password="$pwd"
+    kubectl -n "$NAME" create secret generic arkeo-password --from-literal=password="$pwd"
     echo
   fi
 }
 
 display_mnemonic() {
-  kubectl get -n "$NAME" secrets/arkeonode-mnemonic --template="{{.data.mnemonic}}" | base64 --decode
+  kubectl get -n "$NAME" secrets/arkeo-mnemonic --template="{{.data.mnemonic}}" | base64 --decode
   echo
 }
 
@@ -158,7 +158,7 @@ display_pods() {
 }
 
 display_password() {
-  kubectl get -n "$NAME" secrets/arkeonode-password --template="{{.data.password}}" | base64 --decode
+  kubectl get -n "$NAME" secrets/arkeo-password --template="{{.data.password}}" | base64 --decode
 }
 
 display_status() {
