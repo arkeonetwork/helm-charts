@@ -111,8 +111,6 @@ tolerations: []
 affinity: {}
 
 global:
-  gateway:
-    enabled: false
   images:
     alpineK8s:
       tag: 1.18.2

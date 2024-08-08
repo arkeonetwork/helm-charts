@@ -7,11 +7,6 @@ version: 0.1.0
 appVersion: 0.1.0
 
 dependencies:
-  - name: gateway
-    repository: file://../gateway
-    version: 0.1.0
-    condition: gateway.enabled
-
   - name: arkeo
     repository: file://../arkeo
     version: 0.1.0
@@ -21,11 +16,6 @@ dependencies:
     repository: file://../sentinel
     version: 0.1.0
     condition: sentinel.enabled
-
-  - name: midgard
-    repository: file://../midgard
-    version: 0.1.0
-    condition: midgard.enabled
 
   - name: binance-daemon
     repository: file://../binance-daemon

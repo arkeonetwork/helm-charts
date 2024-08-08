@@ -11,13 +11,6 @@ arkeo:
 directory:
   enabled: false
 
-midgard:
-  enabled: false
-  blockstore:
-    enabled: true
-    remote: https://storage.googleapis.com/public-snapshots-ninerealms/midgard-blockstore/mainnet/v2/
-    size: 20Gi
-
 binance-daemon:
   enabled: false
 
@@ -31,7 +24,7 @@ bitcoin-cash-daemon:
   enabled: false
 
 ethereum-daemon:
-  enabled: true
+  enabled: false
 
 dogecoin-daemon:
   enabled: false

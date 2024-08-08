@@ -31,20 +31,4 @@ if ! kubectl get crd servicemonitors.monitoring.coreos.com >/dev/null 2>&1; then
   exit 1
 fi
 
-case $TYPE in
-  genesis)
-    deploy_genesis
-    ;;
-  validator)
-    deploy_validator
-    ;;
-  fullnode)
-    deploy_fullnode
-    ;;
-  daemons)
-    EXTRA_ARGS="$EXTRA_ARGS --set arkeo.enabled=false"
-    EXTRA_ARGS="$EXTRA_ARGS --set sentinel.enabled=false"
-    EXTRA_ARGS="$EXTRA_ARGS --set gateway.enabled=false"
-    deploy_validator
-    ;;
-esac
+deploy
