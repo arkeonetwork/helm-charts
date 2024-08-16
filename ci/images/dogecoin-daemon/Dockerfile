@@ -1,4 +1,4 @@
-FROM debian:11-slim as installer
+FROM debian:11-slim AS installer
 
 WORKDIR /work
 
