@@ -4,17 +4,17 @@ global:
   storageClassName: "microk8s-hostpath"
 etherscan_api_key: ""
 blockchains:
-  arbitrum: true
+  arbitrum: false
   avalanche: false
-  bitcoin: true
+  bitcoin: false
   bitcoincash: false
-  bnbsmartchain: true
-  cosmos: true
+  bnbsmartchain: false
+  cosmos: false
   dogecoin: false
   ethereum: false
-  gnosis: true
+  gnosis: false
   litecoin: false
-  optimism: true
+  optimism: false
   polygon: false
   thorchain: false
   polyg: false

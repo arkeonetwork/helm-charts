@@ -61,3 +61,13 @@ dependencies:
     repository: file://../binance-smart-daemon
     version: 0.1.0
     condition: binance-smart-daemon.enabled
+
+  - name: relayer
+    repository: file://../relayer
+    version: 0.1.0
+    condition: relayer.enabled
+
+  - name: unchained
+    repository: file://../unchained
+    version: 1.0.0
+    condition: unchained.enabled

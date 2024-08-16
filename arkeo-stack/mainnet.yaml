@@ -11,29 +11,53 @@ arkeo:
 directory:
   enabled: false
 
-binance-daemon:
+relayer:
   enabled: false
 
-bitcoin-daemon:
-  enabled: true
-
-litecoin-daemon:
+unchained:
   enabled: false
 
-bitcoin-cash-daemon:
-  enabled: false
-
-ethereum-daemon:
-  enabled: false
-
-dogecoin-daemon:
-  enabled: false
-
-gaia-daemon:
+arbitrum-daemon:
   enabled: false
 
 avalanche-daemon:
   enabled: false
 
+binance-daemon:
+  enabled: false
+
 binance-smart-daemon:
+  enabled: false
+
+bitcoin-cash-daemon:
+  enabled: false
+
+bitcoin-daemon:
+  enabled: true
+
+cosmos-daemon:
+  enabled: false
+
+dogecoin-daemon:
+  enabled: false
+
+ethereum-daemon:
+  enabled: false
+
+gaia-daemon:
+  enabled: false
+
+gnosis-daemon:
+  enabled: false
+
+litecoin-daemon:
+  enabled: false
+
+optimism-daemon:
+  enabled: false  
+
+polygon-daemon:
+  enabled: false
+
+thorchain-daemon:
   enabled: false
