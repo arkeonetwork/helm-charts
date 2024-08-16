@@ -59,6 +59,9 @@ litecoin-daemon:
 optimism-daemon:
   enabled: false  
 
+osmosis-daemon:
+  enabled: false  
+
 polygon-daemon:
   enabled: false
 

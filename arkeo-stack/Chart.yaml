@@ -76,3 +76,8 @@ dependencies:
     repository: file://../unchained
     version: 1.0.0
     condition: unchained.enabled
+
+  - name: osmosis-daemon
+    repository: file://../osmosis-daemon
+    version: 0.1.0
+    condition: osmosis.enabled
