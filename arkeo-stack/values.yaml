@@ -48,6 +48,10 @@ gaia-daemon:
   enabled: false
   fullnameOverride: gaia-daemon
 
+osmosis-daemon:
+  enabled: false
+  fullnameOverride: osmosis-daemon
+
 avalanche-daemon:
   enabled: false
   fullnameOverride: avalanche-daemon

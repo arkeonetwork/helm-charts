@@ -38,6 +38,9 @@ bitcoin-daemon:
 cosmos-daemon:
   enabled: false
 
+osmosis-daemon:
+  enabled: false
+
 dogecoin-daemon:
   enabled: false
 
