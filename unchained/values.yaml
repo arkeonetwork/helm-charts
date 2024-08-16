@@ -3,18 +3,3 @@ global:
   backupCount: "3"
   storageClassName: "microk8s-hostpath"
 etherscan_api_key: ""
-blockchains:
-  arbitrum: false
-  avalanche: false
-  bitcoin: false
-  bitcoincash: false
-  bnbsmartchain: false
-  cosmos: false
-  dogecoin: false
-  ethereum: false
-  gnosis: false
-  litecoin: false
-  optimism: false
-  polygon: false
-  thorchain: false
-  polyg: false
