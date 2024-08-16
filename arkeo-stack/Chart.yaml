@@ -52,6 +52,11 @@ dependencies:
     version: 0.1.0
     condition: gaia-daemon.enabled
 
+  - name: osmosis-daemon
+    repository: file://../osmosis-daemon
+    version: 0.1.0
+    condition: osmosis-daemon.enabled
+
   - name: avalanche-daemon
     repository: file://../avalanche-daemon
     version: 0.1.0
@@ -67,6 +72,7 @@ dependencies:
     version: 0.1.0
     condition: relayer.enabled
 
+<<<<<<< HEAD
 #  - name: unchained
 #    repository: file://../unchained
 #    version: 1.0.0
@@ -76,3 +82,9 @@ dependencies:
     repository: file://../osmosis-daemon
     version: 0.1.0
     condition: osmosis.enabled
+=======
+  - name: unchained
+    repository: file://../unchained
+    version: 1.0.0
+    condition: unchained.enabled
+>>>>>>> b89b8d50c641bd635afabaf5d0dcd88307a262c9
