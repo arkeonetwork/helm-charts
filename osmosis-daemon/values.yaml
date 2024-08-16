@@ -1,0 +1,85 @@
+# Default values for gaia-daemon.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+net: mainnet
+
+replicaCount: 1
+
+image:
+  name: ghcr.io/arkeonetwork/helm-charts
+  tag: osmosis-daemon-25.2.1
+  hash: "2757e667e14f0f4827e7a0826e3f3d00152d43140a86401a2c9e1fc25680cc23"
+
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+
+hostNetwork: false
+
+service:
+  type: ClusterIP
+  port:
+    mainnet:
+      p2p: 26656
+      rpc: 26657
+      grpc: 9090
+    stagenet:
+      p2p: 26656
+      rpc: 26657
+      grpc: 9090
+
+ingress:
+  enabled: false
+  annotations: {}
+    # kubernetes.io/ingress.class: nginx
+    # cert-manager.io/cluster-issuer: letsencrypt-production
+  hosts: []
+  tls: []
+
+persistence:
+  enabled: true
+  size:
+    testnet: 50Gi
+    mainnet: 2Ti
+    stagenet: 2Ti
+  accessMode: ReadWriteOnce
+  # storageClass: "-"
+
+serviceAccount:
+  # Specifies whether a service account should be created
+  create: true
+  # The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name:
+
+podSecurityContext:
+  fsGroup: 1000
+
+securityContext: {}
+  # capabilities:
+  #   drop:
+  #   - ALL
+  # readOnlyRootFilesystem: true
+  # runAsNonRoot: true
+  # runAsUser: 1000
+
+resources:
+  requests:
+    cpu: 4
+    memory: 16Gi
+  limits:
+    # cpu: 2
+    memory: 16Gi
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
+
+global:
+  images:
+    alpine:
+      tag: latest
+      hash: 4edbd2beb5f78b1014028f4fbb99f3237d9561100b6881aabbf5acce2c4f9454

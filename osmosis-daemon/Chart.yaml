@@ -1,0 +1,7 @@
+apiVersion: v2
+name: osmosis-daemon
+description: osmosis Node daemon component
+type: application
+version: 0.1.0
+
+appVersion: v25.2.1

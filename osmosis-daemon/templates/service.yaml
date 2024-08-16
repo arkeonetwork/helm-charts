@@ -1,0 +1,23 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "osmosis-daemon.fullname" . }}
+  labels:
+    {{- include "osmosis-daemon.labels" . | nindent 4 }}
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+    - name: rpc
+      port: {{ include "osmosis-daemon.rpc" . }}
+      targetPort: rpc
+      protocol: TCP
+    - name: p2p
+      port: {{ include "osmosis-daemon.p2p" . }}
+      targetPort: p2p
+      protocol: TCP
+    - name: grpc
+      port: {{ include "osmosis-daemon.grpc" . }}
+      targetPort: grpc
+      protocol: TCP
+  selector:
+    {{- include "osmosis-daemon.selectorLabels" . | nindent 4 }}
