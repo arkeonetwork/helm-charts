@@ -8,8 +8,8 @@ net: mainnet
 
 image:
   name: registry.gitlab.com/thorchain/devops/node-launcher
-  tag: "dogecoin-daemon-1.14.6"
-  hash: "9224a06d97bbb00dd25c4c33e88631301f25a75977f02b093fb077ad22290bb2"
+  tag: "dogecoin-daemon-1.14.7"
+  hash: "496190c1ec8f4aefa8e894753016c73f3533176cd080bab1e6b45eca04a2a214"
 
 imagePullSecrets: []
 nameOverride: ""
@@ -18,7 +18,6 @@ fullnameOverride: ""
 persistence:
   enabled: true
   size:
-    testnet: 200Gi
     stagenet: 300Gi
     mainnet: 300Gi
   accessMode: ReadWriteOnce
@@ -34,7 +33,8 @@ serviceAccount:
 podSecurityContext:
   fsGroup: 1000
 
-securityContext: {}
+securityContext:
+  {}
   # capabilities:
   #   drop:
   #   - ALL
@@ -51,28 +51,34 @@ service:
     stagenet:
       p2p: 22556
       rpc: 22555
-    testnet:
-      p2p: 44556
-      rpc: 44555
-    regtest:
-      p2p: 18444
-      rpc: 18443
 
 ingress:
   enabled: false
-  annotations: {}
+  annotations:
+    {}
     # kubernetes.io/ingress.class: nginx
     # cert-manager.io/cluster-issuer: letsencrypt-production
-  hosts: []
-  tls: []
+  hosts:
+    []
+    # - host: midgard.example.com
+    #   paths:
+    #   - path: /
+    #     backend:
+    #       serviceName: gateway
+    #       servicePort: midgard
+  tls:
+    []
+    # - secretName: midgard-tls
+    #   hosts:
+    #     - midgard.example.com
 
 resources:
   limits:
     # cpu: 1
-    memory: 5Gi
+    memory: 24Gi
   requests:
     cpu: 1
-    memory: 5Gi
+    memory: 8Gi
 
 nodeSelector: {}
 

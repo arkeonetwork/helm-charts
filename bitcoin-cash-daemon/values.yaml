@@ -8,8 +8,8 @@ net: mainnet
 
 image:
   name: registry.gitlab.com/thorchain/devops/node-launcher
-  tag: "bitcoin-cash-daemon-26.0.0"
-  hash: "bd5956b0f41eb4ae6780c2cfda3b2e71c239963ff8e4e01b9387a380fbfccaf1"
+  tag: "bitcoin-cash-daemon-27.1.0"
+  hash: "79b701f54ce8ec034ec800f3a23e08a56e5d4e02a89cc1e7f17ee11326d0ec70"
 
 imagePullSecrets: []
 nameOverride: ""
@@ -18,7 +18,6 @@ fullnameOverride: ""
 persistence:
   enabled: true
   size:
-    testnet: 150Gi
     stagenet: 400Gi
     mainnet: 400Gi
   accessMode: ReadWriteOnce
@@ -34,7 +33,8 @@ serviceAccount:
 podSecurityContext:
   fsGroup: 1000
 
-securityContext: {}
+securityContext:
+  {}
   # capabilities:
   #   drop:
   #   - ALL
@@ -51,21 +51,30 @@ service:
     stagenet:
       p2p: 8333
       rpc: 8332
-    testnet:
-      p2p: 18333
-      rpc: 18332
-    regtest:
-      p2p: 18444
-      rpc: 18443
 
 ingress:
   enabled: false
-  annotations: {}
+  annotations:
+    {}
     # kubernetes.io/ingress.class: nginx
     # cert-manager.io/cluster-issuer: letsencrypt-production
-  hosts: []
-  tls: []
- 
+  hosts:
+    []
+    # - host: midgard.example.com
+    #   paths:
+    #   - path: /
+    #     pathType: ImplementationSpecific
+    #     backend:
+    #       service
+    #         name: gateway
+    #         port:
+    #           name: midgard
+  tls:
+    []
+    # - secretName: midgard-tls
+    #   hosts:
+    #     - midgard.example.com
+
 resources:
   limits:
     # cpu: 1

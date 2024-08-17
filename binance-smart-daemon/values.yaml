@@ -8,8 +8,8 @@ replicaCount: 1
 
 image:
   name: registry.gitlab.com/thorchain/devops/node-launcher
-  tag: "binance-smart-daemon-1.1.22"
-  hash: "283cfa867083c28a09688d3d07a23d3312d03fa0ebf11f3a2bde7802d2492f85"
+  tag: "binance-smart-daemon-1.4.11"
+  hash: "d615a464a513b3c246c373d91423953973652d8edfcae705c24a53a14d270b6f"
 
 imagePullSecrets: []
 nameOverride: ""
@@ -26,7 +26,7 @@ podSecurityContext:
   fsGroup: 1000
 
 securityContext:
-  fsGroup: 1000
+  {}
   # capabilities:
   #   drop:
   #   - ALL
@@ -40,15 +40,27 @@ service:
 
 ingress:
   enabled: false
-  annotations: {}
+  annotations:
+    {}
     # kubernetes.io/ingress.class: nginx
     # cert-manager.io/cluster-issuer: letsencrypt-production
-  hosts: []
-  tls: []
- 
+  hosts:
+    []
+    # - host: midgard.example.com
+    #   paths:
+    #   - path: /
+    #     backend:
+    #       serviceName: gateway
+    #       servicePort: midgard
+  tls:
+    []
+    # - secretName: midgard-tls
+    #   hosts:
+    #     - midgard.example.com
+
 persistence:
   enabled: true
-  size: 4Ti
+  size: 6Ti
   accessMode: ReadWriteOnce
   # storageClass: "-"
   #
@@ -58,8 +70,9 @@ resources:
     # cpu: 12
     # memory: 64Gi
   requests:
-    cpu: 6
-    memory: 48Gi
+    # NOTE: Usage is dependent on how many Bifrosts leverage the daemon, nodes using shared daemons may require more.
+    cpu: 4
+    memory: 30Gi
 
 nodeSelector: {}
 

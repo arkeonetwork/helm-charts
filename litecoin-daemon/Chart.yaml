@@ -4,4 +4,4 @@ description: Litecoin Core Daemon component
 type: application
 version: 0.1.0
 
-appVersion: 0.18.1
+appVersion: 0.21.3
