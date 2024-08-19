@@ -4,7 +4,7 @@ source ./scripts/core.sh
 
 get_node_info_short
 echo "=> Select a daemon service to reset"
-menu midgard midgard midgard-blockstore binance-smart-daemon thornode gaia-daemon ethereum-daemon-execution ethereum-daemon-beacon avalanche-daemon litecoin-daemon
+menu midgard midgard midgard-blockstore binance-smart-daemon thornode gaia-daemon osmosis-daemon ethereum-daemon-execution ethereum-daemon-beacon avalanche-daemon litecoin-daemon
 SERVICE=${MENU_SELECTED}
 
 if node_exists; then
@@ -55,6 +55,13 @@ case ${SERVICE} in
     kubectl wait --for=delete pods -l app.kubernetes.io/name=gaia-daemon -n "${NAME}" --timeout=5m >/dev/null 2>&1 || true
     kubectl run -n "${NAME}" -it reset-gaia --rm --restart=Never --image=busybox --overrides='{"apiVersion": "v1", "spec": {"containers": [{"command": ["sh", "-c", "rm -rf /root/.gaia/data"], "name": "reset-gaia", "stdin": true, "stdinOnce": true, "tty": true, "image": "busybox", "volumeMounts": [{"mountPath": "/root/.gaia", "name":"data"}]}], "volumes": [{"name": "data", "persistentVolumeClaim": {"claimName": "gaia-daemon"}}]}}'
     kubectl scale -n "${NAME}" --replicas=1 deploy/gaia-daemon --timeout=5m
+    ;;
+
+  osmosis-daemon)
+    kubectl scale -n "${NAME}" --replicas=0 deploy/osmosis-daemon --timeout=5m
+    kubectl wait --for=delete pods -l app.kubernetes.io/name=osmosis-daemon -n "${NAME}" --timeout=5m >/dev/null 2>&1 || true
+    kubectl run -n "${NAME}" -it reset-osmosis --rm --restart=Never --image=busybox --overrides='{"apiVersion": "v1", "spec": {"containers": [{"command": ["sh", "-c", "rm -rf /root/.osmosisd/data"], "name": "reset-osmosis", "stdin": true, "stdinOnce": true, "tty": true, "image": "busybox", "volumeMounts": [{"mountPath": "/root/.osmosisd", "name":"data"}]}], "volumes": [{"name": "data", "persistentVolumeClaim": {"claimName": "osmosis-daemon"}}]}}'
+    kubectl scale -n "${NAME}" --replicas=1 deploy/osmosis-daemon --timeout=5m
     ;;
 
   ethereum-daemon-execution)
