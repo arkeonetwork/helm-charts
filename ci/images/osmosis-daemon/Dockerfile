@@ -25,11 +25,29 @@ ADD https://github.com/CosmWasm/wasmvm/releases/download/${WASMVM_VERSION}/libwa
 ADD https://github.com/CosmWasm/wasmvm/releases/download/${WASMVM_VERSION}/libwasmvm_muslc.x86_64.a /lib/libwasmvm_muslc.x86_64.a
 RUN sha256sum /lib/libwasmvm_muslc.aarch64.a | grep e78b224c15964817a3b75a40e59882b4d0e06fd055b39514d61646689cef8c6e
 RUN sha256sum /lib/libwasmvm_muslc.x86_64.a | grep e660a38efb2930b34ee6f6b0bb12730adccb040b6ab701b8f82f34453a426ae7
-RUN cp "/lib/libwasmvm_muslc.$(uname -m).a" /lib/libwasmvm_muslc.a
+RUN cp "/lib/libwasmvm_muslc.x86_64.a" /lib/libwasmvm_muslc.a
 
 # build
 RUN go mod download
-RUN LEDGER_ENABLED=true LINK_STATICALLY=true BUILD_TAGS=muslc make build
+#RUN LEDGER_ENABLED=true LINK_STATICALLY=true BUILD_TAGS=muslc make build
+
+# Build osmosisd binary
+RUN --mount=type=cache,target=/root/.cache/go-build \
+    --mount=type=cache,target=/root/go/pkg/mod \
+    GOWORK=off go build \
+    -mod=readonly \
+    -tags "netgo,ledger,muslc" \
+    -ldflags \
+    "-X github.com/cosmos/cosmos-sdk/version.Name="osmosis" \
+    -X github.com/cosmos/cosmos-sdk/version.AppName="osmosisd" \
+    -X github.com/cosmos/cosmos-sdk/version.Version=${GIT_VERSION} \
+    -X github.com/cosmos/cosmos-sdk/version.Commit=${GIT_COMMIT} \
+    -X github.com/cosmos/cosmos-sdk/version.BuildTags=${BUILD_TAGS} \
+    -w -s -linkmode=external -extldflags '-Wl,-z,muldefs -static'" \
+    -trimpath \
+    -o /app/build/osmosisd \
+    /app/cmd/osmosisd/main.go
+
 RUN echo "Ensuring binary is statically linked ..."  \
   && file /app/build/osmosisd | grep "statically linked"
 
