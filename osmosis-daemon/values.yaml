@@ -9,7 +9,7 @@ replicaCount: 1
 image:
   name: ghcr.io/arkeonetwork/helm-charts
   tag: osmosis-daemon-25.2.1
-  hash: "00974557c5bb7cf02b82e6b6ca79a0fc3bfa3c88a2e36688ad9dbe325a17894060723518ecf7e545b49b309a915071eb424d95d1ed629df2da6ae272c9ecb3a9"
+  hash: "00974557c5bb7cf02b82e6b6ca79a0fc3bfa3c88a2e36688ad9dbe325a178940"
 
 imagePullSecrets: []
 nameOverride: ""
