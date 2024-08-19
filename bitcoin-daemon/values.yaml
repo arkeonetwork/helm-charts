@@ -7,9 +7,9 @@ replicaCount: 1
 net: mainnet
 
 image:
-  name: registry.gitlab.com/thorchain/devops/node-launcher
+  name: ghcr.io/arkeonetwork/helm-charts
   tag: "bitcoin-daemon-26.2"
-  hash: "0080dd15a8a06312e2ca7bd5051ecc838275345ea98b285e7d66941225dd90c7"
+  hash: "da4af564592e1f31ecd3efe65a063222849e4a7215a15b50a06146150c11fe45"
 
 imagePullSecrets: []
 nameOverride: ""
