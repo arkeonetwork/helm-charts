@@ -16,16 +16,16 @@ api:
     cpu: 250m
     memory: 250Mi
   env:
-  - name: INDEXER_URL
-    value: "http://bitcoin-svc.unchained.svc.cluster.local:8001"
-  - name: INDEXER_WS_URL
-    value: "ws://bitcoin-svc.unchained.svc.cluster.local:8001/websocket"
-  - name: LOG_LEVEL
-    value: "debug"
-  - name: NETWORK
-    value: "mainnet"
-  - name: RPC_URL
-    value: "http://user:password@bitcoin-svc.unchained.svc.cluster.local:8332"
+    - name: INDEXER_URL
+      value: "http://bitcoin-svc.unchained.svc.cluster.local:8001"
+    - name: INDEXER_WS_URL
+      value: "ws://bitcoin-svc.unchained.svc.cluster.local:8001/websocket"
+    - name: LOG_LEVEL
+      value: "debug"
+    - name: NETWORK
+      value: "mainnet"
+    - name: RPC_URL
+      value: "http://user:password@bitcoin-svc.unchained.svc.cluster.local:8332"
 
 
 deployment:
@@ -63,48 +63,51 @@ deployment:
   securityContext:
     {}
 
- service:
+service:
   type: ClusterIP
-    port:
-      mainnet:
-        p2p: 8333
-        rpc: 8332
-      stagenet:
-        p2p: 8333
-        rpc: 8332
+  port:
+    mainnet:
+      p2p: 8333
+      rpc: 8332
+    testnet:
+      p2p: 18333
+      rpc: 18332
+    stagenet:
+      p2p: 8333
+      rpc: 8332
+    regtest:
+      p2p: 18444
+      rpc: 18443
 
-  ingress:
-    enabled: false
-    annotations:
-      {}
-      # kubernetes.io/ingress.class: nginx
-      # cert-manager.io/cluster-issuer: letsencrypt-production
-    hosts:
-      []
-      # - host: midgard.example.com
-      #   paths:
-      #   - path: /
-      #     backend:
-      #       serviceName: gateway
-      #       servicePort: midgard
-    tls:
-      []
-      # - secretName: midgard-tls
-      #   hosts:
-      #     - midgard.example.com
+ingress:
+  enabled: false
+  annotations: {}
+    # kubernetes.io/ingress.class: nginx
+    # cert-manager.io/cluster-issuer: letsencrypt-production
+  hosts: []
+    # - host: midgard.example.com
+    #   paths:
+    #   - path: /
+    #     backend:
+    #       serviceName: gateway
+    #       servicePort: midgard
+  tls: []
+    # - secretName: midgard-tls
+    #   hosts:
+    #     - midgard.example.com
 
-  resources:
-    limits:
-      # cpu: 1
-      memory: 5Gi
-    requests:
-      cpu: 1
-      memory: 5Gi
+resources:
+  limits:
+    # cpu: 1
+    memory: 5Gi
+  requests:
+    cpu: 1
+    memory: 5Gi
 
-  nodeSelector: {}
+nodeSelector: {}
 
-  tolerations: []
+tolerations: []
 
-  affinity: {}
+affinity: {}
 
-  global: {}
+global: {}
