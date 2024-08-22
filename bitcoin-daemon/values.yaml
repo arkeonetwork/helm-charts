@@ -62,49 +62,49 @@ deployment:
 
   securityContext:
     {}
-  
-service:
+
+ service:
   type: ClusterIP
-  port:
-    mainnet:
-      p2p: 8333
-      rpc: 8332
-    stagenet:
-      p2p: 8333
-      rpc: 8332
+    port:
+      mainnet:
+        p2p: 8333
+        rpc: 8332
+      stagenet:
+        p2p: 8333
+        rpc: 8332
 
-ingress:
-  enabled: false
-  annotations:
-    {}
-    # kubernetes.io/ingress.class: nginx
-    # cert-manager.io/cluster-issuer: letsencrypt-production
-  hosts:
-    []
-    # - host: midgard.example.com
-    #   paths:
-    #   - path: /
-    #     backend:
-    #       serviceName: gateway
-    #       servicePort: midgard
-  tls:
-    []
-    # - secretName: midgard-tls
-    #   hosts:
-    #     - midgard.example.com
+  ingress:
+    enabled: false
+    annotations:
+      {}
+      # kubernetes.io/ingress.class: nginx
+      # cert-manager.io/cluster-issuer: letsencrypt-production
+    hosts:
+      []
+      # - host: midgard.example.com
+      #   paths:
+      #   - path: /
+      #     backend:
+      #       serviceName: gateway
+      #       servicePort: midgard
+    tls:
+      []
+      # - secretName: midgard-tls
+      #   hosts:
+      #     - midgard.example.com
 
-resources:
-  limits:
-    # cpu: 1
-    memory: 5Gi
-  requests:
-    cpu: 1
-    memory: 5Gi
+  resources:
+    limits:
+      # cpu: 1
+      memory: 5Gi
+    requests:
+      cpu: 1
+      memory: 5Gi
 
-nodeSelector: {}
+  nodeSelector: {}
 
-tolerations: []
+  tolerations: []
 
-affinity: {}
+  affinity: {}
 
-global: {}
+  global: {}
