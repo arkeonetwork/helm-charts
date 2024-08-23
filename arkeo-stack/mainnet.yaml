@@ -11,59 +11,36 @@ arkeo:
 directory:
   enabled: false
 
-relayer:
+midgard:
   enabled: false
-
-#unchained:
-#  enabled: false
-
-arbitrum-daemon:
-  enabled: false
-
-avalanche-daemon:
-  enabled: false
+  blockstore:
+    enabled: true
+    remote: https://storage.googleapis.com/public-snapshots-ninerealms/midgard-blockstore/mainnet/v2/
+    size: 20Gi
 
 binance-daemon:
-  enabled: false
-
-binance-smart-daemon:
-  enabled: false
-
-bitcoin-cash-daemon:
   enabled: false
 
 bitcoin-daemon:
   enabled: true
 
-cosmos-daemon:
+litecoin-daemon:
   enabled: false
 
-osmosis-daemon:
+bitcoin-cash-daemon:
   enabled: false
+
+ethereum-daemon:
+  enabled: true
 
 dogecoin-daemon:
   enabled: false
 
-ethereum-daemon:
-  enabled: false
-
 gaia-daemon:
+  enabled: true
+
+avalanche-daemon:
   enabled: false
 
-gnosis-daemon:
-  enabled: false
-
-litecoin-daemon:
-  enabled: false
-
-optimism-daemon:
-  enabled: false
-
-osmosis-daemon:
-  enabled: false
-
-polygon-daemon:
-  enabled: false
-
-thorchain-daemon:
+binance-smart-daemon:
   enabled: false

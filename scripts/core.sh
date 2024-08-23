@@ -182,14 +182,17 @@ display_status() {
 
 deploy() {
   local args
+  [ "$NET" = "mainnet" ] && args="--set global.passwordSecret=arkeo-password"
   helm diff upgrade -C 3 --install "$NAME" ./arkeo-stack -n "$NAME" \
     $args $EXTRA_ARGS \
     --set global.mnemonicSecret=arkeo-mnemonic \
-    --set global.net="$NET"
+    --set global.net="$NET" \
+    --set arkeo.type="validator"
   echo -e "=> Changes for a$boldgreen$TYPE$reset arkeonode on $boldgreen$NET$reset named $boldgreen$NAME$reset"
   confirm
   helm upgrade --install "$NAME" ./arkeo-stack -n "$NAME" \
     --create-namespace $args $EXTRA_ARGS \
     --set global.mnemonicSecret=arkeo-mnemonic \
-    --set global.net="$NET"
+    --set global.net="$NET" \
+    --set arkeo.type="validator"
 }

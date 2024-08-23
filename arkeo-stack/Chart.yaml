@@ -7,6 +7,11 @@ version: 0.1.0
 appVersion: 0.1.0
 
 dependencies:
+  - name: gateway
+    repository: file://../gateway
+    version: 0.1.0
+    condition: gateway.enabled
+
   - name: arkeo
     repository: file://../arkeo
     version: 0.1.0
@@ -17,62 +22,7 @@ dependencies:
     version: 0.1.0
     condition: sentinel.enabled
 
-  - name: binance-daemon
-    repository: file://../binance-daemon
-    version: 0.1.0
-    condition: binance-daemon.enabled
-
-  - name: bitcoin-daemon
-    repository: file://../bitcoin-daemon
-    version: 0.1.0
-    condition: bitcoin-daemon.enabled
-
-  - name: litecoin-daemon
-    repository: file://../litecoin-daemon
-    version: 0.1.0
-    condition: litecoin-daemon.enabled
-
-  - name: bitcoin-cash-daemon
-    repository: file://../bitcoin-cash-daemon
-    version: 0.1.0
-    condition: bitcoin-cash-daemon.enabled
-
-  - name: ethereum-daemon
-    repository: file://../ethereum-daemon
-    version: 0.1.0
-    condition: ethereum-daemon.enabled
-
-  - name: dogecoin-daemon
-    repository: file://../dogecoin-daemon
-    version: 0.1.0
-    condition: dogecoin-daemon.enabled
-
-  - name: gaia-daemon
-    repository: file://../gaia-daemon
-    version: 0.1.0
-    condition: gaia-daemon.enabled
-
-  - name: osmosis-daemon
-    repository: file://../osmosis-daemon
-    version: 0.1.0
-    condition: osmosis-daemon.enabled
-
-  - name: avalanche-daemon
-    repository: file://../avalanche-daemon
-    version: 0.1.0
-    condition: avalanche-daemon.enabled
-
-  - name: binance-smart-daemon
-    repository: file://../binance-smart-daemon
-    version: 0.1.0
-    condition: binance-smart-daemon.enabled
-
-  - name: relayer
-    repository: file://../relayer
-    version: 0.1.0
-    condition: relayer.enabled
-
-#  - name: unchained
-#    repository: file://../unchained
-#    version: 1.0.0
-#    condition: unchained.enabled#
+  - name: unchained-stack
+    repository: file://../unchained
+    version: 1.0.0
+    condition: unchained.enabled
