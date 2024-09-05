@@ -30,3 +30,23 @@ if [ -n "$FAILED" ]; then
   echo >/dev/tty
   echo FAILED
 fi
+
+
+# check for yq and dialog
+if [ -n "$FAILED" ]; then
+  if command -v yq >/dev/null 2>&1 ; then
+    echo "yq found"
+  else
+    echo "yq not found, please install"
+    FAILED=1
+  fi
+fi
+
+if [ -n "$FAILED" ]; then
+  if command -v dialog >/dev/null 2>&1 ; then
+    echo "dialog found"
+  else
+    echo "dialog not found, please install"
+    FAILED=1
+  fi
+fi

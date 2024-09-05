@@ -196,3 +196,7 @@ deploy() {
     --set global.net="$NET" \
     --set arkeo.type="validator"
 }
+
+choosechains() {
+  source ./scripts/chainlist.sh
+}
