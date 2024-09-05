@@ -28,7 +28,7 @@ statefulset:
   replicas: 1
   containers:
     - name: daemon
-      image: "shapeshiftdao/dogecoin:1.14.7"
+      image: "arkeonetwork/dogecoin-daemon-1.14.8:latest"
       command: 
         - '/init.sh' 
       limits:

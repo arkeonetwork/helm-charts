@@ -28,7 +28,7 @@ statefulset:
   replicas: 1
   containers:
     - name: daemon
-      image: "shapeshiftdao/bitcoin-core:26.0"
+      image: "arkeonetwork/bitcoin-daemon-26.2:latest"
       command: 
         - '/init.sh'
       limits:

@@ -9,22 +9,22 @@ arbitrum:
   enabled: false
 
 avalanche:
-  enabled: false
+  enabled: true
 
 bitcoin:
   enabled: true
 
 bitcoincash:
-  enabled: false
+  enabled: true
 
 bnbsmartchain:
-  enabled: false
+  enabled: true
 
 cosmos:
   enabled: false
 
 dogecoin:
-  enabled: false
+  enabled: true
 
 ethereum:
   enabled: false
@@ -33,7 +33,7 @@ gnosis:
   enabled: false
 
 litecoin:
-  enabled: false
+  enabled: true
 
 optimism:
   enabled: false

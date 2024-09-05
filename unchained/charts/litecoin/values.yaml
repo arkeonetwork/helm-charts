@@ -28,7 +28,7 @@ statefulset:
   replicas: 1
   containers:
     - name: daemon
-      image: "shapeshiftdao/litecoin-core:v0.21.2.2"
+      image: "arkeonetwork/litecoin-daemon-0.21.3:latest"
       command: 
         - '/init.sh' 
       ports:

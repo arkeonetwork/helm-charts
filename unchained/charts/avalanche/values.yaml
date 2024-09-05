@@ -29,7 +29,7 @@ statefulset:
   replicas: 1
   containers:
     - name: daemon
-      image: "avaplatform/avalanchego:v1.11.2"
+      image: "arkeonetwork/avalanche-daemon-1.11.10:latest"
       command:
         - '/init.sh'
       limits:
