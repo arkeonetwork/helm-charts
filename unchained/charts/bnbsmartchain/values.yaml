@@ -28,7 +28,7 @@ statefulset:
   replicas: 1
   containers:
     - name: daemon
-      image: "arkeonetwork/binance-smart-daemon-1.4.13:latest"
+      image: "arkeonetwork/binance-smart-daemon-1.4.15:latest"
       env:
       - name: SNAPSHOT
         value: 'https://pub-c0627345c16f47ab858c9469133073a8.r2.dev/geth-20231225.tar.lz4'
