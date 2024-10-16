@@ -12,7 +12,7 @@ RUN apt-get update && \
 WORKDIR /keys
 RUN git init && \
   git remote add origin https://github.com/bitcoin-core/guix.sigs.git && \
-  git fetch --depth 1 origin 441d5ea969991203e2a01fe82b4aa8a3c3fc1ddc && \
+  git fetch --depth 1 origin 2c27ab5135a3d5f2b48ca68bd10d15d4f7766686 && \
   git checkout FETCH_HEAD && \
   for file in builder-keys/*; do gpg --import "$file"; done
 
@@ -32,7 +32,6 @@ RUN VERSION="$(sed 's/-.*//' /version)" && \
 FROM debian:11-slim
 
 COPY --from=installer /work/bitcoin/bin/* /usr/local/bin/
-COPY --from=installer /work/bitcoin/lib/* /usr/local/lib/
 COPY --from=installer /work/bitcoin/share/* /usr/local/share/
 
 COPY ./scripts /scripts
