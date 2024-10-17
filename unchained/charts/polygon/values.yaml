@@ -28,7 +28,7 @@ statefulset:
   replicas: 1
   containers:
     - name: daemon
-      image: "0xpolygon/bor:1.2.3"
+      image: "0xpolygon/bor:1.4.1"
       command: 
         - '/init.sh'
       ports:
@@ -49,7 +49,7 @@ statefulset:
         memory: 32Gi
       storage_size: 4000Gi
     - name: heimdall
-      image: "0xpolygon/heimdall:1.0.3"
+      image: "0xpolygon/heimdall:1.0.10"
       command: 
         - '/init.sh'
       ports:

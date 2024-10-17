@@ -28,7 +28,7 @@ statefulset:
   replicas: 1
   containers:
     - name: daemon
-      image: "ethereum/client-go:v1.13.14"
+      image: "ethereum/client-go:v1.14.11"
       command: 
         - '/init.sh' 
       limits:
@@ -50,7 +50,7 @@ statefulset:
       - name: NETWORK
         value: mainnet
     - name: daemon-beacon
-      image: "gcr.io/prysmaticlabs/prysm/beacon-chain:v5.0.0"
+      image: "prysmaticlabs/prysm/beacon-chain:v5.1.2"
       args:
         - '--datadir'
         - '/data'

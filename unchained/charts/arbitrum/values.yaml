@@ -29,7 +29,7 @@ statefulset:
   replicas: 1
   containers:
     - name: daemon
-      image: "offchainlabs/nitro-node:v2.3.0-3e14543"
+      image: "offchainlabs/nitro-node:v2.3.2-064fa11"
       command:
         - '/init.sh'
       limits:
