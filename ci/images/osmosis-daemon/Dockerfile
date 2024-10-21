@@ -12,7 +12,7 @@ COPY version /version
 ENV PACKAGES="curl make git libc-dev bash file gcc linux-headers eudev-dev python3"
 RUN apk add --no-cache $PACKAGES
 
-ARG SRC_COMMIT=b973bffdf127866f45624d7e5a81f31fdc8e8e0b
+ARG SRC_COMMIT=3a19be9eea525dc4e899b1c345e9f08795ad8f6a
 RUN VERSION="$(sed 's/-.*//' /version)" && \
   git init && \
   git remote add origin https://github.com/osmosis-labs/osmosis && \
