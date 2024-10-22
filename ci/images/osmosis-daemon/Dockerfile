@@ -4,7 +4,7 @@
 
 # Source: adapted from gaia-daemon in this project
 
-FROM golang:1.22-alpine AS build
+FROM golang:1.22-alpine3.20 AS build
 
 WORKDIR /app
 COPY version /version
@@ -12,7 +12,7 @@ COPY version /version
 ENV PACKAGES="curl make git libc-dev bash file gcc linux-headers eudev-dev python3"
 RUN apk add --no-cache $PACKAGES
 
-ARG SRC_COMMIT=3a19be9eea525dc4e899b1c345e9f08795ad8f6a
+ARG SRC_COMMIT=768fbf7c738b917ee2e0b482feae34575089b089
 RUN VERSION="$(sed 's/-.*//' /version)" && \
   git init && \
   git remote add origin https://github.com/osmosis-labs/osmosis && \
@@ -20,11 +20,11 @@ RUN VERSION="$(sed 's/-.*//' /version)" && \
   git checkout $SRC_COMMIT
 
 # See https://github.com/CosmWasm/wasmvm/releases
-ARG WASMVM_VERSION=v1.5.2
+ARG WASMVM_VERSION=v2.1.2
 ADD https://github.com/CosmWasm/wasmvm/releases/download/${WASMVM_VERSION}/libwasmvm_muslc.aarch64.a /lib/libwasmvm_muslc.aarch64.a
 ADD https://github.com/CosmWasm/wasmvm/releases/download/${WASMVM_VERSION}/libwasmvm_muslc.x86_64.a /lib/libwasmvm_muslc.x86_64.a
-RUN sha256sum /lib/libwasmvm_muslc.aarch64.a | grep e78b224c15964817a3b75a40e59882b4d0e06fd055b39514d61646689cef8c6e
-RUN sha256sum /lib/libwasmvm_muslc.x86_64.a | grep e660a38efb2930b34ee6f6b0bb12730adccb040b6ab701b8f82f34453a426ae7
+RUN sha256sum /lib/libwasmvm_muslc.aarch64.a | grep 0881c5b463e89e229b06370e9e2961aec0a5c636772d5142c68d351564464a66
+RUN sha256sum /lib/libwasmvm_muslc.x86_64.a | grep 58e1f6bfa89ee390cb9abc69a5bc126029a497fe09dd399f38a82d0d86fe95ef
 RUN cp "/lib/libwasmvm_muslc.x86_64.a" /lib/libwasmvm_muslc.a
 
 # build
