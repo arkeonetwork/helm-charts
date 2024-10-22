@@ -4,7 +4,7 @@ metadata:
   name: {{ include "osmosis-daemon.fullname" . }}-scripts
 data:
   probe.sh: |
-    #!/bin/bash
+    #!/bin/sh
 
     set -euo pipefail
 
