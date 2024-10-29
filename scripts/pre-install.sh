@@ -2,7 +2,7 @@
 
 source ./scripts/core.sh
 
-get_node_info
+
 
 # check for dependencies
 if command -v yq >/dev/null 2>&1 ; then
@@ -44,6 +44,8 @@ else
   echo "helm plugin install https://github.com/databus23/helm-diff"
   exit
 fi
+
+get_node_info
 
 echo "You configure this deployment by editing the ./arkeo-stack/${NET}.yaml file."
 echo "If you haven't looked at this file yet, press ^C now and edit it before proceeding."
