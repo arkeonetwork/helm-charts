@@ -43,3 +43,6 @@ polygon:
 
 thorchain:
   enabled: false
+
+osmosis:
+  enabled: false
