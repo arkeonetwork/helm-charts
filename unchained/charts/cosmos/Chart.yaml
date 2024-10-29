@@ -1,7 +1,7 @@
 apiVersion: v2
-name: cosmos
-description: Deploys Cosmos node as part of the Unchained stack
+name: gaia-daemon
+description: gaia Node daemon component
 type: application
-version: 1.0.0
+version: 0.1.0
 
-appVersion: 1.0.0
+appVersion: v9.0.2
