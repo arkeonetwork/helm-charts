@@ -33,4 +33,7 @@ if ! kubectl get crd servicemonitors.monitoring.coreos.com >/dev/null 2>&1; then
   exit 1
 fi
 
+helm dependencies update ./relayer
+helm dependencies update ./arkeo-stack
+
 deploy
