@@ -31,8 +31,3 @@ do
     fi
   fi
 done
-
-sleep 5
-
-cat unchained/values.yaml
-
