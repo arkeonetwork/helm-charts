@@ -3,6 +3,8 @@
 source ./scripts/core.sh
 source ./scripts/pre-install.sh
 
+choosechains
+
 if [ "$0" == "./scripts/update.sh" ] && snapshot_available; then
   make_snapshot "arkeo"
   if [ "$TYPE" != "fullnode" ]; then
