@@ -2,8 +2,6 @@
 
 source ./scripts/core.sh
 
-
-
 # check for dependencies
 if command -v yq >/dev/null 2>&1 ; then
   echo "yq found"
@@ -45,6 +43,8 @@ else
   exit
 fi
 
+choosechains
+
 get_node_info
 
 echo "You configure this deployment by editing the ./arkeo-stack/${NET}.yaml file."
@@ -72,4 +72,4 @@ if [ "$TYPE" != "daemons" ]; then
   create_mnemonic
 fi
 
-choosechains
+
