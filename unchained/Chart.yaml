@@ -51,6 +51,10 @@ dependencies:
   version: "1.0.0"
   repository: file://./charts/optimism
   condition: optimism.enabled
+- name: osmosis
+  version: "1.0.0"
+  repository: file://./charts/osmosis
+  condition: osmosis.enabled
 - name: polygon
   version: "1.0.0"
   repository: file://./charts/polygon
@@ -59,7 +63,3 @@ dependencies:
   version: "1.0.0"
   repository: file://./charts/thorchain
   condition: thorchain.enabled
-- name: osmosis
-  version: "1.0.0"
-  repository: file://./charts/osmosis
-  condition: osmosis.enabled

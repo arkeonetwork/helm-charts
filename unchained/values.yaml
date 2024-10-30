@@ -38,11 +38,12 @@ litecoin:
 optimism:
   enabled: false
 
+osmosis:
+  enabled: false
+
 polygon:
   enabled: false
 
 thorchain:
   enabled: false
 
-osmosis:
-  enabled: false
