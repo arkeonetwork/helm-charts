@@ -31,3 +31,5 @@ do
     fi
   fi
 done
+
+wait 5
