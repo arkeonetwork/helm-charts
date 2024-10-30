@@ -32,4 +32,7 @@ do
   fi
 done
 
-wait 5
+sleep 5
+
+cat unchained/values.yaml
+
