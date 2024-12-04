@@ -14,8 +14,8 @@ signer:
   mnemonicSecret: ""
   passwordSecret: ""
 
-peer: seed.arkeo.network
-peerApi: seed.arkeo.network
+peer: seed31.innovationtheory.com
+peerApi: seed31.innovationtheory.com:1317
 
 # See docs/Thornode-Snapshot-Recovery-and-Storage-Management.md for details.
 statesync:
@@ -25,8 +25,8 @@ statesync:
 # provide custom environment variables to override config defaults:
 # https://gitlab.com/arkeo/arkeo/-/blob/develop/config/default.yaml
 env:
-  SEED: seed.arkeo.network:26656
-  RPC: seed.arkeo.network:26657
+  SEED: seed31.innovationtheory.com:26656
+  RPC: seed31.innovationtheory.com:26657
 
 debug: false
 chainID:
