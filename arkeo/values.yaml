@@ -30,8 +30,8 @@ env:
 
 debug: false
 chainID:
-  testnet: arkeo-testnet-v1
-  mainnet: arkeo-mainnet-v1
+  testnet: arkeo-testnet-3
+  mainnet: arkeo-testnet-3
   stagenet: arkeo-stagenet-v1
 
 haltHeight:
