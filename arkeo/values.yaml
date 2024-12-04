@@ -15,7 +15,7 @@ signer:
   passwordSecret: ""
 
 peer: seed31.innovationtheory.com
-peerApi: seed31.innovationtheory.com:1317
+peerApi: seed31.innovationtheory.com
 
 # See docs/Thornode-Snapshot-Recovery-and-Storage-Management.md for details.
 statesync:
