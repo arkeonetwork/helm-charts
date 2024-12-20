@@ -152,3 +152,4 @@ data:
     echo "updating arkeo version $ARKEO_VERSION -> $NET_VERSION"
     echo "new image $NEW_IMAGE"
     kubectl set image deployment/arkeo {{ .Chart.Name }}=$NEW_IMAGE
+
