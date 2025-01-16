@@ -355,3 +355,33 @@ data:
         fi
 
         arkeod start
+  setup-testnet.sh: |
+    #!/bin/sh
+    set -e
+
+    # Download Arkeo binary
+    ARKEO_VERSION="v1.0.3-prerelease" 
+    curl -L -o /usr/local/bin/arkeod https://github.com/arkeonetwork/arkeo/releases/download/${ARKEO_VERSION}/arkeod_linux_amd64_testnet
+    chmod +x /usr/local/bin/arkeod
+
+    # Initialize the node
+    arkeod init test-moniker --chain-id arkeo-testnet-3
+
+    # Download genesis file
+    curl -s http://seed31.innovationtheory.com:26657/genesis | jq '.result.genesis' > $HOME/.arkeo/config/genesis.json
+
+    # Configure app settings
+    sed -i -e "s/^pruning *=.*/pruning = \"custom\"/" $HOME/.arkeo/config/app.toml
+    sed -i -e "s/^pruning-keep-recent *=.*/pruning-keep-recent = \"100\"/" $HOME/.arkeo/config/app.toml
+    sed -i -e "s/^pruning-interval *=.*/pruning-interval = \"50\"/" $HOME/.arkeo/config/app.toml
+    sed -i 's|minimum-gas-prices =.*|minimum-gas-prices = "0.001uarkeo"|g' $HOME/.arkeo/config/app.toml
+    sed -i 's|swagger =.*| swagger = true|g' $HOME/.arkeo/config/app.toml
+
+    # Configure seeds and peers
+    SEEDS="9dfa5f2d19c1174baf5e597965394269e654f9b7@seed31.innovationtheory.com:26656"
+    PEERS="8eac1da41b8b1a8c33f23263f5a1eb985a411d48@5.189.137.206:26656,ea2c062d7a607758b7eced85f6b53e4a7620727a@204.16.241.190:26656"
+    sed -i -e "/^\[p2p\]/,/^\[/{s/^[[:space:]]*seeds *=.*/seeds = \"$SEEDS\"/}" \
+           -e "/^\[p2p\]/,/^\[/{s/^[[:space:]]*persistent_peers *=.*/persistent_peers = \"$PEERS\"/}" $HOME/.arkeo/config/config.toml
+
+    # Keep the init container alive for debugging
+    # tail -f /dev/null
