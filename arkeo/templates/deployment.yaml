@@ -32,10 +32,34 @@ spec:
       - name: init-external-ip
         image: alpine/k8s:{{ .Values.global.images.alpineK8s.tag }}@sha256:{{ .Values.global.images.alpineK8s.hash }}
         {{- if .Values.global.gateway.enabled }}
-        command: ['/scripts/setup-testnet.sh', 'false', '{{ .Values.global.gateway.name }}', '{{ include "arkeo.fullname" . }}-setup-testnet']
+        command:
+        - /bin/sh
+        - -c
+        - |
+          /scripts/setup-testnet.sh false '{{ .Values.global.gateway.name }}' '{{ include "arkeo.fullname" . }}-setup-testnet'
         {{- else }}
-        command: ['/scripts/setup-testnet.sh', 'false', '{{ include "arkeo.fullname" . }}', '{{ include "arkeo.fullname" . }}-setup-testnet']
+        command:
+        - /bin/sh
+        - -c
+        - |
+          /scripts/setup-testnet.sh false '{{ include "arkeo.fullname" . }}' '{{ include "arkeo.fullname" . }}-setup-testnet'
         {{- end }}
+        env:
+        - name: CHAIN_ID
+          value: "{{ .Values.chainID.mainnet }}"
+        - name: MONIKER
+          value: "{{ .Values.arkeo.moniker }}"
+        - name: WALLET_NAME
+          value: "{{ .Values.arkeo.wallet }}"
+        - name: FEES
+          value: "{{ .Values.arkeo.fees }}"
+        - name: AMOUNT
+          value: "{{ .Values.arkeo.amount }}"
+        - name: MNEMONIC
+          valueFrom:
+            secretKeyRef:
+              name: arkeo-mnemonic
+              key: mnemonic
         volumeMounts:
         - name: scripts
           mountPath: /scripts
@@ -95,6 +119,46 @@ spec:
               port: rpc
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
+        {{- if eq .Values.type "validator" }}
+        - name: validator-setup
+          image: alpine/k8s:{{ .Values.global.images.alpineK8s.tag }}@sha256:{{ .Values.global.images.alpineK8s.hash }}
+          command:
+            - /bin/sh
+            - -c
+            - |
+              # Wait for node RPC to be ready
+              until curl -s http://localhost:26657/status | grep -q '"catching_up":false'; do
+                echo "Waiting for the node to fully start..."
+                sleep 5
+              done
+              echo "Node is up. Proceeding with validator creation."
+              chmod +x /scripts/validator.sh
+              /scripts/validator.sh
+              
+              echo "Validator setup complete. Exiting."
+              exit 0
+          volumeMounts:
+            - name: arkeo-data
+              mountPath: /root/.arkeo
+            - name: scripts
+              mountPath: /scripts
+          env:
+            - name: CHAIN_ID
+              value: "{{ .Values.chainID.mainnet }}"
+            - name: MONIKER
+              value: "{{ .Values.arkeo.moniker }}"
+            - name: WALLET_NAME
+              value: "{{ .Values.arkeo.wallet }}"
+            - name: FEES
+              value: "{{ .Values.arkeo.fees }}"
+            - name: AMOUNT
+              value: "{{ .Values.arkeo.amount }}"
+            - name: MNEMONIC
+              valueFrom:
+                secretKeyRef:
+                  name: arkeo-mnemonic
+                  key: mnemonic
+          {{- end }}
       volumes:
         - name: arkeo-data
           emptyDir: {}

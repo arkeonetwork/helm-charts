@@ -5,6 +5,24 @@
 net: mainnet
 type: validator
 
+arkeo:
+  version: v1.0.3-prerelease
+  moniker: arkeo-node
+  wallet: soul
+  fees: 5000uarkeo
+  amount: 1000000
+  app_setting:
+    pruning: custom 
+    pruning_keep_recent: 100
+    pruning_interval: 50
+    minimum_gas_prices: 0.001uarkeo
+    swagger: true
+  seeds: 9dfa5f2d19c1174baf5e597965394269e654f9b7@seed31.innovationtheory.com:26656
+  peers: 8eac1da41b8b1a8c33f23263f5a1eb985a411d48@5.189.137.206:26656,ea2c062d7a607758b7eced85f6b53e4a7620727a@204.16.241.190:26656
+  snapshot: https://snapshots-testnet.nodejumper.io/arkeo/arkeo_latest.tar.lz4
+  addrbook: https://snapshots-testnet.nodejumper.io/arkeo/addrbook.json
+
+
 autoupdate:
   enabled: false
 

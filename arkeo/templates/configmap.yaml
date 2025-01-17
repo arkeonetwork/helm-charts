@@ -306,82 +306,123 @@ data:
       fi
 
       arkeod start --pruning nothing --minimum-gas-prices 0.0001uarkeo
-
-  validator.sh: |
-    #!/bin/bash
-
-        set -o pipefail
-        set -ex
-
-        CHAIN_ID="arkeo"
-        RPC="${RPC:=seed31.innovationtheory.com:26657}"
-        SEED="${SEED:=seed31.innovationtheory.com:26656}"
-        PEER_ID=$(curl -sL http://$RPC/status | jq -r '.result.node_info.id')
-        GENESIS="${GENESIS:=$RPC}"
-
-        if [ ! -f ~/.arkeo/config/genesis.json ]; then
-          echo "setting validator node"
-
-          arkeod init local --chain-id "$CHAIN_ID"
-            arkeod config set client keyring-backend test
-            arkeod config set client chain-id arkeo-testnet-3
-          
-
-          rm -rf ~/.arkeo/config/genesis.json
-
-          if [ "$RPC" = "none" ]; then
-            echo "Missing PEER"
-            exit 1
-          fi
-
-          # wait for peer
-          until curl -s "$RPC" 1>/dev/null 2>&1; do
-            echo "Waiting for peer: $RPC"
-            sleep 3
-          done
-
-          # fetch genesis file from seed node
-          curl -sL "$GENESIS/genesis" | jq '.result.genesis' >~/.arkeo/config/genesis.json
-
-          sed -i -e  "s/^pruning *=.*/pruning = \"custom\"/" $HOME/.arkeo/config/app.toml
-            sed -i -e  "s/^pruning-keep-recent *=.*/pruning-keep-recent = \"100\"/" $HOME/.arkeo/config/app.toml
-            sed -i -e  "s/^pruning-interval *=.*/pruning-interval = \"50\"/" $HOME/.arkeo/config/app.toml
-            sed -i -e  "s|^minimum-gas-prices =.*|minimum-gas-prices = \"0.001uarkeo\"|g" $HOME/.arkeo/config/app.toml
-            sed -i -e  "s|swagger =.*| swagger = true|g" $HOME/.arkeo/config/app.toml
-          sed -i -e  "s/seeds = \"\"/seeds = \"$PEER_ID@$SEED\"/g" ~/.arkeo/config/config.toml
-
-          # TODO: create this one as a validator
-          # arkeod tx staking create-validator --chain-id arkeo --commission-rate 0.05 --commission-max-rate 0.2 --commission-max-change-rate 0.1 --min-self-delegation "1" --amount <staking amount>uarkeo --pubkey $(arkeod tendermint show-validator) --moniker "<yourvalidator-name>" --from <your-wallet-name> --fees="5000uarkeo" --yes
-        fi
-
-        arkeod start
   setup-testnet.sh: |
     #!/bin/sh
     set -e
 
     # Download Arkeo binary
-    ARKEO_VERSION="v1.0.3-prerelease" 
-    curl -L -o /usr/local/bin/arkeod https://github.com/arkeonetwork/arkeo/releases/download/${ARKEO_VERSION}/arkeod_linux_amd64_testnet
+    curl -L -o /usr/local/bin/arkeod https://github.com/arkeonetwork/arkeo/releases/download/{{ .Values.arkeo.version }}/arkeod_linux_amd64_testnet
     chmod +x /usr/local/bin/arkeod
 
     # Initialize the node
-    arkeod init test-moniker --chain-id arkeo-testnet-3
+    arkeod init {{ .Values.arkeo.moniker }} --chain-id {{ .Values.chainID.mainnet }}
 
     # Download genesis file
-    curl -s http://seed31.innovationtheory.com:26657/genesis | jq '.result.genesis' > $HOME/.arkeo/config/genesis.json
+    curl -s {{ .Values.env.RPC }}/genesis | jq '.result.genesis' > $HOME/.arkeo/config/genesis.json
 
     # Configure app settings
-    sed -i -e "s/^pruning *=.*/pruning = \"custom\"/" $HOME/.arkeo/config/app.toml
-    sed -i -e "s/^pruning-keep-recent *=.*/pruning-keep-recent = \"100\"/" $HOME/.arkeo/config/app.toml
-    sed -i -e "s/^pruning-interval *=.*/pruning-interval = \"50\"/" $HOME/.arkeo/config/app.toml
-    sed -i 's|minimum-gas-prices =.*|minimum-gas-prices = "0.001uarkeo"|g' $HOME/.arkeo/config/app.toml
-    sed -i 's|swagger =.*| swagger = true|g' $HOME/.arkeo/config/app.toml
+    sed -i -e "s/^pruning *=.*/pruning = \"{{ .Values.arkeo.app_setting.pruning }}\"/" $HOME/.arkeo/config/app.toml
+    sed -i -e "s/^pruning-keep-recent *=.*/pruning-keep-recent = \"{{ .Values.arkeo.app_setting.pruning_keep_recent }}\"/" $HOME/.arkeo/config/app.toml
+    sed -i -e "s/^pruning-interval *=.*/pruning-interval = \"{{ .Values.arkeo.app_setting.pruning_interval }}\"/" $HOME/.arkeo/config/app.toml
+    sed -i 's|minimum-gas-prices =.*|minimum-gas-prices = "{{ .Values.arkeo.app_setting.minimum_gas_prices }}"|g' $HOME/.arkeo/config/app.toml
+    sed -i 's|swagger =.*| swagger = {{ .Values.arkeo.app_setting.swagger }}|g' $HOME/.arkeo/config/app.toml
 
     # Configure seeds and peers
-    SEEDS="9dfa5f2d19c1174baf5e597965394269e654f9b7@seed31.innovationtheory.com:26656"
-    PEERS="8eac1da41b8b1a8c33f23263f5a1eb985a411d48@5.189.137.206:26656,ea2c062d7a607758b7eced85f6b53e4a7620727a@204.16.241.190:26656"
+    SEEDS="{{ .Values.arkeo.seeds }}"
+    PEERS="{{ .Values.arkeo.peers }}"
     sed -i -e "/^\[p2p\]/,/^\[/{s/^[[:space:]]*seeds *=.*/seeds = \"$SEEDS\"/}" \
            -e "/^\[p2p\]/,/^\[/{s/^[[:space:]]*persistent_peers *=.*/persistent_peers = \"$PEERS\"/}" $HOME/.arkeo/config/config.toml
+    
+    apk update && apk add lz4
 
-    # Keep the init container alive for debugging
-    # tail -f /dev/null
+    curl -s {{ .Values.arkeo.addrbook }} > $HOME/.arkeo/config/addrbook.json
+    
+    cp $HOME/.arkeo/data/priv_validator_state.json $HOME/.arkeo/priv_validator_state.json.backup
+
+    arkeod tendermint unsafe-reset-all --home $HOME/.arkeo --keep-addr-book
+    curl {{ .Values.arkeo.snapshot }} | lz4 -dc - | tar -xf - -C $HOME/.arkeo
+
+    mv $HOME/.arkeo/priv_validator_state.json.backup $HOME/.arkeo/data/priv_validator_state.json
+
+
+  validator.sh: |
+    #!/bin/bash
+
+    set -o pipefail
+    set -ex
+
+    curl -L -o /usr/local/bin/arkeod https://github.com/arkeonetwork/arkeo/releases/download/{{ .Values.arkeo.version }}/arkeod_linux_amd64_testnet
+    chmod +x /usr/local/bin/arkeod
+
+    CHAIN_ID=${CHAIN_ID:-"arkeo"}
+    MONIKER=${MONIKER:-"default-validator"}
+    WALLET_NAME=${WALLET_NAME:-"wallet"}
+    FEES=${FEES:-"5000uarkeo"}
+    AMOUNT=${AMOUNT:-"1000000"}
+    AMOUNT=$(printf "%.0f" "$AMOUNT")
+    VALIDATOR_JSON="/root/.arkeo/validator.json"
+    PUBKEY=$(arkeod tendermint show-validator | jq -c)
+
+    cat <<EOF > "$VALIDATOR_JSON"
+    {
+      "pubkey": $PUBKEY,
+      "amount": "${AMOUNT}uarkeo",
+      "moniker": "$MONIKER",
+      "identity": "",
+      "website": "",
+      "security": "",
+      "details": "Arkeo validator node",
+      "commission-rate": "0.05",
+      "commission-max-rate": "0.2",
+      "commission-max-change-rate": "0.1",
+      "min-self-delegation": "1"
+    }
+    EOF
+
+    if ! arkeod keys show "$WALLET_NAME" --keyring-backend test > /dev/null 2>&1; then
+      echo "Wallet '$WALLET_NAME' not found. Recovering with provided mnemonic."
+      
+      if [ -z "$MNEMONIC" ]; then
+        echo "Error: MNEMONIC is not set. Cannot recover the wallet."
+        exit 1
+      fi
+
+      echo "$MNEMONIC" | arkeod keys add "$WALLET_NAME" --keyring-backend test --recover
+    else
+      echo "Wallet '$WALLET_NAME' already exists. Skipping recovery."
+    fi
+
+    arkeod query bank balances $(arkeod keys show $WALLET_NAME -a  --keyring-backend test) --node http://{{ .Values.env.RPC }}
+
+    VALIDATOR_ADDRESS=$(arkeod keys show "$WALLET_NAME" --bech val -a --keyring-backend test)
+    IS_VALIDATOR=$(arkeod query staking validator "$VALIDATOR_ADDRESS" --node http://{{ .Values.env.RPC }} -o json | jq -r '.validator.status')
+
+    if [[ "$IS_VALIDATOR" == "BOND_STATUS_BONDED" ]]; then
+      echo "Node is already an active validator with status: $IS_VALIDATOR. Skipping creation."
+
+    elif [[ "$IS_VALIDATOR" == "BOND_STATUS_UNBONDING" || "$IS_VALIDATOR" == "BOND_STATUS_UNBONDED" ]]; then
+      echo "Node is in $IS_VALIDATOR state. Rebonding validator..."
+
+      arkeod tx staking edit-validator "$VALIDATOR_JSON" \
+        --from "$WALLET_NAME" \
+        --chain-id "$CHAIN_ID" \
+        --fees="$FEES" \
+        --keyring-backend test \
+        --yes
+
+
+      sleep 10s
+
+      arkeod tx slashing unjail --from "$WALLET_NAME" --chain-id "$CHAIN_ID" --gas auto --gas-adjustment 1.5 --gas-prices 0.025uarkeo  --keyring-backend test
+
+    else
+      echo "Node is not a validator. Creating validator..."
+
+      arkeod tx staking create-validator "$VALIDATOR_JSON" \
+        --chain-id "$CHAIN_ID" \
+        --from "$WALLET_NAME" \
+        --fees="$FEES" \
+        --keyring-backend test \
+        --yes
+    fi
+        
