@@ -68,6 +68,7 @@ create_namespace
 if [ "$TYPE" != "daemons" ]; then
   create_password
   create_mnemonic
+  create_wallet
 fi
 
 

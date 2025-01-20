@@ -148,6 +148,22 @@ create_password() {
   fi
 }
 
+create_wallet() {
+  local wallet
+  if ! kubectl get -n "$NAME" secrets/arkeo-wallet >/dev/null 2>&1; then
+    echo "=> Creating arkeonode Wallet Name"
+    read -r -p "Enter wallet name: " wallet
+    echo
+    if [ -z "$wallet" ]; then
+      die "Wallet name cannot be empty"
+    fi
+    kubectl -n "$NAME" create secret generic arkeo-wallet --from-literal=wallet="$wallet"
+    echo
+  else
+    echo "=> Wallet secret already exists for $NAME. Skipping creation."
+  fi
+}
+
 display_mnemonic() {
   kubectl get -n "$NAME" secrets/arkeo-mnemonic --template="{{.data.mnemonic}}" | base64 --decode
   echo
