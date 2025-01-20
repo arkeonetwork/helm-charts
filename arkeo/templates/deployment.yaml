@@ -36,13 +36,27 @@ spec:
         - /bin/sh
         - -c
         - |
+          if [ -f /root/.arkeo/setup-completed ]; then
+            echo "Setup already completed. Skipping init container."
+            exit 0
+          fi
+          
+          echo "Running initial setup..."
           /scripts/setup-testnet.sh false '{{ .Values.global.gateway.name }}' '{{ include "arkeo.fullname" . }}-setup-testnet'
+          touch /root/.arkeo/setup-completed
         {{- else }}
         command:
         - /bin/sh
         - -c
         - |
+          if [ -f /root/.arkeo/setup-completed ]; then
+            echo "Setup already completed. Skipping init container."
+            exit 0
+          fi
+          
+          echo "Running initial setup..."
           /scripts/setup-testnet.sh false '{{ include "arkeo.fullname" . }}' '{{ include "arkeo.fullname" . }}-setup-testnet'
+          touch /root/.arkeo/setup-completed
         {{- end }}
         env:
         - name: CHAIN_ID
@@ -126,6 +140,11 @@ spec:
             - /bin/sh
             - -c
             - |
+              if [ -f /root/.arkeo/validator-setup-completed ]; then
+                echo "Validator setup already completed. Skipping."
+                exit 0
+              fi
+
               # Wait for node RPC to be ready
               until curl -s http://localhost:26657/status | grep -q '"catching_up":false'; do
                 echo "Waiting for the node to fully start..."
@@ -136,6 +155,7 @@ spec:
               /scripts/validator.sh
               
               echo "Validator setup complete. Exiting."
+              touch /root/.arkeo/validator-setup-completed
               exit 0
           volumeMounts:
             - name: arkeo-data
@@ -148,7 +168,10 @@ spec:
             - name: MONIKER
               value: "{{ .Values.arkeo.moniker }}"
             - name: WALLET_NAME
-              value: "{{ .Values.arkeo.wallet }}"
+              valueFrom:
+                secretKeyRef:
+                  name: arkeo-wallet
+                  key: wallet
             - name: FEES
               value: "{{ .Values.arkeo.fees }}"
             - name: AMOUNT
@@ -161,7 +184,8 @@ spec:
           {{- end }}
       volumes:
         - name: arkeo-data
-          emptyDir: {}
+          persistentVolumeClaim:
+            claimName: {{ if .Values.persistence.existingClaim }}{{ .Values.persistence.existingClaim }}{{- else }}{{ template "arkeo.fullname" . }}{{- end }}
         - name: tmp
           emptyDir: {} 
         - name: data

@@ -356,7 +356,6 @@ data:
 
     CHAIN_ID=${CHAIN_ID:-"arkeo"}
     MONIKER=${MONIKER:-"default-validator"}
-    WALLET_NAME=${WALLET_NAME:-"wallet"}
     FEES=${FEES:-"5000uarkeo"}
     AMOUNT=${AMOUNT:-"1000000"}
     AMOUNT=$(printf "%.0f" "$AMOUNT")

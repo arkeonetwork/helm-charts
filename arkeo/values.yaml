@@ -8,7 +8,6 @@ type: validator
 arkeo:
   version: v1.0.3-prerelease
   moniker: arkeo-node
-  wallet: soul
   fees: 5000uarkeo
   amount: 1000000
   app_setting:
