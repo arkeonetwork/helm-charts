@@ -1,7 +1,4 @@
 dependencies:
-- name: gateway
-  repository: file://../gateway
-  version: 0.1.0
 - name: arkeo
   repository: file://../arkeo
   version: 0.1.0
@@ -11,5 +8,5 @@ dependencies:
 - name: unchained-stack
   repository: file://../unchained
   version: 1.0.0
-digest: sha256:e78d01db010c861437d94b0dae79dbeb83376b18f0b65bec67b3d4e6a74f1bae
-generated: "2024-08-23T19:23:53.046887097Z"
+digest: sha256:71b3dca37f3c734fb261d1459575e629cdea32f7eee150b72c49c1f2360929db
+generated: "2025-01-21T10:22:30.987586962-05:00"

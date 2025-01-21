@@ -7,11 +7,6 @@ version: 0.1.0
 appVersion: 0.1.0
 
 dependencies:
-  - name: gateway
-    repository: file://../gateway
-    version: 0.1.0
-    condition: gateway.enabled
-
   - name: arkeo
     repository: file://../arkeo
     version: 0.1.0

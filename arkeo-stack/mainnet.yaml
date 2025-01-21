@@ -1,6 +1,6 @@
 global:
   tag: latest
-  hash: 62d78aaefab5e229a2068349cbcab402cd297b2fc13cc45c5873fe37ae5cfbf2
+  hash: e9bb828cf6368e65e21359d9e512a9e307f396e511b8f87919be657d3067a9ea
 
 arkeo:
   haltHeight:

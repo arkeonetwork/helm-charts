@@ -42,7 +42,7 @@ spec:
           fi
           
           echo "Running initial setup..."
-          /scripts/setup-testnet.sh false '{{ .Values.global.gateway.name }}' '{{ include "arkeo.fullname" . }}-setup-testnet'
+          /scripts/setup-testnet.sh false '{{ include "arkeo.fullname" . }}-setup-testnet'
           touch /root/.arkeo/setup-completed
         {{- else }}
         command:
