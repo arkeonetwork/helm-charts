@@ -44,9 +44,9 @@ replicaCount: 1
 strategyType: Recreate
 
 image:
-  repository: ghcr.io/arkeonetwork/arkeo
+  repository: ghcr.io/arkeonetwork/arkeo-testnet
   pullPolicy: IfNotPresent
-  tag: latest
+  tag: 1.0.4-prerelease
   hash: "" # Not used for mocknet/testnet
 
 imagePullSecrets: []
