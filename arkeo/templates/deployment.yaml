@@ -31,20 +31,6 @@ spec:
       initContainers:
       - name: init-external-ip
         image: alpine/k8s:{{ .Values.global.images.alpineK8s.tag }}@sha256:{{ .Values.global.images.alpineK8s.hash }}
-        {{- if .Values.global.gateway.enabled }}
-        command:
-        - /bin/sh
-        - -c
-        - |
-          if [ -f /root/.arkeo/setup-completed ]; then
-            echo "Setup already completed. Skipping init container."
-            exit 0
-          fi
-          
-          echo "Running initial setup..."
-          /scripts/setup-testnet.sh false '{{ include "arkeo.fullname" . }}-setup-testnet'
-          touch /root/.arkeo/setup-completed
-        {{- else }}
         command:
         - /bin/sh
         - -c
@@ -57,14 +43,11 @@ spec:
           echo "Running initial setup..."
           /scripts/setup-testnet.sh false '{{ include "arkeo.fullname" . }}' '{{ include "arkeo.fullname" . }}-setup-testnet'
           touch /root/.arkeo/setup-completed
-        {{- end }}
         env:
         - name: CHAIN_ID
           value: "{{ .Values.chainID.mainnet }}"
         - name: MONIKER
           value: "{{ .Values.arkeo.moniker }}"
-        - name: WALLET_NAME
-          value: "{{ .Values.arkeo.wallet }}"
         - name: FEES
           value: "{{ .Values.arkeo.fees }}"
         - name: AMOUNT
@@ -116,21 +99,61 @@ spec:
               containerPort: 26660
               protocol: TCP
           livenessProbe:
-            timeoutSeconds: 10
-            httpGet:
-              path: /status
-              port: rpc
+            exec:
+              command:
+              - /bin/sh
+              - -c
+              - |
+                status_code=$(curl -s -o /dev/null -w "%{http_code}" http://localhost:26657/status)
+                if [ $status_code -eq 200 ]; then
+                  response=$(curl -s http://localhost:26657/status)
+                  if echo "$response" | grep -q '"latest_block_height"'; then
+                    exit 0
+                  fi
+                fi
+                exit 1
+            timeoutSeconds: 30
+            periodSeconds: 60
+            failureThreshold: 10
+            successThreshold: 1
+            initialDelaySeconds: 60
           startupProbe:
-            failureThreshold: 30
-            timeoutSeconds: 10
-            httpGet:
-              path: /status
-              port: rpc
+            exec:
+              command:
+              - /bin/sh
+              - -c
+              - |
+                status_code=$(curl -s -o /dev/null -w "%{http_code}" http://localhost:26657/status)
+                if [ $status_code -eq 200 ]; then
+                  response=$(curl -s http://localhost:26657/status)
+                  if echo "$response" | grep -q '"latest_block_height"'; then
+                    exit 0
+                  fi
+                fi
+                exit 1
+            failureThreshold: 60
+            periodSeconds: 10
+            timeoutSeconds: 30
+            initialDelaySeconds: 30
           readinessProbe:
-            timeoutSeconds: 10
-            httpGet:
-              path: /status
-              port: rpc
+            exec:
+              command:
+              - /bin/sh
+              - -c
+              - |
+                status_code=$(curl -s -o /dev/null -w "%{http_code}" http://localhost:26657/status)
+                if [ $status_code -eq 200 ]; then
+                  response=$(curl -s http://localhost:26657/status)
+                  if echo "$response" | grep -q '"latest_block_height"'; then
+                    exit 0
+                  fi
+                fi
+                exit 1
+            timeoutSeconds: 30
+            periodSeconds: 60
+            failureThreshold: 10
+            successThreshold: 1
+            initialDelaySeconds: 60
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
         {{- if eq .Values.type "validator" }}
@@ -142,6 +165,7 @@ spec:
             - |
               if [ -f /root/.arkeo/validator-setup-completed ]; then
                 echo "Validator setup already completed. Skipping."
+                tail -f /dev/null
                 exit 0
               fi
 
@@ -156,7 +180,7 @@ spec:
               
               echo "Validator setup complete. Exiting."
               touch /root/.arkeo/validator-setup-completed
-              exit 0
+              tail -f /dev/null
           volumeMounts:
             - name: arkeo-data
               mountPath: /root/.arkeo

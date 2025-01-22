@@ -329,7 +329,17 @@ data:
 
     # Configure seeds and peers
     SEEDS="{{ .Values.arkeo.seeds }}"
-    PEERS="{{ .Values.arkeo.peers }}"
+
+    # Fetch Peers form network 
+    net_info=$(curl -s {{ .Values.env.RPC }}/net_info)
+    formatted_output=$(echo "$net_info" | jq -r '
+      .result.peers[] |
+      .node_info.listen_addr as $listen_addr |
+      ($listen_addr | split(":") | last) as $port |
+      "\(.node_info.id)@\(.remote_ip):\($port)"
+    ' | paste -sd, -)
+
+    PEERS="$formatted_output"
     sed -i -e "/^\[p2p\]/,/^\[/{s/^[[:space:]]*seeds *=.*/seeds = \"$SEEDS\"/}" \
            -e "/^\[p2p\]/,/^\[/{s/^[[:space:]]*persistent_peers *=.*/persistent_peers = \"$PEERS\"/}" $HOME/.arkeo/config/config.toml
     
@@ -383,6 +393,7 @@ data:
       
       if [ -z "$MNEMONIC" ]; then
         echo "Error: MNEMONIC is not set. Cannot recover the wallet."
+        tail -f /dev/null
         exit 1
       fi
 
