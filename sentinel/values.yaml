@@ -7,11 +7,14 @@ moniker: n/a
 website: n/a
 description: n/a
 location: n/a
-pubkey: <INSERT>
+pubkey: INSERT
 freeRate:
   limit: 10
+  duration: 100
 claimStoreLocation: "${HOME}/.arkeo/claims"
 contractConfigStoreLocation: "${HOME}/.arkeo/contract_configs"
+providerConfigStoreLocation: "${HOME}/.arkeo/provider"
+
 
 signer:
   name: arkeo
@@ -29,6 +32,7 @@ debug: false
 env: {}
 
 arkeoApi: arkeo:1317
+
 chainID:
   testnet: arkeo-testnet-v1
   mainnet: arkeo-mainnet-v1
@@ -44,10 +48,10 @@ replicaCount: 1
 strategyType: Recreate
 
 image:
-  repository: ghcr.io/arkeonetwork/arkeo-testnet
+  repository: ghcr.io/arkeonetwork/arkeo/sentinel-testnet
   pullPolicy: IfNotPresent
-  tag: 1.0.4-prerelease
-  hash: "" # Not used for mocknet/testnet
+  tag: 1.0.3
+  hash: "54361642e78823add7b70f5439adbaa8f10ad35cf2b3f1c43042efb76fcd3633" # Not used for mocknet/testnet
 
 imagePullSecrets: []
 nameOverride: ""
@@ -95,8 +99,8 @@ securityContext: {}
 
 resources:
   requests:
-    cpu: 7
-    memory: 2Gi
+    cpu: 2
+    memory: 1Gi
   limits:
     memory: 4Gi
 

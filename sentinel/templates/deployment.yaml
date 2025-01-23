@@ -53,9 +53,13 @@ spec:
         - name: {{ .Chart.Name }}
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}
-          image: {{ include "sentinel.image" . }}
+          image: {{ .Values.image.repository }}:{{ .Values.image.tag }}@sha256:{{ .Values.image.hash }}
           imagePullPolicy: {{ .Values.image.pullPolicy }}
-          command: ["/scripts/sentinel.sh"]
+          command: 
+            - /bin/sh
+            - -c
+            - |
+              /scripts/start.sh
           {{- if .Values.debug }}
           args: ["sentinel", "-l", "debug"]
           {{- else }}
@@ -71,14 +75,9 @@ spec:
             - mountPath: /etc/sentinel
               name: data
               subPath: etc
+            - name: scripts
+              mountPath: /scripts
           env:
-            - name: EXTERNAL_IP
-              valueFrom:
-                configMapKeyRef:
-                  name: {{ include "sentinel.fullname" . }}-external-ip
-                  key: externalIP
-            - name: VALIDATOR
-              value: "true"
             - name: NET
               value: {{ include "sentinel.net" . }}
             - name: MONIKER
@@ -89,10 +88,6 @@ spec:
               value: {{ .Values.description }}
             - name: LOCATION
               value: {{ .Values.location }}
-            - name: PROVIDER_PUBKEY
-              value: {{ .Values.pubkey }}
-            - name: PUBKEY
-              value: {{ .Values.pubkey }}
             - name: CLAIM_STORE_LOCATION
               value: {{ .Values.claimStoreLocation }}
             - name: CONTRACT_CONFIG_STORE_LOCATION
@@ -103,32 +98,12 @@ spec:
               value: {{ include "sentinel.arkeoDaemon" . }}
             - name: FREE_RATE_LIMIT
               value: "{{ .Values.freeRate.limit }}"
-            - name: PEER
-              value: {{ default .Values.peer .Values.global.peer }}
-            - name: SIGNER_NAME
-              value: {{ .Values.signer.name }}
-            - name: SIGNER_PASSWD
-              {{- if default .Values.signer.passwordSecret .Values.global.passwordSecret }}
-              valueFrom:
-                secretKeyRef:
-                  name: {{ default .Values.signer.passwordSecret .Values.global.passwordSecret }}
-                  key: password
-              {{- else}}
-              value: {{ .Values.signer.password }}
-              {{- end }}
-            {{- if default .Values.signer.mnemonicSecret .Values.global.mnemonicSecret }}
-            - name: SIGNER_SEED_PHRASE
-              valueFrom:
-                secretKeyRef:
-                  name: {{ default .Values.signer.mnemonicSecret .Values.global.mnemonicSecret }}
-                  key: mnemonic
-            {{- end }}
-            - name: CHAIN_ID
-              value: {{ include "sentinel.chainID" . }}
-            {{- range $key, $value := .Values.env }}
-            - name: {{ $key }}
-              value: {{ $value | quote }}
-            {{- end }}
+            - name: FREE_RATE_LIMIT_DURATION
+              value: "{{ .Values.freeRate.duration }}"
+            - name: PROVIDER_PUBKEY
+              value: {{ .Values.pubkey }}
+            - name: PROVIDER_CONFIG_STORE_LOCATION
+              value: {{ .Values.providerConfigStoreLocation }}
           ports:
             - name: http
               containerPort: {{ .Values.service.port.http }}

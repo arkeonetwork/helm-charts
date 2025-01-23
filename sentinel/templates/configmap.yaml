@@ -48,3 +48,21 @@ data:
     fi
 
     kubectl create configmap "$CONFIGMAP" --from-literal=externalIP="$external_ip" --dry-run=client -o yaml | kubectl apply -f -
+
+  start.sh: |
+    #!/bin/bash
+    #
+    # Ensure required environment variables are set
+    required_vars=("NET" "MONIKER" "WEBSITE" "DESCRIPTION" "LOCATION" "SOURCE_CHAIN" "EVENT_STREAM_HOST" "FREE_RATE_LIMIT" "FREE_RATE_LIMIT_DURATION" "CLAIM_STORE_LOCATION" "CONTRACT_CONFIG_STORE_LOCATION" "PROVIDER_PUBKEY" "PROVIDER_CONFIG_STORE_LOCATION")
+
+    for var in "${required_vars[@]}"; do
+      if [ -z "${!var}" ]; then
+        echo "Error: Environment variable $var is not set."
+        exit 1
+      fi
+    done
+
+    export PORT=3636
+
+    # Start sentinel
+    sentinel
