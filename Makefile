@@ -146,6 +146,9 @@ lint: ## Run linters (development)
 verify-ethereum: ## Verify Ethereum finalized slot state root
 	@./scripts/verify-ethereum.sh
 
+set-validator: 
+	@./scripts/validator.sh
+
 .PHONY: help helm repo pull tools destroy-tools install-loki destroy-loki install-prometheus destroy-prometheus install-metrics destroy-metrics install-dashboard prometheus grafana dashboard alert-manager mnemonic update-dependencies reset restart pods deploy update destroy status shell watch logs pause resume lint verify-ethereum
 
 .EXPORT_ALL_VARIABLES:

@@ -48,7 +48,7 @@ spec:
           privileged: true
       - name: init-arkeo
         image: busybox:{{ .Values.global.images.busybox.tag }}@sha256:{{ .Values.global.images.busybox.hash }}
-        command: ['sh', '-c', 'until nc -zv {{ .Values.arkeoApi }}; do echo waiting for arkeo; sleep 2; done']
+        command: ['sh', '-c', 'until nc -zv {{ .Values.arkeoApi }}; do echo waiting for arkeo at {{ .Values.arkeoApi }}; sleep 2; done']
       containers:
         - name: {{ .Chart.Name }}
           securityContext:
