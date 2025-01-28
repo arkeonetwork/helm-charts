@@ -326,6 +326,8 @@ data:
     sed -i -e "s/^pruning-interval *=.*/pruning-interval = \"{{ .Values.arkeo.app_setting.pruning_interval }}\"/" $HOME/.arkeo/config/app.toml
     sed -i 's|minimum-gas-prices =.*|minimum-gas-prices = "{{ .Values.arkeo.app_setting.minimum_gas_prices }}"|g' $HOME/.arkeo/config/app.toml
     sed -i 's|swagger =.*| swagger = {{ .Values.arkeo.app_setting.swagger }}|g' $HOME/.arkeo/config/app.toml
+    sed -i 's|^enable = false|enable = true|g' $HOME/.arkeo/config/app.toml
+    sed -i 's|^address = "tcp://localhost:1317"|address = "tcp://0.0.0.0:1317"|g' $HOME/.arkeo/config/app.toml
 
     # Configure seeds and peers
     SEEDS="{{ .Values.arkeo.seeds }}"
