@@ -38,7 +38,6 @@ pull: ## Git pull helm-charts repository
 
 update-dependencies:
 	@echo "=> Updating Helm chart dependencies"
-	@helm dependencies update ./relayer
 	@helm dependencies update ./arkeo-stack
 	@echo
 
