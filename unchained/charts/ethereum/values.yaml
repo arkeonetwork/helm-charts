@@ -13,15 +13,15 @@ api:
     memory: 250Mi
   env:
   - name: INDEXER_URL
-    value: "http://ethereum-svc.unchained.svc.cluster.local:8001"
+    value: "http://ethereum-svc.arkeo.svc.cluster.local:8001"
   - name: INDEXER_WS_URL
-    value: "ws://ethereum-svc.unchained.svc.cluster.local:8001/websocket"
+    value: "ws://ethereum-svc.arkeo.svc.cluster.local:8001/websocket"
   - name: LOG_LEVEL
     value: "debug"
   - name: NETWORK
     value: "mainnet"
   - name: RPC_URL
-    value: "http://ethereum-svc.unchained.svc.cluster.local:8545"
+    value: "http://ethereum-svc.arkeo.svc.cluster.local:8545"
 
 statefulset:
   name: ethereum
@@ -72,7 +72,7 @@ statefulset:
         cpu: 1
       storage_size: 500Gi
     - name: indexer
-      image: "shapeshiftdao/unchained-blockbook:c2cb648"
+      image: "shapeshiftdao/unchained-blockbook:4a7fdb5"
       command: 
         - '/bin/blockbook'
         - '-blockchaincfg=/config.json'
