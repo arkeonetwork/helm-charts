@@ -17,7 +17,7 @@ cosmos:
 dogecoin:
   enabled: false
 ethereum:
-  enabled: false
+  enabled: true
 gnosis:
   enabled: false
 litecoin:
