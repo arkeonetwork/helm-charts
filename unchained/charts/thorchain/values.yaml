@@ -13,18 +13,18 @@ api:
     memory: 250Mi
   env:
   - name: LCD_URL
-    value: "http://thorchain-svc.unchained.svc.cluster.local:1317"
+    value: "http://thorchain-svc.arkeo.svc.cluster.local:1317"
   - name: WS_URL
-    value: "ws://thorchain-svc.unchained.svc.cluster.local:27147"
+    value: "ws://thorchain-svc.arkeo.svc.cluster.local:27147"
   - name: RPC_URL
-    value: "http://thorchain-svc.unchained.svc.cluster.local:27147"
+    value: "http://thorchain-svc.arkeo.svc.cluster.local:27147"
 
 statefulset:
   name: thorchain
   replicas: 1
   containers:
     - name: daemon
-      image: "registry.gitlab.com/thorchain/thornode:mainnet-2.137.0"
+      image: "registry.gitlab.com/thorchain/thornode:mainnet-3.2.0"
       ports:
       - name: daemon-api
         containerPort: 1317
@@ -74,7 +74,7 @@ statefulset:
       storage_size: 500Gi
       dataDir: '/var/lib/postgresql/data'
     - name: indexer
-      image: "registry.gitlab.com/thorchain/midgard:2.20.1"
+      image: "registry.gitlab.com/thorchain/midgard:2.29.5"
       env:
       - name: MIDGARD_BLOCKSTORE_LOCAL
         value: '/blockstore'
