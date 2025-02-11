@@ -50,7 +50,7 @@ statefulset:
       - name: NETWORK
         value: mainnet
     - name: daemon-beacon
-      image: "prysmaticlabs/prysm/beacon-chain:v5.1.2"
+      image: "gcr.io/prysmaticlabs/prysm/beacon-chain:v5.2.0"
       args:
         - '--datadir'
         - '/data'
