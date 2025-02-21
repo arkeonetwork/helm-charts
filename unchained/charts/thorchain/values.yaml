@@ -76,14 +76,14 @@ statefulset:
     - name: indexer
       image: "registry.gitlab.com/thorchain/midgard:2.29.5"
       env:
-      - name: MIDGARD_GENESIS_REMOTE
-        value: 'https://rpc-v1.ninerealms.com/genesis'
+      #- name: MIDGARD_GENESIS_REMOTE
+      #  value: 'https://rpc-v1.ninerealms.com/genesis'
       - name: MIDGARD_GENESIS_LOCAL
         value: '/blockstore/genesis.json'
-      - name: MIDGARD_GENESIS_INITIAL_BLOCK_HEIGHT
-        value: '4786560'
-      - name: MIDGARD_GENESIS_INITIAL_BLOCK_HASH
-        value: '9B86543A5CF5E26E3CE93C8349B2EABE5E238DFFC9EBE8EC6207FE7178FF27AC'
+      #- name: MIDGARD_GENESIS_INITIAL_BLOCK_HEIGHT
+      #  value: '4786560'
+      #- name: MIDGARD_GENESIS_INITIAL_BLOCK_HASH
+      #  value: '9B86543A5CF5E26E3CE93C8349B2EABE5E238DFFC9EBE8EC6207FE7178FF27AC'
       - name: MIDGARD_BLOCKSTORE_REMOTE
         value: 'https://storage.googleapis.com/public-snapshots-ninerealms/midgard-blockstore/'
       ports:
