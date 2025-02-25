@@ -3,9 +3,10 @@
 set -e
 
 start_service() {
-  if [[ -f /blockstore/genesis.json ]]; then
-    wget -O /blockstore/genesis.json https://storage.googleapis.com/public-snapshots-ninerealms/genesis/17562000.json
-  fi
+  #if [[ -f /blockstore/genesis.json ]]; then
+  wget -O /blockstore/genesis.json https://rpc-v1.ninerealms.com/genesis
+  #fi
+  #rm -rf /blockstore/*
 
   ./midgard config.json &
   PID="$!"

@@ -118,18 +118,6 @@ spec:
           subPath: blockstore-hashes
         {{- end }}
     {{- end }}
-      #initContainers:
-      #- name: install
-      #  image: busybox
-      #  command:
-      #  - wget
-      #  - "-O"
-      #  - "/genesis.json"
-      #  - "https://storage.googleapis.com/public-snapshots-ninerealms/genesis/17562000.json"
-      #  volumeMounts:
-      #  - name: {{ $.Values.name }}
-      #    mountPath: '/'
-      #    subPath: 'genesis.json'
       volumes:
         - name: {{ .Values.name }}
           configMap:
