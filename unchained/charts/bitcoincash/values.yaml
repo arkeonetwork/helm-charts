@@ -13,27 +13,27 @@ api:
     memory: 250Mi
   env:
   - name: INDEXER_URL
-    value: "http://bitcoincash-svc.unchained.svc.cluster.local:8001"
+    value: "http://bitcoincash-svc.arkeo.svc.cluster.local:8001"
   - name: INDEXER_WS_URL
-    value: "ws://bitcoincash-svc.unchained.svc.cluster.local:8001/websocket"
+    value: "ws://bitcoincash-svc.arkeo.svc.cluster.local:8001/websocket"
   - name: LOG_LEVEL
     value: "debug"
   - name: NETWORK
     value: "mainnet"
   - name: RPC_URL
-    value: "http://user:password@bitcoincash-svc.unchained.svc.cluster.local:8332"
+    value: "http://user:password@bitcoincash-svc.arkeo.svc.cluster.local:8332"
 
 statefulset:
   name: bitcoincash
   replicas: 1
   containers:
     - name: daemon
-      image: "arkeonetwork/bitcoin-cash-daemon-27.1.0:latest"
+      image: "shapeshiftdao/bitcoin-cash-node:27.0.0"
       command: 
         - '/init.sh'
       limits:
         cpu: 2
-        memory: 5Gi
+        memory: 10Gi
       requests:
         cpu: 1
       ports:
@@ -41,7 +41,7 @@ statefulset:
         containerPort: 8332
       storage_size: 250Gi
     - name: indexer
-      image: "shapeshiftdao/unchained-blockbook:559cfbc"
+      image: "shapeshiftdao/unchained-blockbook:4a7fdb5"
       command: 
         - '/bin/blockbook'
         - '-blockchaincfg=/config.json'

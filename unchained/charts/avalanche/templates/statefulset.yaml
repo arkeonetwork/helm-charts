@@ -71,6 +71,7 @@ spec:
             port: 8001
           {{- end }}
         readinessProbe:
+          initialDelaySeconds: 7200
           failureThreshold: 10
           periodSeconds: 30
           timeoutSeconds: 10
