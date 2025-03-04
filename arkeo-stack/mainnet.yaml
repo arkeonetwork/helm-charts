@@ -1,7 +1,3 @@
-global:
-  tag: latest
-  hash: 6f845fdaad1d0ee9a357b176ba0518719e45a9a9eee352158b76386fcb2efbcd
-
 arkeo:
   haltHeight:
   statesync:

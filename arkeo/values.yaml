@@ -6,7 +6,7 @@ net: mainnet
 type: validator
 
 arkeo:
-  version: v1.0.4-prerelease
+  version: v1.0.6-prerelease
   moniker: arkeo-node
   fees: 5000uarkeo
   amount: 1000000
@@ -59,7 +59,8 @@ strategyType: Recreate
 image:
   repository: ghcr.io/arkeonetwork/arkeo-testnet
   pullPolicy: Always
-  tag: 1.0.4-prerelease
+  tag: 1.0.6-prerelease
+  hash: 6d077dfe855570e0fa307312df91c4e536c2cb9d261b55fb592ecfdf3bd578eb
 
 imagePullSecrets: []
 nameOverride: ""
