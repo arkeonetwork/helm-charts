@@ -45,6 +45,7 @@ spec:
           {{- end }}
         command: {{- toYaml .command | nindent 10 }} 
         startupProbe:
+          initialDelaySeconds: 7200
           failureThreshold: 60
           periodSeconds: 30
           timeoutSeconds: 10 
@@ -58,6 +59,7 @@ spec:
             port: 8001
           {{- end }}
         livenessProbe:
+          initialDelaySeconds: 7200
           periodSeconds: 30
           timeoutSeconds: 10
           {{- if ne .name "indexer" }}

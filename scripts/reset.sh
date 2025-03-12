@@ -4,7 +4,7 @@ source ./scripts/core.sh
 
 get_node_info_short
 echo "=> Select a daemon service to reset"
-menu midgard midgard midgard-blockstore binance-smart-daemon thornode gaia-daemon osmosis-daemon ethereum-daemon-execution ethereum-daemon-beacon avalanche-daemon litecoin-daemon
+menu midgard midgard midgard-blockstore binance-smart-daemon thornode gaia-daemon osmosis-daemon ethereum-daemon-execution ethereum-daemon-beacon avalanche-daemon litecoin-daemon arkeo
 SERVICE=${MENU_SELECTED}
 
 if node_exists; then
@@ -91,4 +91,12 @@ case ${SERVICE} in
     kubectl run -n "${NAME}" -it reset-litecoin --rm --restart=Never --image=busybox --overrides='{"apiVersion": "v1", "spec": {"containers": [{"command": ["sh", "-c", "rm -rf /home/litecoin/.litecoin/*"], "name": "reset-litecoin", "stdin": true, "stdinOnce": true, "tty": true, "image": "busybox", "volumeMounts": [{"mountPath": "/home/litecoin/.litecoin", "name":"data"}]}], "volumes": [{"name": "data", "persistentVolumeClaim": {"claimName": "litecoin-daemon"}}]}}'
     kubectl scale -n "${NAME}" --replicas=1 deploy/litecoin-daemon --timeout=5m
     ;;
+
+  arkeo)
+    kubectl scale -n "${NAME}" --replicas=0 deploy/arkeo --timeout=5m
+    kubectl wait --for=delete pods -l app.kubernetes.io/name=arkeo -n "${NAME}" --timeout=5m >/dev/null 2>&1 || true
+    kubectl run -n "${NAME}" -it reset-arkeo --rm --restart=Never --image=busybox --overrides='{"apiVersion": "v1", "spec": {"containers": [{"command": ["sh", "-c", "rm -rf /root/.arkeo/data"], "name": "reset-arkeo", "stdin": true, "stdinOnce": true, "tty": true, "image": "busybox", "volumeMounts": [{"mountPath": "/root/.arkeo", "name":"data"}]}], "volumes": [{"name": "data", "persistentVolumeClaim": {"claimName": "arkeo"}}]}}'
+    kubectl scale -n "${NAME}" --replicas=1 deploy/arkeo --timeout=5m
+    ;;
+
 esac
