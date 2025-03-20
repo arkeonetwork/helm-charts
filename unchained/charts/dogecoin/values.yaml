@@ -56,7 +56,7 @@ statefulset:
         - '-workers=1'
       limits:
         cpu: 2
-        memory: 12Gi
+        memory: 14Gi
       requests:
         cpu: 1
       storage_size: 250Gi

@@ -20,7 +20,7 @@ spec:
       containers:
       - name: {{ .Chart.Name }}-{{ .Values.api.tier }}
         image: {{ .Values.api.image }}
-        args: ['-swagger', 'swagger.json']
+        #args: ['-swagger', 'swagger.json']
         env:
         {{- range $value := .Values.api.env }}
         - name: {{ $value.name }}
@@ -40,7 +40,7 @@ spec:
           httpGet:
             path: '/health'
             port: 3000
-          initialDelaySeconds: 10
+          initialDelaySeconds: 30
           periodSeconds: 5
           failureThreshold: 3
           successThreshold: 1
@@ -48,7 +48,7 @@ spec:
           httpGet:
             path: '/health'
             port: 3000
-          initialDelaySeconds: 10
+          initialDelaySeconds: 30
           periodSeconds: 5
           failureThreshold: 3
           successThreshold: 1
