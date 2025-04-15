@@ -6,19 +6,19 @@ net: mainnet
 type: validator
 
 arkeo:
-  version: v1.0.4-prerelease
+  version: v1.0.6-prerelease
   moniker: arkeo-node
   fees: 5000uarkeo
   amount: 1000000
   app_setting:
-    pruning: custom 
+    pruning: custom
     pruning_keep_recent: 100
     pruning_interval: 50
     minimum_gas_prices: 0.001uarkeo
     swagger: true
-  seeds: 9dfa5f2d19c1174baf5e597965394269e654f9b7@seed31.innovationtheory.com:26656
-  snapshot: https://snapshots-testnet.nodejumper.io/arkeo/arkeo_latest.tar.lz4
-  addrbook: https://snapshots-testnet.nodejumper.io/arkeo/addrbook.json
+  seeds: b5fe75682387729e63f00cf08438b57069ede679@seedm1.innovationtheory.com:26656
+#  snapshot: https://snapshots-testnet.nodejumper.io/arkeo/arkeo_latest.tar.lz4
+#  addrbook: https://snapshots-testnet.nodejumper.io/arkeo/addrbook.json
 
 
 autoupdate:
@@ -30,8 +30,8 @@ signer:
   mnemonicSecret: ""
   passwordSecret: ""
 
-peer: seed31.innovationtheory.com
-peerApi: seed31.innovationtheory.com
+peer: seedm1.innovationtheory.com
+peerApi: seedm1.innovationtheory.com
 
 # See docs/Thornode-Snapshot-Recovery-and-Storage-Management.md for details.
 statesync:
@@ -41,13 +41,13 @@ statesync:
 # provide custom environment variables to override config defaults:
 # https://gitlab.com/arkeo/arkeo/-/blob/develop/config/default.yaml
 env:
-  SEED: seed31.innovationtheory.com:26656
-  RPC: seed31.innovationtheory.com:26657
+  SEED: seedm1.innovationtheory.com:26656
+  RPC: seedm1.innovationtheory.com:26657
 
 debug: false
 chainID:
   testnet: arkeo-testnet-3
-  mainnet: arkeo-testnet-3
+  mainnet: arkeo-main-v1
   stagenet: arkeo-stagenet-v1
 
 haltHeight:
@@ -57,9 +57,10 @@ replicaCount: 1
 strategyType: Recreate
 
 image:
-  repository: ghcr.io/arkeonetwork/arkeo-testnet
+  repository: ghcr.io/arkeonetwork/arkeo
   pullPolicy: Always
-  tag: 1.0.4-prerelease
+  tag: 1.0.6-prerelease
+  hash: 8d0f44ab5c3032250219c65e24b1b90eb997f3aa7e3ced64a37ccefae9bc36a8
 
 imagePullSecrets: []
 nameOverride: ""

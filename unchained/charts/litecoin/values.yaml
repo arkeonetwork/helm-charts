@@ -13,22 +13,22 @@ api:
     memory: 250Mi
   env:
   - name: INDEXER_URL
-    value: "http://litecoin-svc.unchained.svc.cluster.local:8001"
+    value: "http://litecoin-svc.arkeo.svc.cluster.local:8001"
   - name: INDEXER_WS_URL
-    value: "ws://litecoin-svc.unchained.svc.cluster.local:8001/websocket"
+    value: "ws://litecoin-svc.arkeo.svc.cluster.local:8001/websocket"
   - name: LOG_LEVEL
     value: "debug"
   - name: NETWORK
     value: "mainnet"
   - name: RPC_URL
-    value: "http://user:password@litecoin-svc.unchained.svc.cluster.local:8332"
+    value: "http://user:password@litecoin-svc.arkeo.svc.cluster.local:8332"
 
 statefulset:
   name: litecoin
   replicas: 1
   containers:
     - name: daemon
-      image: "arkeonetwork/litecoin-daemon-0.21.3:latest"
+      image: "shapeshiftdao/litecoin-core:v0.21.3"
       command: 
         - '/init.sh' 
       ports:
@@ -36,7 +36,7 @@ statefulset:
         containerPort: 8332
       limits:
         cpu: 2
-        memory: 4Gi
+        memory: 10Gi
       requests:
         cpu: 1
       storage_size: 250Gi
@@ -53,7 +53,7 @@ statefulset:
         - '-workers=1'
       limits:
         cpu: 2
-        memory: 16Gi
+        memory: 18Gi
       requests:
         cpu: 1
       storage_size: 250Gi

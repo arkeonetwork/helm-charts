@@ -45,6 +45,7 @@ spec:
           {{- end }}
         command: {{- toYaml .command | nindent 10 }} 
         readinessProbe:
+          initialDelaySeconds: 7200
           failureThreshold: 10
           periodSeconds: 30
           timeoutSeconds: 10

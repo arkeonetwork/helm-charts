@@ -14,9 +14,13 @@ api:
   env:
   - name: LCD_URL
     value: "http://thorchain-svc.arkeo.svc.cluster.local:1317"
+  - name: LCD_V1_URL
+    value: "http://thorchain-svc.arkeo.svc.cluster.local:1317"
   - name: WS_URL
     value: "ws://thorchain-svc.arkeo.svc.cluster.local:27147"
   - name: RPC_URL
+    value: "http://thorchain-svc.arkeo.svc.cluster.local:27147"
+  - name: RPC_V1_URL
     value: "http://thorchain-svc.arkeo.svc.cluster.local:27147"
 
 statefulset:
@@ -24,7 +28,7 @@ statefulset:
   replicas: 1
   containers:
     - name: daemon
-      image: "registry.gitlab.com/thorchain/thornode:mainnet-3.2.0"
+      image: "registry.gitlab.com/thorchain/thornode:mainnet-3.3.0"
       ports:
       - name: daemon-api
         containerPort: 1317

@@ -1,0 +1,42 @@
+name: cosmos
+
+api:
+  tier: api
+  image: "shapeshiftdao/unchained-cosmos-api:latest"
+  autoscaling: true
+  replicas: 1
+  limits:
+    cpu: 500m
+    memory: 1Gi
+  requests:
+    cpu: 250m
+    memory: 500Mi
+  env:
+  - name: LCD_URL
+    value: "http://gaia-daemon.arkeo.svc.cluster.local:1317"
+  - name: GRPC_URL
+    value: "gaia-daemon.arkeo.svc.cluster.local:9090"
+  - name: WS_URL
+    value: "ws://gaia-daemon.arkeo.svc.cluster.local:26657"
+  - name: RPC_URL
+    value: "http://gaia-daemon.arkeo.svc.cluster.local:26657"
+
+statefulset:
+  name: cosmos
+  replicas: 1
+  containers:
+    - name: daemon
+      image: "shapeshiftdao/cosmoshub:v17.2.0"
+      ports:
+      - name: daemon-api
+        containerPort: 1317
+      - name: daemon-rpc
+        containerPort: 26657
+      limits:
+        cpu: 4
+        memory: 48Gi
+      requests:
+        cpu: 2
+      storage_size: 4750Gi
+      dataDir: /root
+      

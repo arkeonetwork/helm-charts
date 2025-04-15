@@ -2,7 +2,7 @@ name: ethereum
 
 api:
   tier: api
-  image: "shapeshiftdao/unchained-ethereum-api:latest"
+  image: "shapeshiftdao/unchained-ethereum-api:5fa59154a3a9d0f0a39d45767c8a95812603b108"
   autoscaling: true
   replicas: 1
   limits:
@@ -67,7 +67,7 @@ statefulset:
         - '--accept-terms-of-use'
       limits:
         cpu: 2
-        memory: 12Gi
+        memory: 16Gi
       requests:
         cpu: 1
       storage_size: 500Gi
@@ -84,7 +84,7 @@ statefulset:
         - '-workers=1'
       limits:
         cpu: 2
-        memory: 12Gi
+        memory: 16Gi
       requests:
         cpu: 1
       storage_size: 500Gi

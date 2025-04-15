@@ -13,9 +13,9 @@ api:
     memory: 250Mi
   env:
   - name: INDEXER_URL
-    value: "http://dogecoin-svc.unchained.svc.cluster.local:8001"
+    value: "http://dogecoin-svc.arkeo.svc.cluster.local:8001"
   - name: INDEXER_WS_URL
-    value: "ws://dogecoin-svc.unchained.svc.cluster.local:8001/websocket"
+    value: "ws://dogecoin-svc.arkeo.svc.cluster.local:8001/websocket"
   - name: LOG_LEVEL
     value: "debug"
   - name: NETWORK
@@ -28,12 +28,12 @@ statefulset:
   replicas: 1
   containers:
     - name: daemon
-      image: "arkeonetwork/dogecoin-daemon-1.14.8:latest"
+      image: "shapeshiftdao/dogecoin:1.14.7"
       command: 
         - '/init.sh' 
       limits:
         cpu: 2
-        memory: 5Gi
+        memory: 10Gi
       requests:
         cpu: 1
       ports:
@@ -56,7 +56,7 @@ statefulset:
         - '-workers=1'
       limits:
         cpu: 2
-        memory: 12Gi
+        memory: 14Gi
       requests:
         cpu: 1
       storage_size: 250Gi
