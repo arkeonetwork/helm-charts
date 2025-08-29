@@ -332,7 +332,7 @@ data:
     # Configure seeds and peers
     SEEDS="{{ .Values.arkeo.seeds }}"
 
-    # Fetch Peers form network 
+    # Fetch Peers from network
     net_info=$(curl -s {{ .Values.env.RPC }}/net_info)
     formatted_output=$(echo "$net_info" | jq -r '
       .result.peers[] |
